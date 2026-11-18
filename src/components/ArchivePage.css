@@ -1,0 +1,486 @@
+/* =========================================================
+   ON AIR — ARCHIVE PAGE WRAPPER
+   Transparent over global website background
+========================================================= */
+
+.archive-page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  /* No local section background */
+  background: transparent !important;
+}
+
+
+/* =========================================================
+   GLOBAL ARCHIVE CHROME
+========================================================= */
+
+.archive-global-chrome {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+
+  --navy: #112548;
+  --teal: #4E8484;
+  --cream: #F7EDE3;
+  --beige: #E1D7CC;
+  --gray: #6D6D6D;
+  --gold: #C7A86B;
+  --red: #D92832;
+}
+
+
+/* =========================================================
+   TOP BAR
+   Transparent — No blur — No overlay
+========================================================= */
+
+.archive-global-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: clamp(64px, 9vh, 92px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 clamp(20px, 5.3vw, 82px);
+
+  border-bottom: 1px solid rgba(199, 168, 107, 0.38);
+
+  /* Removed dark background and blur */
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  direction: ltr;
+}
+
+
+/* =========================================================
+   LANGUAGE — LEFT
+========================================================= */
+
+.archive-global-language {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  direction: ltr;
+  pointer-events: auto;
+}
+
+.archive-global-language button {
+  border: 0;
+  outline: 0;
+  padding: 0;
+
+  background: transparent;
+
+  color: var(--cream);
+
+  font-family: "Space Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+
+  cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.archive-global-language button.active,
+.archive-global-language button:hover {
+  color: var(--teal);
+}
+
+.archive-global-language span {
+  color: var(--gray);
+  font-family: "Space Mono", monospace;
+}
+
+
+/* =========================================================
+   TECHNICAL INFO — CENTER
+========================================================= */
+
+.archive-global-tech {
+  position: absolute;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  direction: ltr;
+  white-space: nowrap;
+
+  color: var(--cream);
+
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+
+.archive-global-tech i {
+  font-style: normal;
+  color: var(--gray);
+}
+
+
+/* =========================================================
+   REC — RIGHT
+========================================================= */
+
+.archive-global-rec {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  direction: ltr;
+  color: var(--cream);
+
+  font-family: "Space Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.archive-global-rec span {
+  width: 13px;
+  height: 13px;
+
+  border-radius: 50%;
+  background: var(--red);
+
+  box-shadow: 0 0 12px rgba(217, 40, 50, 0.35);
+
+  animation: archiveGlobalRecBlink 1.3s infinite;
+}
+
+@keyframes archiveGlobalRecBlink {
+  0%, 45% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50%, 100% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+
+/* =========================================================
+   GLOBAL CAMERA FRAME
+========================================================= */
+
+.archive-global-frame {
+  position: absolute;
+
+  top: 125px;
+  right: clamp(28px, 5vw, 76px);
+  bottom: 45px;
+  left: clamp(28px, 5vw, 76px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CORNERS
+========================================================= */
+
+.global-corner {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  opacity: 0.72;
+}
+
+.global-corner::before,
+.global-corner::after {
+  content: "";
+  position: absolute;
+  background: var(--gold);
+}
+
+
+/* TOP LEFT */
+
+.global-tl {
+  top: 0;
+  left: 0;
+}
+
+.global-tl::before {
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 1px;
+}
+
+.global-tl::after {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 64px;
+}
+
+
+/* TOP RIGHT */
+
+.global-tr {
+  top: 0;
+  right: 0;
+}
+
+.global-tr::before {
+  top: 0;
+  right: 0;
+  width: 64px;
+  height: 1px;
+}
+
+.global-tr::after {
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 64px;
+}
+
+
+/* BOTTOM LEFT */
+
+.global-bl {
+  bottom: 0;
+  left: 0;
+}
+
+.global-bl::before {
+  bottom: 0;
+  left: 0;
+  width: 64px;
+  height: 1px;
+}
+
+.global-bl::after {
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 64px;
+}
+
+
+/* BOTTOM RIGHT */
+
+.global-br {
+  bottom: 0;
+  right: 0;
+}
+
+.global-br::before {
+  bottom: 0;
+  right: 0;
+  width: 64px;
+  height: 1px;
+}
+
+.global-br::after {
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  height: 64px;
+}
+
+
+/* =========================================================
+   HIDE THE OLD LOCAL TOP BAR
+========================================================= */
+
+.archive-page-wrapper
+.cinematic-archive
+.archive-global-bar {
+  display: none !important;
+}
+
+
+/* =========================================================
+   HIDE OLD INTRO CORNERS
+========================================================= */
+
+.archive-page-wrapper
+.cinematic-archive
+.archive-frame {
+  display: none !important;
+}
+
+.archive-page-wrapper
+.cinematic-archive
+.archive-corner {
+  display: none !important;
+}
+
+
+/* =========================================================
+   KEEP CONTENT ABOVE GLOBAL BACKGROUND
+========================================================= */
+
+.archive-page-wrapper
+.cinematic-archive,
+.archive-page-wrapper
+.oa-production {
+  position: relative;
+  z-index: 1;
+
+  background: transparent !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .archive-global-bar {
+    height: 64px;
+    padding: 0 20px;
+
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .archive-global-language button {
+    font-size: 10px;
+  }
+
+  .archive-global-tech {
+    gap: 10px;
+    font-size: 8px;
+  }
+
+  .archive-global-rec {
+    gap: 8px;
+    font-size: 9px;
+  }
+
+  .archive-global-rec span {
+    width: 9px;
+    height: 9px;
+  }
+
+  .archive-global-frame {
+    top: 92px;
+    right: 18px;
+    bottom: 22px;
+    left: 18px;
+  }
+
+  .global-corner {
+    width: 36px;
+    height: 36px;
+  }
+
+  .global-tl::before,
+  .global-tr::before,
+  .global-bl::before,
+  .global-br::before {
+    width: 36px;
+  }
+
+  .global-tl::after,
+  .global-tr::after,
+  .global-bl::after,
+  .global-br::after {
+    height: 36px;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 430px) {
+
+  .archive-global-bar {
+    height: 56px;
+    padding: 0 12px;
+  }
+
+  .archive-global-language {
+    gap: 6px;
+  }
+
+  .archive-global-language button {
+    font-size: 8px;
+  }
+
+  .archive-global-tech {
+    gap: 6px;
+    font-size: 6.5px;
+    letter-spacing: 0.08em;
+  }
+
+  .archive-global-tech span:nth-of-type(2),
+  .archive-global-tech i:nth-of-type(2) {
+    display: none;
+  }
+
+  .archive-global-rec {
+    gap: 6px;
+    font-size: 7px;
+  }
+
+  .archive-global-rec span {
+    width: 7px;
+    height: 7px;
+  }
+
+  .archive-global-frame {
+    top: 78px;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+
+  .global-corner {
+    width: 30px;
+    height: 30px;
+  }
+
+  .global-tl::before,
+  .global-tr::before,
+  .global-bl::before,
+  .global-br::before {
+    width: 30px;
+  }
+
+  .global-tl::after,
+  .global-tr::after,
+  .global-bl::after,
+  .global-br::after {
+    height: 30px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-global-rec span {
+    animation: none;
+  }
+}
