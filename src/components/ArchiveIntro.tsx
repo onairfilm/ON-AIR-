@@ -3,6 +3,9 @@ import "./ArchiveIntro.css";
 
 type Language = "ar" | "en";
 
+const teddyImage =
+  `${import.meta.env.BASE_URL}images/teddy-hanging.png`;
+
 export default function ArchiveIntro() {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem("onair-language");
@@ -12,6 +15,10 @@ export default function ArchiveIntro() {
   const [soundOn, setSoundOn] = useState(false);
 
   const isArabic = language === "ar";
+
+  /* =========================================
+     LANGUAGE SYNC
+  ========================================= */
 
   useEffect(() => {
     const handleLanguageChange = (event: Event) => {
@@ -38,40 +45,38 @@ export default function ArchiveIntro() {
     };
   }, []);
 
+  /* =========================================
+     SCROLL FUNCTIONS
+  ========================================= */
+
   const scrollToNext = () => {
     const nextSection =
       document.getElementById("productionSection");
 
-    if (nextSection) {
-      nextSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    nextSection?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   const scrollToMemory = () => {
     const section =
       document.getElementById("leaveMarkSection");
 
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    section?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   const scrollToSocial = () => {
     const section =
       document.getElementById("socialSection");
 
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    section?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   return (
@@ -82,6 +87,8 @@ export default function ArchiveIntro() {
       dir={isArabic ? "rtl" : "ltr"}
     >
       <section className="archive-intro-screen">
+
+        {/* BACKGROUND */}
 
         <div
           className="archive-background"
@@ -113,14 +120,31 @@ export default function ArchiveIntro() {
           aria-hidden="true"
         />
 
-        <div className="cinematic-tech">
+        {/* =====================================
+            HANGING TEDDY
+        ===================================== */}
 
+        <div
+          className="archive-teddy-drop"
+          aria-hidden="true"
+        >
+          <img
+            className="archive-teddy-image"
+            src={teddyImage}
+            alt=""
+            draggable={false}
+          />
+        </div>
+
+        {/* =====================================
+            CINEMATIC TECH
+        ===================================== */}
+
+        <div className="cinematic-tech">
           <div className="cinematic-sound" dir="ltr">
             <button
               type="button"
-              className={
-                soundOn ? "sound-active" : ""
-              }
+              className={soundOn ? "sound-active" : ""}
               onClick={() =>
                 setSoundOn((current) => !current)
               }
@@ -134,14 +158,15 @@ export default function ArchiveIntro() {
               </span>
 
               <span>
-                {soundOn
-                  ? "SOUND ON"
-                  : "SOUND OFF"}
+                {soundOn ? "SOUND ON" : "SOUND OFF"}
               </span>
             </button>
           </div>
-
         </div>
+
+        {/* =====================================
+            MAIN CONTENT
+        ===================================== */}
 
         <div className="archive-content">
 
@@ -154,92 +179,122 @@ export default function ArchiveIntro() {
             aria-hidden="true"
           />
 
-            <div
-             className="archive-logo"
-             aria-label="ON AIR بِالعَافيَه"
-               >
-            
-            
-<svg
-  className="archive-wordmark-svg"
-  viewBox="0 0 900 250"
-  xmlns="http://www.w3.org/2000/svg"
-  role="img"
-  aria-label="ON AIR"
->
-  <g
-    fill="none"
-    stroke="#112548"
-    strokeWidth="14"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    {/* O */}
-    <circle cx="105" cy="125" r="76" />
-
-    {/* N */}
-    <path d="
-      M 225 205
-      V 112
-      C 225 72, 250 49, 290 49
-      C 330 49, 355 72, 355 112
-      V 205
-    " />
-
-    {/* A - Tall rounded arch */}
-    <path d="
-      M 415 205
-      V 76
-      C 415 28, 449 5, 495 5
-      C 541 5, 575 28, 575 76
-      V 205
-    " />
-
-    {/* A - Inner vertical */}
-    <path d="
-      M 495 153
-      V 205
-    " />
-
-    {/* I */}
-    <path d="
-      M 650 105
-      V 205
-    " />
-
-    {/* R */}
-    <path d="
-      M 705 205
-      V 112
-      C 705 72, 730 49, 770 49
-      H 860
-    " />
-
-    {/* R - Dot */}
-    <path
-      d="M 650 49 V 49"
-      strokeWidth="0"
-    />
-  </g>
-
-  {/* A dot */}
-  <circle cx="495" cy="126" r="7" fill="#112548" />
-
-  {/* I dot */}
-  <circle cx="650" cy="70" r="7" fill="#112548" />
-</svg>
-         <div className="archive-arabic" dir="rtl">
-          بِالعَافيَه
-          </div>
+          {/* =================================
+              ANIMATED ON AIR LOGO
+          ================================= */}
 
           <div
-       className="archive-logo-line"
-       aria-hidden="true"
-        />
-         </div>
+            className="archive-logo"
+            aria-label="ON AIR بِالعَافيَه"
+          >
+            <svg
+              className="archive-wordmark-svg"
+              viewBox="0 0 900 250"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="ON AIR"
+            >
+              <g
+                fill="none"
+                stroke="#112548"
+                strokeWidth="14"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {/* O */}
 
+                <g className="archive-logo-letter archive-letter-o">
+                  <circle cx="105" cy="125" r="76" />
+                </g>
+
+                {/* N */}
+
+                <g className="archive-logo-letter archive-letter-n">
+                  <path
+                    d="
+                      M 225 205
+                      V 112
+                      C 225 72, 250 49, 290 49
+                      C 330 49, 355 72, 355 112
+                      V 205
+                    "
+                  />
+                </g>
+
+                {/* A */}
+
+                <g className="archive-logo-letter archive-letter-a">
+                  <path
+                    d="
+                      M 415 205
+                      V 76
+                      C 415 28, 449 5, 495 5
+                      C 541 5, 575 28, 575 76
+                      V 205
+                    "
+                  />
+
+                  <path d="M 495 153 V 205" />
+
+                  <circle
+                    cx="495"
+                    cy="126"
+                    r="7"
+                    fill="#112548"
+                    stroke="none"
+                  />
+                </g>
+
+                {/* I */}
+
+                <g className="archive-logo-letter archive-letter-i">
+                  <path d="M 650 105 V 205" />
+
+                  <circle
+                    cx="650"
+                    cy="70"
+                    r="7"
+                    fill="#112548"
+                    stroke="none"
+                  />
+                </g>
+
+                {/* R */}
+
+                <g className="archive-logo-letter archive-letter-r">
+                  <path
+                    d="
+                      M 705 205
+                      V 112
+                      C 705 72, 730 49, 770 49
+                      H 860
+                    "
+                  />
+                </g>
+              </g>
+            </svg>
+
+            {/* Arabic Brand */}
+
+            <div className="archive-arabic" dir="rtl">
+              بِالعَافيَه
+            </div>
+
+            {/* Logo Underline */}
+
+            <div
+              className="archive-logo-line"
+              aria-hidden="true"
+            />
+          </div>
+
+          {/* =================================
+              HERO ACTIONS
+          ================================= */}
 
           <div className="cinematic-hero-actions">
+
+            {/* MEMORY */}
 
             <button
               type="button"
@@ -265,6 +320,8 @@ export default function ArchiveIntro() {
                 </small>
               </span>
             </button>
+
+            {/* SCROLL */}
 
             <button
               type="button"
@@ -297,6 +354,8 @@ export default function ArchiveIntro() {
               </span>
             </button>
 
+            {/* SOCIAL */}
+
             <button
               type="button"
               className="hero-action hero-action-social"
@@ -323,6 +382,10 @@ export default function ArchiveIntro() {
             </button>
 
           </div>
+
+          {/* =================================
+              STATEMENT
+          ================================= */}
 
           <div className="cinematic-statement">
 
@@ -364,8 +427,9 @@ export default function ArchiveIntro() {
             aria-hidden="true"
           />
 
-          <div className="cinematic-status">
+          {/* STATUS */}
 
+          <div className="cinematic-status">
             <span className="status-dot" />
 
             <span>
@@ -373,10 +437,11 @@ export default function ArchiveIntro() {
                 ? "ملف الفريق مفتوح"
                 : "TEAM FILE OPEN"}
             </span>
-
           </div>
 
         </div>
+
+        {/* BOTTOM META */}
 
         <div className="cinematic-bottom-meta">
           <span>FILE OPENED</span>

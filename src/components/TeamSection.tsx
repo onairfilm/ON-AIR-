@@ -1,249 +1,210 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./TeamSection.css";
 
 type Language = "ar" | "en";
 
-type IconName =
-  | "clapper"
-  | "headset"
-  | "camera"
-  | "pen"
-  | "layers"
-  | "hanger"
-  | "edit"
-  | "styleCamera"
-  | "makeup"
-  | "production"
-  | "megaphone"
-  | "spotlight";
-
 type TeamMember = {
-  number: string;
-  name: string;
-  icon: IconName;
+  nameAr: string;
+  nameEn: string;
+  photo: string;
   rolesAr: string[];
   rolesEn: string[];
-  photo?: string;
 };
 
 const teamMembers: TeamMember[] = [
   {
-    number: "01",
-    name: "عادل محمد",
-    icon: "clapper",
+    nameAr: "عادل محمد",
+    nameEn: "Adel Mohamed",
+    photo: "images/team/adel-mohamed.jpeg",
     rolesAr: ["إخراج", "مونتاج"],
     rolesEn: ["Direction", "Editing"],
   },
   {
-    number: "02",
-    name: "آيه بسيوني",
-    icon: "headset",
+    nameAr: "آيه بسيوني",
+    nameEn: "Aya Bassiouni",
+    photo: "images/team/aya-bassiouni.jpeg",
     rolesAr: ["مساعد مخرج", "هندسة صوتية"],
     rolesEn: ["Assistant Director", "Sound Engineering"],
   },
   {
-    number: "03",
-    name: "يوسف حسن",
-    icon: "camera",
+    nameAr: "يوسف حسن",
+    nameEn: "Youssef Hassan",
+    photo: "images/team/youssef-hassan.jpeg",
     rolesAr: ["مدير التصوير"],
     rolesEn: ["Director of Photography"],
   },
   {
-    number: "04",
-    name: "إسراء أحمد",
-    icon: "pen",
+    nameAr: "إسراء أحمد",
+    nameEn: "Esraa Ahmed",
+    photo: "images/team/esraa-ahmed.jpeg",
     rolesAr: ["سيناريست", "ديكور"],
     rolesEn: ["Screenwriting", "Set Design"],
   },
   {
-    number: "05",
-    name: "بسملة رضا",
-    icon: "layers",
+    nameAr: "بسملة رضا",
+    nameEn: "Basmala Reda",
+    photo: "images/team/basmala-reda.jpeg",
     rolesAr: ["راكور", "ديكور"],
     rolesEn: ["Script Continuity", "Set Design"],
   },
   {
-    number: "06",
-    name: "مريم محمد",
-    icon: "hanger",
+    nameAr: "مريم محمد",
+    nameEn: "Mariam Mohamed",
+    photo: "images/team/mariam-mohamed.jpeg",
     rolesAr: ["ستايلست", "تصوير"],
     rolesEn: ["Styling", "Camera"],
   },
   {
-    number: "07",
-    name: "مريم مسعد",
-    icon: "edit",
+    nameAr: "مريم مسعد",
+    nameEn: "Mariam Messaad",
+    photo: "images/team/mariam-messaad.jpeg",
     rolesAr: ["تصوير", "مونتاج"],
     rolesEn: ["Camera", "Editing"],
   },
   {
-    number: "08",
-    name: "روان عماد",
-    icon: "styleCamera",
+    nameAr: "روان عماد",
+    nameEn: "Rawan Emad",
+    photo: "images/team/rawan-emad.jpeg",
     rolesAr: ["ستايلست", "تصوير"],
     rolesEn: ["Styling", "Camera"],
   },
   {
-    number: "09",
-    name: "ياسمين هاني",
-    icon: "makeup",
+    nameAr: "ياسمين هاني",
+    nameEn: "Yasmin Hany",
+    photo: "images/team/yasmin-hany.jpeg",
     rolesAr: ["ميكاب", "ديزاينر"],
     rolesEn: ["Makeup", "Designer"],
   },
   {
-    number: "10",
-    name: "الاء بكر",
-    icon: "production",
+    nameAr: "الاء بكر",
+    nameEn: "Alaa Bakr",
+    photo: "images/team/alaa-bakr.jpeg",
     rolesAr: ["إنتاج", "راكور"],
     rolesEn: ["Production", "Script Continuity"],
   },
   {
-    number: "11",
-    name: "تقي المناخلي",
-    icon: "megaphone",
+    nameAr: "تقي المناخلي",
+    nameEn: "Toqa El-Manakhly",
+    photo: "images/team/toqa-elmanakhly.jpeg",
     rolesAr: ["تسويق", "ميديا"],
     rolesEn: ["Marketing", "Media"],
   },
   {
-    number: "12",
-    name: "رويدا صيام",
-    icon: "spotlight",
+    nameAr: "رويدا صيام",
+    nameEn: "Rowaida Siam",
+    photo: "images/team/rowaida-siam.jpeg",
     rolesAr: ["تصوير", "إضاءة"],
     rolesEn: ["Camera", "Lighting"],
   },
 ];
 
-function TeamIcon({ name }: { name: IconName }) {
-  const common = {
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.7,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
+type Position = -2 | -1 | 0 | 1 | 2;
+
+function CrewImage({
+  member,
+  language,
+  variant = "main",
+}: {
+  member: TeamMember;
+  language: Language;
+  variant?: "main" | "thumbnail";
+}) {
+  const [imageError, setImageError] = useState(false);
+
+  const imageSrc = `${import.meta.env.BASE_URL}${member.photo}`;
+  const displayName =
+    language === "ar" ? member.nameAr : member.nameEn;
+
+  if (imageError) {
+    return (
+      <div
+        className={`oa-carousel-fallback oa-carousel-fallback-${variant}`}
+        aria-label={displayName}
+      >
+        <span>{displayName.charAt(0)}</span>
+      </div>
+    );
+  }
 
   return (
-    <svg
-      viewBox="0 0 64 64"
-      className="oa-team-icon"
-      aria-hidden="true"
+    <img
+      src={imageSrc}
+      alt={variant === "main" ? displayName : ""}
+      className={`oa-carousel-photo oa-carousel-photo-${variant}`}
+      loading="eager"
+      draggable={false}
+      onError={() => setImageError(true)}
+    />
+  );
+}
+
+function CrewCard({
+  member,
+  language,
+  position,
+  onSelect,
+}: {
+  member: TeamMember;
+  language: Language;
+  position: Position;
+  onSelect: () => void;
+}) {
+  const positionClass = [
+    "far-left",
+    "left",
+    "center",
+    "right",
+    "far-right",
+  ][position + 2];
+
+  const displayName =
+    language === "ar" ? member.nameAr : member.nameEn;
+
+  const roles =
+    language === "ar" ? member.rolesAr : member.rolesEn;
+
+  return (
+    <button
+      type="button"
+      className={`oa-carousel-card oa-card-${positionClass} ${
+        position === 0 ? "is-center" : ""
+      }`}
+      onClick={onSelect}
+      aria-label={displayName}
+      aria-pressed={position === 0}
+      tabIndex={0}
     >
-      {name === "clapper" && (
-        <>
-          <rect x="9" y="23" width="46" height="32" rx="3" {...common} />
-          <path d="M9 23 13 11h43l-4 12" {...common} />
-          <path d="m21 11 7 12 M35 11l7 12 M49 11l7 12" {...common} />
-          <path d="M19 34h26 M19 41h18" {...common} />
-        </>
-      )}
+      <div className="oa-carousel-image">
+        <CrewImage
+          member={member}
+          language={language}
+        />
 
-      {name === "headset" && (
-        <>
-          <path d="M12 34v-5a20 20 0 0 1 40 0v5" {...common} />
-          <rect x="10" y="31" width="9" height="17" rx="4" {...common} />
-          <rect x="45" y="31" width="9" height="17" rx="4" {...common} />
-          <path d="M49 48c-2 6-8 8-16 8h-4" {...common} />
-          <path d="M29 56h-5" {...common} />
-        </>
-      )}
+        <div className="oa-carousel-shade" />
 
-      {name === "camera" && (
-        <>
-          <rect x="7" y="19" width="50" height="34" rx="5" {...common} />
-          <path d="M19 19l4-7h17l5 7" {...common} />
-          <circle cx="32" cy="36" r="11" {...common} />
-          <circle cx="32" cy="36" r="5" {...common} />
-          <circle cx="49" cy="26" r="2" fill="currentColor" />
-        </>
-      )}
+        {/* Main card caption */}
+        <div className="oa-carousel-main-caption">
+          <h3>{displayName}</h3>
+          <p>{roles.join(" / ")}</p>
+        </div>
 
-      {name === "pen" && (
-        <>
-          <path d="m15 48 4-13L43 11l10 10-24 24-14 3Z" {...common} />
-          <path d="m37 17 10 10 M19 35l10 10" {...common} />
-          <path d="m15 48 10-3" {...common} />
-          <path d="M12 56h40" {...common} />
-        </>
-      )}
-
-      {name === "layers" && (
-        <>
-          <path d="m32 10 22 12-22 12L10 22 32 10Z" {...common} />
-          <path d="m10 31 22 12 22-12" {...common} />
-          <path d="m10 40 22 12 22-12" {...common} />
-        </>
-      )}
-
-      {name === "hanger" && (
-        <>
-          <path d="M30 18a5 5 0 1 1 8 4c-3 2-5 3-5 7" {...common} />
-          <path d="m32 29-22 19a3 3 0 0 0 2 5h40a3 3 0 0 0 2-5L32 29Z" {...common} />
-        </>
-      )}
-
-      {name === "edit" && (
-        <>
-          <circle cx="17" cy="47" r="6" {...common} />
-          <circle cx="17" cy="17" r="6" {...common} />
-          <path d="m22 20 30 27 M22 44l30-27" {...common} />
-          <path d="M47 47l7 7 M47 17l7-7" {...common} />
-        </>
-      )}
-
-      {name === "styleCamera" && (
-        <>
-          <path d="M18 17a4 4 0 1 1 7 3c-3 2-4 4-4 6" {...common} />
-          <path d="m22 28-12 11a3 3 0 0 0 2 5h21" {...common} />
-          <rect x="32" y="27" width="24" height="24" rx="4" {...common} />
-          <circle cx="44" cy="39" r="7" {...common} />
-        </>
-      )}
-
-      {name === "makeup" && (
-        <>
-          <path d="m17 48 23-29 9 7-23 29-9-7Z" {...common} />
-          <path d="m36 23 9 7 M17 48l-5 9 10-2" {...common} />
-          <path d="M43 12c5-3 9 1 8 5l-5 6-8-7 5-4Z" {...common} />
-        </>
-      )}
-
-      {name === "production" && (
-        <>
-          <rect x="13" y="12" width="38" height="44" rx="4" {...common} />
-          <path d="M24 12v-3h16v3" {...common} />
-          <path d="m21 27 3 3 5-6 M33 28h10" {...common} />
-          <path d="m21 40 3 3 5-6 M33 41h10" {...common} />
-          <path d="M21 50h22" {...common} />
-        </>
-      )}
-
-      {name === "megaphone" && (
-        <>
-          <path d="M10 27h12l27-12v34L22 37H10z" {...common} />
-          <path d="m22 37 5 15h10l-8-18" {...common} />
-          <path d="M53 25l5-3 M54 33h6 M53 41l5 3" {...common} />
-        </>
-      )}
-
-      {name === "spotlight" && (
-        <>
-          <path d="M20 11h24l-5 12H25l-5-12Z" {...common} />
-          <path d="M25 23 12 52 M39 23l13 29" {...common} />
-          <path d="M18 52h28 M32 23v22" {...common} />
-          <path d="m27 45 5 6 5-6" {...common} />
-        </>
-      )}
-    </svg>
+        {/* Side card caption */}
+        <div className="oa-carousel-mini-caption">
+          <strong>{displayName}</strong>
+          <span>{roles.join(" / ")}</span>
+        </div>
+      </div>
+    </button>
   );
 }
 
 export default function TeamSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
   const [language, setLanguage] = useState<Language>("ar");
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const isArabic = language === "ar";
 
-  // Sync with the website language switch
+  // Sync with website language
   useEffect(() => {
     const syncLanguage = () => {
       setLanguage(
@@ -268,171 +229,106 @@ export default function TeamSection() {
       }
     };
 
-    window.addEventListener("onair-language-change", onLanguageChange);
+    window.addEventListener(
+      "onair-language-change",
+      onLanguageChange
+    );
 
     return () => {
       mutationObserver.disconnect();
-      window.removeEventListener("onair-language-change", onLanguageChange);
+
+      window.removeEventListener(
+        "onair-language-change",
+        onLanguageChange
+      );
     };
   }, []);
 
-  // Reveal the section when it enters the viewport
+  // Automatic carousel rotation
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const timer = window.setInterval(() => {
+      setSelectedIndex((current) =>
+        (current + 1) % teamMembers.length
+      );
+    }, 3200);
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) {
-      section.classList.add("oa-team-visible");
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          section.classList.add("oa-team-visible");
-          observer.unobserve(section);
-        }
-      },
-      {
-        threshold: 0.06,
-        rootMargin: "0px 0px -5% 0px",
-      }
-    );
-
-    observer.observe(section);
-
-    return () => observer.disconnect();
+    return () => window.clearInterval(timer);
   }, []);
+
+  // Five visible positions around the center
+  const visibleMembers = ([-2, -1, 0, 1, 2] as Position[]).map(
+    (position) => {
+      const index =
+        (selectedIndex + position + teamMembers.length) %
+        teamMembers.length;
+
+      return {
+        member: teamMembers[index],
+        index,
+        position,
+      };
+    }
+  );
 
   return (
     <section
-      ref={sectionRef}
       id="team"
       className="oa-team"
       dir={isArabic ? "rtl" : "ltr"}
       lang={language}
     >
-      {/* Background image and subtle grain */}
-      <div className="oa-team-background" aria-hidden="true" />
-      <div className="oa-team-grain" aria-hidden="true" />
+      <div className="oa-carousel-container">
 
-      <div className="oa-team-container">
-
-        <header className="oa-team-header">
-          <div className="oa-team-overline" dir="ltr">
+        {/* HEADER */}
+        <header className="oa-carousel-header">
+          <div className="oa-carousel-overline" dir="ltr">
             <span>ON AIR</span>
             <i />
-            <span>THE CREW</span>
-            <i />
-            <span>12 PEOPLE</span>
+            <span>THE CREW ARCHIVE</span>
           </div>
 
-          <span className="oa-team-kicker">
-            <span className="oa-team-dot" />
-            {isArabic
-              ? "وراء كل كادر حكاية"
-              : "BEHIND EVERY FRAME"}
+          <span className="oa-carousel-kicker">
+            {isArabic ? "وراء الكواليس" : "BEHIND THE SCENES"}
           </span>
 
           <h2>
             {isArabic
               ? "الناس اللي ورا الحكاية"
-              : "THE PEOPLE BEHIND THE FRAME"}
+              : "THE PEOPLE BEHIND THE STORY"}
           </h2>
 
           <p>
             {isArabic
-              ? "كل واحد فينا كان شايل جزء من الحكاية. من أول فكرة لحد آخر كادر، كل دور كان ليه أثر في إن الفيلم يبقى بالشكل اللي تخيلناه."
-              : "Every person carried a part of this story. From the first idea to the final frame, every role helped bring our film to life."}
+              ? "كل واحد فينا كان له دور في صناعة الحكاية، من أول فكرة لحد آخر كادر."
+              : "Every person played a part in bringing this story to life."}
           </p>
-
-          <div className="oa-team-count">
-            <strong dir="ltr">12</strong>
-            <span>
-              {isArabic
-                ? "عضو — حكاية واحدة"
-                : "MEMBERS — ONE STORY"}
-            </span>
-          </div>
         </header>
 
-        <div className="oa-team-grid">
-          {teamMembers.map((member, index) => {
-            const roles = isArabic ? member.rolesAr : member.rolesEn;
+        {/* CINEMATIC CAROUSEL */}
+        <div className="oa-carousel-stage" dir="ltr">
+          <div className="oa-carousel-glow" />
 
-            return (
-              <article
-                className="oa-team-card"
-                key={member.number}
-                style={{
-                  animationDelay: `${index * 85}ms`,
-                }}
-              >
-                <div className="oa-team-card-top">
-                  <span className="oa-team-card-number" dir="ltr">
-                    CREW / {member.number}
-                  </span>
-
-                  <span className="oa-team-card-mark" aria-hidden="true">
-                    ✳
-                  </span>
-                </div>
-
-                <div className="oa-team-portrait">
-                  <span
-                    className="oa-team-portrait-watermark"
-                    aria-hidden="true"
-                  >
-                    {member.number}
-                  </span>
-
-                  {member.photo ? (
-                    <img
-                      src={member.photo}
-                      alt={member.name}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="oa-team-icon-wrap">
-                      <TeamIcon name={member.icon} />
-                    </div>
-                  )}
-
-                  <span className="oa-team-photo-corner corner-tl" />
-                  <span className="oa-team-photo-corner corner-tr" />
-                  <span className="oa-team-photo-corner corner-bl" />
-                  <span className="oa-team-photo-corner corner-br" />
-                </div>
-
-                <div className="oa-team-member-info">
-                  <span className="oa-team-member-label">
-                    {isArabic ? "من فريق الفيلم" : "FILM CREW"}
-                  </span>
-
-                  <h3>{member.name}</h3>
-
-                  <div className="oa-team-roles">
-                    {roles.map((role) => (
-                      <span key={role}>{role}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="oa-team-card-footer">
-                  <span dir="ltr">ON AIR / 2026</span>
-                  <span dir="ltr">{member.number} — 12</span>
-                </div>
-              </article>
-            );
-          })}
+          <div className="oa-carousel-track">
+            {visibleMembers.map(({ member, index, position }) => (
+              <CrewCard
+                key={member.nameEn}
+                member={member}
+                language={language}
+                position={position}
+                onSelect={() => setSelectedIndex(index)}
+              />
+            ))}
+          </div>
         </div>
 
-        <footer className="oa-team-footer">
-          <span className="oa-team-footer-line" />
+        {/* AUTO PROGRESS */}
+        <div className="oa-carousel-progress" aria-hidden="true">
+          <span key={selectedIndex} />
+        </div>
+
+        {/* FOOTER */}
+        <footer className="oa-carousel-footer">
+          <span className="oa-carousel-footer-line" />
 
           <p>
             {isArabic
@@ -440,9 +336,7 @@ export default function TeamSection() {
               : "Different roles. One shared vision."}
           </p>
 
-          <span className="oa-team-footer-brand" dir="ltr">
-            ON AIR بِالعَافيَه
-          </span>
+          <span dir="ltr">ON AIR بِالعَافيَه</span>
         </footer>
 
       </div>

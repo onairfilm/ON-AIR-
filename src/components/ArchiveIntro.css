@@ -1189,3 +1189,378 @@
     transition: none !important;
   }
 }
+/* =========================================================
+   ON AIR — ANIMATED ARCHIVE WORDMARK
+   Same staggered letter entrance as the Hero
+========================================================= */
+
+:root {
+  --archive-logo-ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* Keep the logo container visible.
+   The individual letters now animate separately. */
+
+.archive-logo {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+/* SVG letters */
+
+.archive-logo-letter {
+  opacity: 0;
+
+  filter: blur(12px);
+
+  transform-box: fill-box;
+  transform-origin: center;
+
+  will-change: transform, opacity, filter;
+}
+
+/* O */
+
+.archive-letter-o {
+  transform:
+    translate(-110%, -70%)
+    rotate(-21deg)
+    scale(.55);
+
+  animation:
+    archiveLetterSettle .95s var(--archive-logo-ease) .55s forwards;
+}
+
+/* N */
+
+.archive-letter-n {
+  transform:
+    translate(-75%, 85%)
+    rotate(13deg)
+    scale(.58);
+
+  animation:
+    archiveLetterSettle .95s var(--archive-logo-ease) .68s forwards;
+}
+
+/* A */
+
+.archive-letter-a {
+  transform:
+    translate(80%, -90%)
+    rotate(17deg)
+    scale(.58);
+
+  animation:
+    archiveLetterSettle .95s var(--archive-logo-ease) .81s forwards;
+}
+
+/* I */
+
+.archive-letter-i {
+  transform:
+    translate(70%, 75%)
+    rotate(-15deg)
+    scale(.58);
+
+  animation:
+    archiveLetterSettle .95s var(--archive-logo-ease) .94s forwards;
+}
+
+/* R */
+
+.archive-letter-r {
+  transform:
+    translate(105%, -60%)
+    rotate(18deg)
+    scale(.55);
+
+  animation:
+    archiveLetterSettle .95s var(--archive-logo-ease) 1.07s forwards;
+}
+
+/* All English letters settle into their final position */
+
+@keyframes archiveLetterSettle {
+  to {
+    opacity: 1;
+    filter: blur(0);
+
+    transform:
+      translate(0, 0)
+      rotate(0)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   ARABIC BRAND REVEAL
+========================================================= */
+
+.archive-arabic {
+  opacity: 0;
+
+  transform:
+    translateY(22px)
+    scale(.84);
+
+  filter: blur(11px);
+
+  animation:
+    archiveArabicBrandIn .95s var(--archive-logo-ease) 1.5s forwards;
+}
+
+@keyframes archiveArabicBrandIn {
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+    filter: blur(0);
+  }
+}
+
+/* Small lines beside the Arabic brand */
+
+.archive-arabic::before,
+.archive-arabic::after {
+  content: "";
+
+  position: absolute;
+  top: 50%;
+
+  width: clamp(22px, 3vw, 48px);
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--teal)
+  );
+
+  opacity: 0;
+
+  animation:
+    archiveBrandSideLine .75s ease 1.76s forwards;
+}
+
+.archive-arabic::before {
+  right: calc(100% + clamp(12px, 1.8vw, 24px));
+}
+
+.archive-arabic::after {
+  left: calc(100% + clamp(12px, 1.8vw, 24px));
+  transform: rotate(180deg);
+}
+
+@keyframes archiveBrandSideLine {
+  from {
+    opacity: 0;
+    width: 0;
+  }
+
+  to {
+    opacity: .48;
+  }
+}
+
+/* Logo underline appears after the letters */
+
+.archive-logo-line {
+  width: 0;
+  opacity: 0;
+
+  animation:
+    archiveAnimatedLogoLine .8s var(--archive-logo-ease) 1.95s forwards;
+}
+
+@keyframes archiveAnimatedLogoLine {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+
+  to {
+    width: 50px;
+    opacity: .75;
+  }
+}
+
+/* =========================================================
+   TEDDY — HANGING FROM THE SIDE
+========================================================= */
+
+.archive-teddy-drop {
+  position: absolute;
+
+  top: 0;
+  left: clamp(-8px, .5vw, 8px);
+
+  z-index: 5;
+
+  height: min(78svh, 650px);
+  width: auto;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transform-origin: 12% 0%;
+
+  animation:
+    archiveTeddyDrop 1.5s cubic-bezier(.22, .8, .22, 1) .3s both;
+}
+
+/* Transparent teddy image */
+
+.archive-teddy-image {
+  display: block;
+
+  width: auto;
+  height: 100%;
+
+  object-fit: contain;
+
+  transform-origin: 10% 1%;
+
+  filter:
+    drop-shadow(7px 12px 13px rgba(0, 0, 0, .22));
+
+  animation:
+    archiveTeddySwing 5.5s ease-in-out 1.9s infinite;
+}
+
+/* Teddy drops from above and settles */
+
+@keyframes archiveTeddyDrop {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(-105%)
+      rotate(-5deg);
+  }
+
+  68% {
+    opacity: 1;
+
+    transform:
+      translateY(15px)
+      rotate(2.2deg);
+  }
+
+  84% {
+    opacity: 1;
+
+    transform:
+      translateY(-5px)
+      rotate(-1.2deg);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      rotate(0);
+  }
+}
+
+/* Gentle rope swing */
+
+@keyframes archiveTeddySwing {
+  0%, 100% {
+    transform: rotate(-1.3deg);
+  }
+
+  50% {
+    transform: rotate(1.3deg);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+  .archive-teddy-drop {
+    height: min(62svh, 500px);
+    left: -22px;
+    opacity: .95;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .archive-teddy-drop {
+    top: 62px;
+    left: -35px;
+
+    height: min(45svh, 350px);
+
+    opacity: .82;
+  }
+
+  .archive-teddy-image {
+    transform-origin: 10% 1%;
+  }
+
+  .archive-wordmark-svg {
+    position: relative;
+    z-index: 2;
+  }
+
+  .archive-arabic {
+    position: relative;
+    z-index: 2;
+  }
+
+  .archive-logo-letter {
+    filter: blur(8px);
+  }
+}
+
+/* Small phones */
+
+@media (max-width: 430px) {
+  .archive-teddy-drop {
+    top: 65px;
+    left: -43px;
+
+    height: min(39svh, 290px);
+
+    opacity: .76;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-logo-letter,
+  .archive-arabic,
+  .archive-arabic::before,
+  .archive-arabic::after,
+  .archive-logo-line,
+  .archive-teddy-drop,
+  .archive-teddy-image {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .archive-logo-letter,
+  .archive-arabic,
+  .archive-logo-line,
+  .archive-teddy-drop {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}

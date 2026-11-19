@@ -20,7 +20,7 @@ type ProductionStage = {
   enTitle: string;
   arDescription: string;
   enDescription: string;
-  type: "open" | "progress" | "soon";
+  type: "open" | "progress" | "soon" | "secret";
   href?: string;
   active?: boolean;
 };
@@ -122,7 +122,7 @@ const productionStages: ProductionStage[] = [
     enDescription:
       "Writing the story, building characters, and shaping scenes.",
     type: "open",
-    href: "/story.html",
+    href: "/scenario",
   },
   {
     number: "03",
@@ -132,8 +132,8 @@ const productionStages: ProductionStage[] = [
       "اختيار الكاست والمواقع وتجهيز كل تفصيلة قبل أول كادر.",
     enDescription:
       "Casting, choosing locations, and preparing every detail before the first frame.",
-    type: "progress",
-    active: true,
+    type: "open",
+    href: "/preparation",
   },
   {
     number: "04",
@@ -143,7 +143,8 @@ const productionStages: ProductionStage[] = [
       "هنا تتحول الكلمات والتحضيرات إلى كادرات حقيقية.",
     enDescription:
       "Where the words and preparation become real frames.",
-    type: "soon",
+    type: "open",
+    href: "/shooting",
   },
   {
     number: "05",
@@ -153,7 +154,8 @@ const productionStages: ProductionStage[] = [
       "ترتيب اللقطات وضبط الإيقاع وتجميع الحكاية.",
     enDescription:
       "Shaping the cuts, the rhythm, and the story.",
-    type: "soon",
+    type: "secret",
+    active: true,
   },
   {
     number: "06",
@@ -163,7 +165,7 @@ const productionStages: ProductionStage[] = [
       "المراجعة واللمسات الأخيرة قبل أن تكتمل الحكاية.",
     enDescription:
       "The final review and finishing touches before the story is complete.",
-    type: "soon",
+    type: "secret",
   },
 ];
 
@@ -178,6 +180,9 @@ export default function ProductionJourney() {
       ? "en"
       : "ar";
   });
+
+  const [selectedStage, setSelectedStage] =
+    useState<ProductionStage | null>(null);
 
   const isArabic = language === "ar";
 
@@ -228,6 +233,34 @@ export default function ProductionJourney() {
       );
     };
   }, []);
+
+  /* =========================================
+     STAGE MODAL — CLOSE / SCROLL LOCK
+  ========================================= */
+
+  useEffect(() => {
+    if (!selectedStage) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedStage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+
+      window.removeEventListener(
+        "keydown",
+        handleEscape
+      );
+    };
+  }, [selectedStage]);
 
   /* =========================================
      SECTION REVEAL
@@ -369,14 +402,12 @@ export default function ProductionJourney() {
      STATUS
   ========================================= */
 
-  const renderStageStatus = (
-    stage: ProductionStage
-  ) => {
+  const renderStageStatus = (stage: ProductionStage) => {
     if (stage.type === "open") {
       return (
         <span className="oa-status-live open-status">
           <i />
-          {isArabic ? "فتح" : "Open"}
+          {isArabic ? "مفتوح" : "OPEN"}
         </span>
       );
     }
@@ -384,10 +415,17 @@ export default function ProductionJourney() {
     if (stage.type === "progress") {
       return (
         <div className="oa-status-state">
-          {isArabic
-            ? "قيد التجهيز"
-            : "In progress"}
+          {isArabic ? "قيد التجهيز" : "In progress"}
         </div>
+      );
+    }
+
+    if (stage.type === "secret") {
+      return (
+        <span className="oa-status-secret">
+          <i />
+          {isArabic ? "سرّ" : "CLASSIFIED"}
+        </span>
       );
     }
 
@@ -546,10 +584,7 @@ export default function ProductionJourney() {
                     className="oa-stage-node-wrap"
                     aria-hidden="true"
                   >
-                    <span
-                      className="oa-stage-number"
-                      dir="ltr"
-                    >
+                    <span className="oa-stage-number" dir="ltr">
                       {stage.number}
                     </span>
 
@@ -580,6 +615,7 @@ export default function ProductionJourney() {
                 </>
               );
 
+              // All stages with href open their dedicated pages.
               if (stage.href) {
                 return (
                   <a
@@ -593,6 +629,32 @@ export default function ProductionJourney() {
                   >
                     {stageContent}
                   </a>
+                );
+              }
+
+              // Secret stages open the classified modal.
+              if (
+                stage.type === "open" ||
+                stage.type === "secret"
+              ) {
+                return (
+                  <button
+                    key={stage.number}
+                    type="button"
+                    role="listitem"
+                    className={`oa-stage-card clickable ${
+                      stage.active ? "active" : ""
+                    } ${
+                      stage.type === "secret"
+                        ? "secret-stage"
+                        : ""
+                    }`}
+                    style={style}
+                    onClick={() => setSelectedStage(stage)}
+                    aria-haspopup="dialog"
+                  >
+                    {stageContent}
+                  </button>
                 );
               }
 
@@ -700,7 +762,6 @@ export default function ProductionJourney() {
             })}
           </div>
         </section>
-
       </div>
 
       {/* =====================================
@@ -726,6 +787,96 @@ export default function ProductionJourney() {
             : "ON AIR / ARCHIVE"}
         </span>
       </footer>
+
+      {/* =====================================
+          STAGE DETAILS / CLASSIFIED MODAL
+      ===================================== */}
+
+      {selectedStage && (
+        <div
+          className="oa-stage-modal"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setSelectedStage(null);
+            }
+          }}
+        >
+          <div
+            className="oa-stage-modal-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="oa-stage-modal-title"
+            dir={isArabic ? "rtl" : "ltr"}
+          >
+            <button
+              type="button"
+              className="oa-stage-modal-close"
+              onClick={() => setSelectedStage(null)}
+              aria-label={isArabic ? "إغلاق" : "Close"}
+            >
+              ×
+            </button>
+
+            <div
+              className="oa-stage-modal-symbol"
+              aria-hidden="true"
+            >
+              {selectedStage.type === "secret" ? "✳" : "✦"}
+            </div>
+
+            <span
+              className="oa-stage-modal-eyebrow"
+              dir="ltr"
+            >
+              {selectedStage.type === "secret"
+                ? isArabic
+                  ? "ملف سري / ON AIR"
+                  : "CLASSIFIED FILE / ON AIR"
+                : isArabic
+                  ? "مرحلة متاحة / ON AIR"
+                  : "OPEN STAGE / ON AIR"}
+            </span>
+
+            <h3 id="oa-stage-modal-title">
+              {selectedStage.type === "secret"
+                ? isArabic
+                  ? "لسه دول سر..."
+                  : "Some things are still a secret..."
+                : isArabic
+                  ? selectedStage.arTitle
+                  : selectedStage.enTitle}
+            </h3>
+
+            <p>
+              {selectedStage.type === "secret"
+                ? isArabic
+                  ? "المونتاج والنسخة النهائية لسه مخبيين تفاصيل كتير. مش كل حاجة ينفع تتكشف دلوقتي… خلي المفاجأة لوقتها."
+                  : "Editing and the final cut still hold details we are not ready to reveal. Not everything can be shown yet. Let the surprise come at the right time."
+                : isArabic
+                  ? selectedStage.arDescription
+                  : selectedStage.enDescription}
+            </p>
+
+            <div
+              className="oa-stage-modal-bottom"
+              dir="ltr"
+            >
+              <span />
+              <small>ON AIR بِالعَافيَه</small>
+              <span />
+            </div>
+
+            <button
+              type="button"
+              className="oa-stage-modal-confirm"
+              onClick={() => setSelectedStage(null)}
+            >
+              {isArabic ? "تمام، مستنيين" : "GOT IT"}
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

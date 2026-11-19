@@ -1316,3 +1316,832 @@
     transition: none !important;
   }
 }
+/* =========================================================
+   ON AIR — PRODUCTION JOURNEY STAGE UPDATE
+   Append this block at the END of ProductionJourney.css
+========================================================= */
+
+/* Keep interactive stage cards visually identical to the timeline cards. */
+
+button.oa-stage-card {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  border-inline-start: 1px solid rgba(247, 237, 227, 0.075);
+  border-radius: 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* The timeline progress line ends at Editing (stage 05). */
+
+.oa-stage-track::after {
+  inset-inline-start: var(--track-inset, 5.2%);
+  inset-inline-end: auto;
+
+  width: calc(
+    (100% - (var(--track-inset, 5.2%) * 2)) * .8
+  );
+
+  background: linear-gradient(
+    90deg,
+    rgba(199, 168, 107, .18),
+    #C7A86B
+  );
+
+  box-shadow: 0 0 11px rgba(199, 168, 107, .34);
+}
+
+/* Editing is the current stage. */
+
+.oa-stage-card.active .oa-stage-node {
+  width: 15px;
+  height: 15px;
+
+  border-color: #C7A86B;
+  background: #C7A86B;
+
+  box-shadow:
+    0 0 0 6px rgba(199, 168, 107, .12),
+    0 0 19px rgba(199, 168, 107, .72);
+
+  animation: oa-editing-node-pulse 2s ease-in-out infinite;
+}
+
+.oa-stage-card.active .oa-stage-copy h4,
+.oa-stage-card.active .oa-stage-state {
+  color: #C7A86B;
+}
+
+@keyframes oa-editing-node-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 5px rgba(199, 168, 107, .08),
+      0 0 12px rgba(199, 168, 107, .42);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 9px rgba(199, 168, 107, .12),
+      0 0 23px rgba(199, 168, 107, .82);
+  }
+}
+
+/* Open stage status */
+
+.oa-status-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #C7A86B;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.oa-status-live i {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+
+  border-radius: 50%;
+  background: currentColor;
+
+  box-shadow: 0 0 8px rgba(199, 168, 107, .52);
+}
+
+/* Secret status for Editing and Final Cut */
+
+.oa-status-secret {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #C7A86B;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.oa-status-secret i {
+  display: block;
+
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+
+  border-radius: 50%;
+  background: #C7A86B;
+
+  box-shadow: 0 0 9px rgba(199, 168, 107, .5);
+}
+
+.oa-stage-card.secret-stage {
+  cursor: pointer;
+}
+
+.oa-stage-card.secret-stage:hover .oa-stage-copy h4 {
+  color: #C7A86B;
+}
+
+/* Button focus treatment */
+
+button.oa-stage-card:focus-visible {
+  outline: 2px solid #C7A86B;
+  outline-offset: 4px;
+}
+
+/* =========================================================
+   STAGE DETAIL / CLASSIFIED MODAL
+========================================================= */
+
+.oa-stage-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 22px;
+
+  background: rgba(3, 8, 15, .78);
+
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+
+  animation: oa-stage-modal-backdrop .28s ease both;
+}
+
+.oa-stage-modal-content {
+  position: relative;
+
+  width: min(440px, 100%);
+  padding: 42px 35px 30px;
+
+  text-align: center;
+
+  color: #F7EDE3;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(199, 168, 107, .12),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(17, 37, 72, .98),
+      rgba(5, 12, 20, .99)
+    );
+
+  border: 1px solid rgba(199, 168, 107, .55);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, .5),
+    inset 0 0 35px rgba(199, 168, 107, .035);
+
+  animation: oa-stage-modal-in .42s cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.oa-stage-modal-content::before {
+  content: "";
+
+  position: absolute;
+  inset: 9px;
+
+  border: 1px solid rgba(199, 168, 107, .12);
+
+  pointer-events: none;
+}
+
+/* Close button */
+
+.oa-stage-modal-close {
+  position: absolute;
+
+  top: 13px;
+  inset-inline-end: 15px;
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+
+  width: 32px;
+  height: 32px;
+
+  border: 1px solid rgba(199, 168, 107, .3);
+  border-radius: 50%;
+
+  color: #F7EDE3;
+  background: transparent;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  transition:
+    color .25s ease,
+    border-color .25s ease,
+    transform .25s ease;
+}
+
+.oa-stage-modal-close:hover {
+  color: #C7A86B;
+  border-color: #C7A86B;
+
+  transform: rotate(90deg);
+}
+
+/* Modal symbol */
+
+.oa-stage-modal-symbol {
+  display: grid;
+  place-items: center;
+
+  width: 62px;
+  height: 62px;
+
+  margin: 0 auto 19px;
+
+  border: 1px solid rgba(199, 168, 107, .48);
+  border-radius: 50%;
+
+  color: #C7A86B;
+  background: rgba(199, 168, 107, .07);
+
+  font-size: 27px;
+
+  animation: oa-stage-symbol-glow 2.3s ease-in-out infinite;
+}
+
+/* Modal text */
+
+.oa-stage-modal-eyebrow {
+  display: block;
+
+  margin-bottom: 11px;
+
+  color: #C7A86B;
+
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .14em;
+}
+
+.oa-stage-modal-content h3 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+
+  color: #F7EDE3;
+
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: clamp(24px, 4vw, 31px);
+  font-weight: 800;
+}
+
+.oa-stage-modal-content p {
+  position: relative;
+  z-index: 1;
+
+  max-width: 340px;
+
+  margin: 15px auto 0;
+
+  color: rgba(247, 237, 227, .8);
+
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: 13px;
+  line-height: 2;
+}
+
+/* Modal footer decoration */
+
+.oa-stage-modal-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  margin: 25px 0 20px;
+}
+
+.oa-stage-modal-bottom span {
+  width: 34px;
+  height: 1px;
+
+  background: rgba(199, 168, 107, .5);
+}
+
+.oa-stage-modal-bottom small {
+  color: rgba(247, 237, 227, .56);
+
+  font-family: "Space Mono", monospace;
+  font-size: 7px;
+  letter-spacing: .12em;
+}
+
+/* Confirm button */
+
+.oa-stage-modal-confirm {
+  position: relative;
+  z-index: 1;
+
+  padding: 10px 25px;
+
+  border: 1px solid rgba(199, 168, 107, .6);
+
+  color: #F7EDE3;
+  background: rgba(199, 168, 107, .08);
+
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    color .25s ease,
+    background .25s ease,
+    border-color .25s ease;
+}
+
+.oa-stage-modal-confirm:hover {
+  color: #07111D;
+  background: #C7A86B;
+  border-color: #C7A86B;
+}
+
+/* Modal animations */
+
+@keyframes oa-stage-modal-backdrop {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes oa-stage-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes oa-stage-symbol-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(199, 168, 107, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 22px rgba(199, 168, 107, .17);
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .oa-stage-modal {
+    padding: 18px;
+  }
+
+  .oa-stage-modal-content {
+    padding: 38px 23px 25px;
+  }
+
+  .oa-stage-modal-content p {
+    font-size: 12px;
+  }
+
+  .oa-stage-card.active .oa-stage-node {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .oa-stage-card.active .oa-stage-node,
+  .oa-stage-modal-symbol {
+    animation: none;
+  }
+}
+/* =========================================================
+   PRODUCTION STAGES — UPDATED INTERACTIONS
+========================================================= */
+
+/* Interactive cards */
+
+button.oa-stage-card {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+
+  font: inherit;
+  color: inherit;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+/* Current stage: Editing */
+
+.oa-stage-card.active .oa-stage-node {
+  width: 15px;
+  height: 15px;
+
+  border-color: #C7A86B;
+  background: #C7A86B;
+
+  box-shadow:
+    0 0 0 6px rgba(199, 168, 107, .12),
+    0 0 19px rgba(199, 168, 107, .72);
+
+  animation: oa-editing-node-pulse 2s ease-in-out infinite;
+}
+
+.oa-stage-card.active .oa-stage-copy h4,
+.oa-stage-card.active .oa-stage-state {
+  color: #C7A86B;
+}
+
+@keyframes oa-editing-node-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 5px rgba(199, 168, 107, .08),
+      0 0 12px rgba(199, 168, 107, .42);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 9px rgba(199, 168, 107, .12),
+      0 0 23px rgba(199, 168, 107, .82);
+  }
+}
+
+/* Open status */
+
+.oa-status-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #C7A86B;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.oa-status-live i {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+
+  border-radius: 50%;
+  background: currentColor;
+
+  box-shadow: 0 0 8px rgba(199, 168, 107, .52);
+}
+
+/* Secret status */
+
+.oa-status-secret {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #C7A86B;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.oa-status-secret i {
+  display: block;
+
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+
+  border-radius: 50%;
+  background: #C7A86B;
+
+  box-shadow: 0 0 9px rgba(199, 168, 107, .5);
+}
+
+.oa-stage-card.secret-stage {
+  cursor: pointer;
+}
+
+.oa-stage-card.secret-stage:hover .oa-stage-copy h4 {
+  color: #C7A86B;
+}
+
+/* Keyboard focus */
+
+button.oa-stage-card:focus-visible,
+a.oa-stage-card:focus-visible {
+  outline: 2px solid #C7A86B;
+  outline-offset: 4px;
+}
+
+/* =========================================================
+   SECRET / STAGE MODAL
+========================================================= */
+
+.oa-stage-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 22px;
+
+  background: rgba(3, 8, 15, .78);
+
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+
+  animation: oa-stage-modal-backdrop .28s ease both;
+}
+
+.oa-stage-modal-content {
+  position: relative;
+
+  width: min(440px, 100%);
+  padding: 42px 35px 30px;
+
+  text-align: center;
+
+  color: #F7EDE3;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(199, 168, 107, .12),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(17, 37, 72, .98),
+      rgba(5, 12, 20, .99)
+    );
+
+  border: 1px solid rgba(199, 168, 107, .55);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, .5),
+    inset 0 0 35px rgba(199, 168, 107, .035);
+
+  animation: oa-stage-modal-in .42s cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.oa-stage-modal-content::before {
+  content: "";
+
+  position: absolute;
+  inset: 9px;
+
+  border: 1px solid rgba(199, 168, 107, .12);
+
+  pointer-events: none;
+}
+
+/* Close button */
+
+.oa-stage-modal-close {
+  position: absolute;
+
+  top: 13px;
+  inset-inline-end: 15px;
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+
+  width: 32px;
+  height: 32px;
+
+  border: 1px solid rgba(199, 168, 107, .3);
+  border-radius: 50%;
+
+  color: #F7EDE3;
+  background: transparent;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  transition:
+    color .25s ease,
+    border-color .25s ease,
+    transform .25s ease;
+}
+
+.oa-stage-modal-close:hover {
+  color: #C7A86B;
+  border-color: #C7A86B;
+
+  transform: rotate(90deg);
+}
+
+/* Modal symbol */
+
+.oa-stage-modal-symbol {
+  display: grid;
+  place-items: center;
+
+  width: 62px;
+  height: 62px;
+
+  margin: 0 auto 19px;
+
+  border: 1px solid rgba(199, 168, 107, .48);
+  border-radius: 50%;
+
+  color: #C7A86B;
+  background: rgba(199, 168, 107, .07);
+
+  font-size: 27px;
+
+  animation: oa-stage-symbol-glow 2.3s ease-in-out infinite;
+}
+
+/* Modal text */
+
+.oa-stage-modal-eyebrow {
+  display: block;
+
+  margin-bottom: 11px;
+
+  color: #C7A86B;
+
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .14em;
+}
+
+.oa-stage-modal-content h3 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+
+  color: #F7EDE3;
+
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: clamp(24px, 4vw, 31px);
+  font-weight: 800;
+}
+
+.oa-stage-modal-content p {
+  position: relative;
+  z-index: 1;
+
+  max-width: 340px;
+
+  margin: 15px auto 0;
+
+  color: rgba(247, 237, 227, .8);
+
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: 13px;
+  line-height: 2;
+}
+
+/* Modal footer decoration */
+
+.oa-stage-modal-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  margin: 25px 0 20px;
+}
+
+.oa-stage-modal-bottom span {
+  width: 34px;
+  height: 1px;
+
+  background: rgba(199, 168, 107, .5);
+}
+
+.oa-stage-modal-bottom small {
+  color: rgba(247, 237, 227, .56);
+
+  font-family: "Space Mono", monospace;
+  font-size: 7px;
+  letter-spacing: .12em;
+}
+
+/* Confirm button */
+
+.oa-stage-modal-confirm {
+  position: relative;
+  z-index: 1;
+
+  padding: 10px 25px;
+
+  border: 1px solid rgba(199, 168, 107, .6);
+
+  color: #F7EDE3;
+  background: rgba(199, 168, 107, .08);
+
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    color .25s ease,
+    background .25s ease,
+    border-color .25s ease;
+}
+
+.oa-stage-modal-confirm:hover {
+  color: #07111D;
+  background: #C7A86B;
+  border-color: #C7A86B;
+}
+
+/* Modal animations */
+
+@keyframes oa-stage-modal-backdrop {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes oa-stage-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes oa-stage-symbol-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(199, 168, 107, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 22px rgba(199, 168, 107, .17);
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .oa-stage-modal {
+    padding: 18px;
+  }
+
+  .oa-stage-modal-content {
+    padding: 38px 23px 25px;
+  }
+
+  .oa-stage-modal-content p {
+    font-size: 12px;
+  }
+
+  .oa-stage-card.active .oa-stage-node {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .oa-stage-card.active .oa-stage-node,
+  .oa-stage-modal-symbol {
+    animation: none;
+  }
+}
