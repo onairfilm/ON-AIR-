@@ -13,6 +13,7 @@
   background: transparent !important;
 }
 
+
 /* =========================================================
    GLOBAL ARCHIVE CHROME
 ========================================================= */
@@ -31,6 +32,7 @@
   --gold: #C7A86B;
   --red: #D92832;
 }
+
 
 /* =========================================================
    TOP BAR
@@ -60,6 +62,7 @@
 
   direction: ltr;
 }
+
 
 /* =========================================================
    LANGUAGE — LEFT
@@ -103,6 +106,7 @@
   font-family: "Space Mono", monospace;
 }
 
+
 /* =========================================================
    TECHNICAL INFO — CENTER
 ========================================================= */
@@ -131,6 +135,7 @@
   font-style: normal;
   color: var(--gray);
 }
+
 
 /* =========================================================
    REC — RIGHT
@@ -173,6 +178,7 @@
   }
 }
 
+
 /* =========================================================
    GLOBAL CAMERA FRAME
 ========================================================= */
@@ -187,6 +193,7 @@
 
   pointer-events: none;
 }
+
 
 /* =========================================================
    CORNERS
@@ -205,6 +212,7 @@
   position: absolute;
   background: var(--gold);
 }
+
 
 /* TOP LEFT */
 
@@ -227,6 +235,7 @@
   height: 64px;
 }
 
+
 /* TOP RIGHT */
 
 .global-tr {
@@ -247,6 +256,7 @@
   width: 1px;
   height: 64px;
 }
+
 
 /* BOTTOM LEFT */
 
@@ -269,6 +279,7 @@
   height: 64px;
 }
 
+
 /* BOTTOM RIGHT */
 
 .global-br {
@@ -290,6 +301,7 @@
   height: 64px;
 }
 
+
 /* =========================================================
    HIDE THE OLD LOCAL TOP BAR
 ========================================================= */
@@ -299,6 +311,7 @@
 .archive-global-bar {
   display: none !important;
 }
+
 
 /* =========================================================
    HIDE OLD INTRO CORNERS
@@ -316,6 +329,7 @@
   display: none !important;
 }
 
+
 /* =========================================================
    KEEP CONTENT ABOVE GLOBAL BACKGROUND
 ========================================================= */
@@ -329,6 +343,7 @@
 
   background: transparent !important;
 }
+
 
 /* =========================================================
    MOBILE
@@ -390,6 +405,7 @@
     height: 36px;
   }
 }
+
 
 /* =========================================================
    SMALL PHONES
@@ -458,6 +474,7 @@
   }
 }
 
+
 /* =========================================================
    REDUCED MOTION
 ========================================================= */
@@ -465,144 +482,5 @@
 @media (prefers-reduced-motion: reduce) {
   .archive-global-rec span {
     animation: none;
-  }
-}
-
-/* =========================================================
-   ON AIR — HANGING TEDDY
-   Stays on the right while scrolling.
-   The rope grows with page scroll; the teddy is hidden only
-   while the Production Journey section is in the viewport.
-========================================================= */
-
-.archive-hanging-teddy {
-  --teddy-rope-height: 135px;
-
-  position: fixed;
-  top: 0;
-  right: clamp(8px, 1.6vw, 25px);
-  z-index: 1500;
-
-  width: clamp(96px, 9.5vw, 126px);
-  height: calc(var(--teddy-rope-height) + 250px);
-
-  pointer-events: none;
-  opacity: 1;
-  visibility: visible;
-
-  transition:
-    opacity 0.28s ease,
-    visibility 0.28s ease;
-
-  will-change: opacity;
-}
-
-.archive-hanging-teddy.is-hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* A textured rope that grows independently from the teddy image. */
-.archive-hanging-teddy__rope {
-  position: absolute;
-  top: 0;
-  left: 9%;
-
-  display: block;
-  width: 9px;
-  height: var(--teddy-rope-height);
-
-  border-radius: 999px;
-
-  background:
-    repeating-linear-gradient(
-      132deg,
-      transparent 0 3px,
-      rgba(65, 36, 20, 0.68) 3px 4.2px,
-      transparent 4.2px 7px
-    ),
-    repeating-linear-gradient(
-      48deg,
-      rgba(255, 220, 165, 0.2) 0 2px,
-      transparent 2px 5px
-    ),
-    linear-gradient(
-      90deg,
-      #61391f 0%,
-      #a8733d 26%,
-      #d2a064 52%,
-      #87532e 78%,
-      #4d2b1a 100%
-    );
-
-  box-shadow:
-    0 0 3px rgba(0, 0, 0, 0.42),
-    inset 1px 0 1px rgba(255, 220, 165, 0.24);
-}
-
-/*
-  The image contains both the rope and the teddy.
-  object-fit crops the upper rope area so the bear stays
-  at its natural proportions while the CSS rope extends.
-*/
-.archive-hanging-teddy__bear {
-  position: absolute;
-  top: calc(var(--teddy-rope-height) - 13px);
-  left: 0;
-
-  display: block;
-  width: 100%;
-  height: 250px;
-
-  object-fit: cover;
-  object-position: center bottom;
-
-  user-select: none;
-  -webkit-user-drag: none;
-
-  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.22));
-}
-
-/* Prevent the older in-section teddy from appearing as a duplicate. */
-.oa-production .production-teddy {
-  display: none !important;
-}
-
-@media (max-width: 700px) {
-  .archive-hanging-teddy {
-    right: 3px;
-    width: 78px;
-    height: calc(var(--teddy-rope-height) + 175px);
-  }
-
-  .archive-hanging-teddy__rope {
-    left: 9%;
-    width: 7px;
-  }
-
-  .archive-hanging-teddy__bear {
-    top: calc(var(--teddy-rope-height) - 10px);
-    height: 175px;
-  }
-}
-
-@media (max-width: 390px) {
-  .archive-hanging-teddy {
-    right: 1px;
-    width: 68px;
-  }
-
-  .archive-hanging-teddy__rope {
-    width: 6px;
-  }
-
-  .archive-hanging-teddy__bear {
-    height: 158px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .archive-hanging-teddy {
-    transition: none;
   }
 }
