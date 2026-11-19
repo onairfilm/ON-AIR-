@@ -1384,3 +1384,60 @@
   -webkit-backdrop-filter: none !important;
 
 }
+
+/* =========================================
+   CUSTOM MEDIA LAYOUTS
+   Different layouts for different day media
+========================================= */
+
+/* DAY WITH VIDEO ONLY */
+
+.oa-diary-media.video-only .oa-diary-media-heading {
+  margin-bottom: 14px;
+}
+
+.oa-diary-media.video-only .oa-diary-video-wrap {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+/* DAY WITH ONE PHOTO ONLY */
+
+.oa-diary-media.single-photo .oa-diary-photo-heading {
+  margin-top: 0;
+}
+
+.oa-diary-media.single-photo .oa-diary-photos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+}
+
+.oa-diary-media.single-photo .oa-diary-photo {
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 4 / 3;
+  margin-inline: auto;
+}
+
+.oa-diary-media.single-photo .oa-diary-photo img {
+  object-fit: contain;
+  background: #050C14;
+}
+
+/* MOBILE */
+
+@media (max-width: 680px) {
+  .oa-diary-media.video-only .oa-diary-video-wrap {
+    aspect-ratio: 16 / 9;
+  }
+
+  .oa-diary-media.single-photo .oa-diary-photos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .oa-diary-media.single-photo .oa-diary-photo {
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+}

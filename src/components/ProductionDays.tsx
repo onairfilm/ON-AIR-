@@ -1,7 +1,13 @@
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./ProductionDays.css";
 
 type Language = "ar" | "en";
+
+type DayMedia = {
+  video?: string;
+  photos?: string[];
+};
 
 type ProductionDay = {
   number: string;
@@ -13,8 +19,8 @@ type ProductionDay = {
   enStory: string;
   arDetails: string[];
   enDetails: string[];
-  video: string;
-  photos: [string, string];
+  video?: string;
+  photos: string[];
   locked?: boolean;
 };
 
@@ -28,7 +34,8 @@ function createDay(
   enStory: string,
   arDetails: string[] = [],
   enDetails: string[] = [],
-  locked = false
+  locked = false,
+  media?: DayMedia
 ): ProductionDay {
   const id = number.padStart(2, "0");
 
@@ -43,12 +50,18 @@ function createDay(
     arDetails,
     enDetails,
 
-    video: `/videos/production-days/day-${id}.mp4`,
+    // لو اليوم له ميديا محددة نستخدمها،
+    // ولو مفيش نحتفظ بالمسارات القديمة لباقي الأيام.
+    video: media
+      ? media.video
+      : `/videos/production-days/day-${id}.mp4`,
 
-    photos: [
-      `/images/production-days/day-${id}-01.jpg`,
-      `/images/production-days/day-${id}-02.jpg`,
-    ],
+    photos: media
+      ? media.photos ?? []
+      : [
+          `/images/production-days/day-${id}-01.jpeg`,
+          `/images/production-days/day-${id}-02.jpeg`,
+        ],
 
     locked,
   };
@@ -59,37 +72,75 @@ function createDay(
 ===================================================== */
 
 const productionDays: ProductionDay[] = [
+  /* DAY 01 */
+
   createDay(
     "01",
     "29/6",
     "29 JUN",
-    "أول مرة قعدنا فيها سوا",
-    "OUR FIRST MEETING",
-    "فاكرين أول قعدة لينا؟ كنا لسه بنحاول نتخيل شكل الحكاية اللي عايزين نحكيها. اتجمعنا وبدأنا نتكلم عن فكرة الفيلم، وكل واحد فينا كان عنده حاجة عايز يضيفها. مكنّاش عارفين كل اللي مستنينا، بس كنا عارفين إن دي بداية حاجة نفسنا نعملها بجد.",
-    "Remember our first meeting? We were still imagining the story we wanted to tell. We gathered, talked about the film idea, and each of us had something to add. We didn't know everything waiting ahead, but we knew this was the beginning of something we truly wanted to make.",
-    ["أول اجتماع جمعنا كفريق", "اتكلمنا عن فكرة الفيلم", "حددنا أول مهامنا"],
-    ["Our first team meeting", "Discussing the film idea", "Setting our first tasks"]
+    "كل حكاية ليها أول قعدة",
+    "EVERY STORY STARTS WITH A MEETING",
+
+    "يوم 29/6 كان أول ميتنج لينا. كنا لسه في أول الطريق، ومعانا أفكار كتير وأسئلة أكتر. قعدنا نتناقش: هنحكي إيه؟ وإيه الفكرة اللي تستاهل نبدأ منها؟ وسط الكلام والاقتراحات، بدأنا نقرب من فكرة الفيلم اللي اخترناها تكون بداية حكايتنا. مكنّاش نعرف وقتها الرحلة هتاخدنا لفين، بس دي كانت أول خطوة.",
+
+    "On June 29, we held our first meeting. We were at the very beginning, with plenty of ideas and even more questions. We talked about what we wanted to tell and which idea felt right for our film. Somewhere between the suggestions and the discussion, the idea we chose began to take shape. We didn't know where the journey would lead, but this was our first step.",
+
+    [],
+    [],
+    false,
+    {
+      video: "/videos/production-days/day-01.mp4",
+      photos: [],
+    }
   ),
+
+  /* DAY 02 */
 
   createDay(
     "02",
     "7/8",
     "07 AUG",
-    "رجعنا نكمّل الحكاية",
-    "PICKING UP THE STORY",
-    "ومع كل مرة كنا بنرجع فيها للفكرة، كنا بنشوفها من زاوية مختلفة. بدأنا نفهم أكتر إحنا عايزين نوصل إيه للناس، وإزاي نخلي الحكاية قريبة منهم ومش مجرد موضوع بيتحكي.",
-    "Every time we returned to the idea, we saw it from a different angle. We began to understand what we wanted people to take away, and how to make the story feel close to them rather than just another subject being told."
+    "أول لقاء مع بطلتنا",
+    "OUR FIRST MEETING WITH SABA",
+
+    "يوم 7/8 كان لمخرجنا أول لقاء مع صَبا، بطلة فيلمنا. بعد ما كانت الحكاية بتتكوّن في أفكارنا وتخطيطنا، جه اليوم اللي المخرج قابل فيه بطلتنا لأول مرة. صورة واحدة، لكنها بتوثّق بداية لقاء مهم في رحلتنا.",
+
+    "On August 7, our director met Saba, the heroine of our film, for the first time. Until then, the story had been taking shape through our ideas and plans. Now came the day our director finally met the person who would bring our heroine to life. One photograph, but an important beginning in our journey.",
+
+    [],
+    [],
+    false,
+    {
+      photos: [
+        "/images/production-days/day-02-01.jpeg",
+      ],
+    }
   ),
+
+  /* DAY 03 */
 
   createDay(
     "03",
     "29/8",
     "29 AUG",
-    "الصورة بتوضح واحدة واحدة",
-    "THE PICTURE GETS CLEARER",
-    "في الرحلة دي مفيش حاجة بتتظبط من أول مرة. كنا بنفكر ونسأل ونرجع نبص على الصورة الكبيرة. ومع الوقت، الأفكار اللي كانت متفرقة بدأت تقرب من بعض وتاخد شكل أوضح.",
-    "Nothing in this journey came together all at once. We kept thinking, asking questions, and looking at the bigger picture. Little by little, the ideas that once felt scattered began to find their place."
+    "طيب.. نبدأ منين؟",
+    "WHERE DO WE START?",
+
+    "يوم 29/8 اتجمعنا عشان نفهم إحنا داخلين على إيه بالظبط. إيه المطلوب مننا؟ إيه اللي المفروض نعمله؟ وإزاي هنبدأ نرتّب كل ده؟ بدأنا نتكلم عن الخطوات اللي جاية، ونفهم حجم الشغل اللي مستنينا. المرة دي مكنّاش بنتكلم عن فكرة وبس، كنا بنحاول نعرف إزاي نحولها لحقيقة.",
+
+    "On August 29, we came together to understand exactly what lay ahead. What was required of us? What did we need to do? And how would we organize it all? We began discussing the next steps and understanding the work waiting for us. This time, we weren't just talking about an idea; we were figuring out how to turn it into reality.",
+
+    [],
+    [],
+    false,
+    {
+      photos: [
+        "/images/production-days/day-03-01.jpeg",
+      ],
+    }
   ),
+
+  /* DAY 04 */
 
   createDay(
     "04",
@@ -101,6 +152,8 @@ const productionDays: ProductionDay[] = [
     "We had more questions than answers, and that was part of the journey. We wanted to understand the story before telling it, because even the smallest detail could change the feeling of an entire scene."
   ),
 
+  /* DAY 05 */
+
   createDay(
     "05",
     "5/9",
@@ -110,6 +163,8 @@ const productionDays: ProductionDay[] = [
     "في حاجات كتير بتحصل قبل ما أي حد يشوف نتيجة. كلام، تفكير، محاولات، وتفاصيل بنرجع لها أكتر من مرة. يمكن اللحظات دي مش كلها هتظهر في الفيلم، لكنها جزء أساسي من حكايته.",
     "A lot happens before anyone gets to see a result: conversations, thinking, attempts, and details we revisit more than once. These moments may not all appear in the film, but they are an essential part of its story."
   ),
+
+  /* DAY 06 */
 
   createDay(
     "06",
@@ -121,6 +176,8 @@ const productionDays: ProductionDay[] = [
     "As we kept going, the story that once lived only in our minds started to feel more real. There were still details to work through and decisions to make, but the road ahead was becoming clearer."
   ),
 
+  /* DAY 07 */
+
   createDay(
     "07",
     "18/9",
@@ -131,6 +188,8 @@ const productionDays: ProductionDay[] = [
     "From the outside, this journey may look like a series of dates. For us, every date carries conversations, thought, and effort. We were building one thing together, even when each of us was seeing a different part of it."
   ),
 
+  /* DAY 08 */
+
   createDay(
     "08",
     "23/9",
@@ -140,6 +199,8 @@ const productionDays: ProductionDay[] = [
     "في المرحلة دي بقينا بنبص لكل اللي فات ونحاول نجمعه في صورة واحدة. الفكرة محتاجة تبقى واضحة، وكل حاجة لازم تخدم الحكاية اللي اتفقنا إننا نحكيها.",
     "At this point, we started looking back at everything so far and bringing it into one picture. The idea needed to be clear, and every part had to serve the story we had chosen to tell."
   ),
+
+  /* DAY 09 */
 
   createDay(
     "09",
@@ -153,6 +214,8 @@ const productionDays: ProductionDay[] = [
     ["Finalised the script", "Received the doctor's approval", "Completed a major preparation milestone"]
   ),
 
+  /* DAY 10 */
+
   createDay(
     "10",
     "7/10",
@@ -164,6 +227,8 @@ const productionDays: ProductionDay[] = [
     ["أول بروفة للفيلم", "أول كاست", "بدأنا نشوف الشخصيات على أرض الواقع"],
     ["Our first rehearsal", "Our first cast", "Seeing the characters come to life"]
   ),
+
+  /* DAY 11 */
 
   createDay(
     "11",
@@ -177,6 +242,8 @@ const productionDays: ProductionDay[] = [
     ["Reviewing set design", "Reviewing styling details", "Refining the film's visual direction"]
   ),
 
+  /* DAY 12 */
+
   createDay(
     "12",
     "14/10",
@@ -187,6 +254,8 @@ const productionDays: ProductionDay[] = [
     "The closer we got to filming, the greater the responsibility felt. We looked at what we had done and remembered that every detail had taken time and effort. There was still plenty waiting for us before the camera started rolling."
   ),
 
+  /* DAY 13 */
+
   createDay(
     "13",
     "21/10",
@@ -196,6 +265,8 @@ const productionDays: ProductionDay[] = [
     "بعد كل اللي فات، بقينا بنحس إن الفيلم مش مجرد فكرة بنتكلم عنها. بقى له شكل وتفاصيل وناس مستنياه. وكل ما بنقرب من التنفيذ، بنفتكر أول يوم بدأنا فيه ونسأل نفسنا: معقول وصلنا لكل ده؟",
     "After everything so far, the film no longer felt like just an idea we talked about. It had a shape, details, and people waiting for it. As production got closer, we kept thinking about the first day and asking ourselves: did we really make it this far?"
   ),
+
+  /* DAY 14 */
 
   createDay(
     "14",
@@ -328,6 +399,8 @@ export default function ProductionDays() {
     setActiveNumber(openDays[next].number);
   };
 
+  /* ACTIVE DAY CONTENT */
+
   const story = isArabic
     ? activeDay.arStory
     : activeDay.enStory;
@@ -339,6 +412,16 @@ export default function ProductionDays() {
   const details = isArabic
     ? activeDay.arDetails
     : activeDay.enDetails;
+
+  const hasVideo = Boolean(activeDay.video);
+  const hasPhotos = activeDay.photos.length > 0;
+
+  const mediaLayoutClass =
+    hasVideo && !hasPhotos
+      ? "video-only"
+      : !hasVideo && activeDay.photos.length === 1
+      ? "single-photo"
+      : "";
 
   return (
     <section
@@ -537,106 +620,126 @@ export default function ProductionDays() {
             </div>
           </section>
 
-          {/* VIDEO AND PHOTOS */}
+          {/* MEDIA: VIDEO AND/OR PHOTOS */}
 
-          <section
-            className="oa-diary-media"
-            aria-label={
-              isArabic
-                ? "فيديو وصور اليوم"
-                : "Day video and photos"
-            }
-          >
-            <div className="oa-diary-media-heading">
-              <span>
-                {isArabic
-                  ? "اللي وثّقناه في اليوم ده"
-                  : "CAPTURED THAT DAY"}
-              </span>
+          {(hasVideo || hasPhotos) && (
+            <section
+              className={`oa-diary-media ${mediaLayoutClass}`}
+              aria-label={
+                isArabic
+                  ? "محتوى اليوم"
+                  : "Day media"
+              }
+            >
 
-              <span dir="ltr">VIDEO + 02 FRAMES</span>
-            </div>
+              {/* VIDEO */}
 
-            {/* VIDEO PLAYER */}
+              {hasVideo && (
+                <>
+                  <div className="oa-diary-media-heading">
+                    <span>
+                      {isArabic
+                        ? "فيديو من اليوم ده"
+                        : "VIDEO FROM THAT DAY"}
+                    </span>
 
-            <div className="oa-diary-video-wrap">
-              <video
-                key={activeDay.video}
-                className="oa-diary-video"
-                src={activeDay.video}
-                controls
-                playsInline
-                preload="metadata"
-              >
-                {isArabic
-                  ? "المتصفح لا يدعم تشغيل الفيديو."
-                  : "Your browser does not support video playback."}
-              </video>
-
-              <span className="oa-diary-video-corner">
-                REC
-              </span>
-            </div>
-
-            {/* PHOTO HEADING */}
-
-            <div className="oa-diary-photo-heading">
-              <span>
-                {isArabic
-                  ? "وصورتين من نفس اليوم"
-                  : "TWO MORE MOMENTS"}
-              </span>
-
-              <span dir="ltr">PHOTO 01 / 02</span>
-            </div>
-
-            {/* PHOTO GALLERY */}
-
-            <div className="oa-diary-photos">
-              {activeDay.photos.map((photo, index) => (
-                <figure
-                  className="oa-diary-photo"
-                  key={photo}
-                >
-                  <div className="oa-diary-photo-placeholder">
-                    <span>{`PHOTO 0${index + 1}`}</span>
-
-                    <small dir="ltr">
-                      {`day-${activeDay.number}-0${index + 1}.jpg`}
-                    </small>
+                    <span dir="ltr">
+                      VIDEO / 01
+                    </span>
                   </div>
 
-                  <img
-                    src={photo}
-                    alt={
-                      isArabic
-                        ? `صورة ${index + 1} من يوم ${activeDay.date}`
-                        : `Photo ${index + 1} from ${activeDay.enDate}`
-                    }
-                    loading="lazy"
-                    onError={(event) =>
-                      event.currentTarget.classList.add("is-missing")
-                    }
-                  />
+                  <div className="oa-diary-video-wrap">
+                    <video
+                      key={activeDay.video}
+                      className="oa-diary-video"
+                      src={activeDay.video}
+                      controls
+                      playsInline
+                      preload="metadata"
+                    >
+                      {isArabic
+                        ? "المتصفح لا يدعم تشغيل الفيديو."
+                        : "Your browser does not support video playback."}
+                    </video>
 
-                  <figcaption dir="ltr">
-                    FRAME 0{index + 1}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+                    <span className="oa-diary-video-corner">
+                      REC
+                    </span>
+                  </div>
+                </>
+              )}
 
-            {/* MEDIA FOOTER */}
+              {/* PHOTOS */}
 
-            <div
-              className="oa-diary-media-footer"
-              dir="ltr"
-            >
-              <span>ON AIR / ARCHIVE</span>
-              <span>24 FPS</span>
-              <span>DAY {activeDay.number}</span>
-            </div>
-          </section>
+              {hasPhotos && (
+                <>
+                  <div className="oa-diary-photo-heading">
+                    <span>
+                      {isArabic
+                        ? activeDay.photos.length === 1
+                          ? "صورة من اليوم ده"
+                          : "صور من اليوم ده"
+                        : activeDay.photos.length === 1
+                        ? "PHOTO FROM THAT DAY"
+                        : "PHOTOS FROM THAT DAY"}
+                    </span>
+
+                    <span dir="ltr">
+                      PHOTO 01 /{" "}
+                      {String(activeDay.photos.length).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  <div className="oa-diary-photos">
+                    {activeDay.photos.map((photo, index) => (
+                      <figure
+                        className="oa-diary-photo"
+                        key={photo}
+                      >
+                        <div className="oa-diary-photo-placeholder">
+                          <span>
+                            {`PHOTO ${String(index + 1).padStart(2, "0")}`}
+                          </span>
+
+                          <small dir="ltr">
+                            {photo.split("/").pop()}
+                          </small>
+                        </div>
+
+                        <img
+                          src={photo}
+                          alt={
+                            isArabic
+                              ? `صورة ${index + 1} من يوم ${activeDay.date}`
+                              : `Photo ${index + 1} from ${activeDay.enDate}`
+                          }
+                          loading="lazy"
+                          onError={(event) => {
+                            event.currentTarget.classList.add("is-missing");
+                          }}
+                        />
+
+                        <figcaption dir="ltr">
+                          {`FRAME ${String(index + 1).padStart(2, "0")}`}
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* MEDIA FOOTER */}
+
+              <div
+                className="oa-diary-media-footer"
+                dir="ltr"
+              >
+                <span>ON AIR / ARCHIVE</span>
+                <span>24 FPS</span>
+                <span>DAY {activeDay.number}</span>
+              </div>
+            </section>
+          )}
         </article>
 
         {/* FOOTER */}
