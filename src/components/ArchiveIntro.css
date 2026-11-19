@@ -1564,3 +1564,263 @@
     transform: none;
   }
 }
+/* =========================================
+   ON AIR — TEDDY SCROLL ANIMATION
+========================================= */
+
+.archive-teddy-follow {
+  --archive-teddy-rope-x: 27px;
+
+  position: fixed !important;
+
+  top: 0;
+  right: 12px;
+  left: auto;
+
+  width: max-content;
+
+  z-index: 80;
+  pointer-events: none;
+
+  opacity: 1;
+  visibility: visible;
+
+  transition:
+    opacity .65s ease,
+    visibility .65s ease;
+}
+
+/* =========================================
+   TEDDY SWING
+========================================= */
+
+.archive-teddy-swing {
+  position: relative;
+
+  width: max-content;
+
+  transform-origin:
+    var(--archive-teddy-rope-x) 5px;
+
+  animation:
+    archiveTeddySwingV2 3s ease-in-out infinite;
+}
+
+/* =========================================
+   ROPE — EXTENDS WITH SCROLL
+========================================= */
+
+.archive-teddy-swing::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: var(--archive-teddy-rope-x);
+
+  width: 8px;
+
+  height: var(
+    --archive-teddy-scroll-drop,
+    0px
+  );
+
+  z-index: 0;
+
+  border-radius: 5px;
+
+  background: repeating-linear-gradient(
+    135deg,
+    #d3aa76 0 2px,
+    #76502f 2px 4px,
+    #b88854 4px 6px
+  );
+
+  box-shadow:
+    inset 1px 0 2px rgba(255,255,255,.2),
+    2px 2px 5px rgba(0,0,0,.22);
+}
+
+/* =========================================
+   TEDDY — MOVES DOWN WITH ROPE
+========================================= */
+
+.archive-teddy-entry {
+  position: relative;
+
+  z-index: 1;
+
+  width: max-content;
+
+  height: min(48svh, 380px);
+
+  margin-top: var(
+    --archive-teddy-scroll-drop,
+    0px
+  );
+
+  opacity: 0;
+
+  transform-origin: 12% 0%;
+
+  animation:
+    archiveTeddyEntranceV2
+    1.6s cubic-bezier(.22,.8,.22,1) .3s both;
+}
+
+/* =========================================
+   TEDDY IMAGE
+========================================= */
+
+.archive-teddy-follow .archive-teddy-image {
+  display: block;
+
+  width: auto;
+  height: 100%;
+
+  max-width: none;
+
+  object-fit: contain;
+
+  user-select: none;
+
+  animation: none;
+
+  filter:
+    drop-shadow(
+      5px 10px 12px rgba(0,0,0,.24)
+    );
+}
+
+/* =========================================
+   INITIAL DROP
+========================================= */
+
+@keyframes archiveTeddyEntranceV2 {
+
+  0% {
+    opacity: 0;
+    transform: translateY(-110%) rotate(-4deg);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translateY(12px) rotate(2deg);
+  }
+
+  85% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+
+}
+
+/* =========================================
+   BIG PENDULUM SWING
+========================================= */
+
+@keyframes archiveTeddySwingV2 {
+
+  0%, 100% {
+    transform: rotate(
+      var(--archive-teddy-swing-left, -7deg)
+    );
+  }
+
+  50% {
+    transform: rotate(
+      var(--archive-teddy-swing-right, 7deg)
+    );
+  }
+
+}
+
+/* =========================================
+   HIDE ONLY AT PRODUCTION JOURNEY
+========================================= */
+
+.archive-teddy-follow.teddy-is-hidden {
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity .65s ease,
+    visibility 0s linear .65s;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .archive-teddy-follow {
+    right: -8px;
+  }
+
+  .archive-teddy-entry {
+    height: min(43svh, 330px);
+  }
+
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .archive-teddy-follow {
+    --archive-teddy-rope-x: 22px;
+
+    right: -18px;
+  }
+
+  .archive-teddy-entry {
+    height: min(36svh, 270px);
+  }
+
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 430px) {
+
+  .archive-teddy-follow {
+    right: -25px;
+  }
+
+  .archive-teddy-entry {
+    height: min(32svh, 235px);
+  }
+
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .archive-teddy-follow {
+    transition: none !important;
+  }
+
+  .archive-teddy-swing {
+    animation: none !important;
+  }
+
+  .archive-teddy-entry {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import "./ArchiveIntro.css";
 
 type Language = "ar" | "en";
@@ -13,6 +14,7 @@ export default function ArchiveIntro() {
   });
 
   const [soundOn, setSoundOn] = useState(false);
+  const [teddyHidden, setTeddyHidden] = useState(false);
 
   const isArabic = language === "ar";
 
@@ -42,6 +44,36 @@ export default function ArchiveIntro() {
         "onair-language-change",
         handleLanguageChange
       );
+    };
+  }, []);
+
+  /* =========================================
+     TEDDY SCROLL BEHAVIOR
+     يظهر أثناء تصفح الموقع
+     ويختفي داخل رحلة الإنتاج
+  ========================================= */
+
+  useEffect(() => {
+    const productionSection =
+      document.getElementById("productionSection");
+
+    if (!productionSection) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry) {
+          setTeddyHidden(entry.isIntersecting);
+        }
+      },
+      {
+        threshold: 0.01,
+      }
+    );
+
+    observer.observe(productionSection);
+
+    return () => {
+      observer.disconnect();
     };
   }, []);
 
@@ -121,27 +153,12 @@ export default function ArchiveIntro() {
         />
 
         {/* =====================================
-            HANGING TEDDY
-        ===================================== */}
-
-        <div
-          className="archive-teddy-drop"
-          aria-hidden="true"
-        >
-          <img
-            className="archive-teddy-image"
-            src={teddyImage}
-            alt=""
-            draggable={false}
-          />
-        </div>
-
-        {/* =====================================
             CINEMATIC TECH
         ===================================== */}
 
         <div className="cinematic-tech">
           <div className="cinematic-sound" dir="ltr">
+
             <button
               type="button"
               className={soundOn ? "sound-active" : ""}
@@ -160,7 +177,9 @@ export default function ArchiveIntro() {
               <span>
                 {soundOn ? "SOUND ON" : "SOUND OFF"}
               </span>
+
             </button>
+
           </div>
         </div>
 
@@ -187,6 +206,7 @@ export default function ArchiveIntro() {
             className="archive-logo"
             aria-label="ON AIR بِالعَافيَه"
           >
+
             <svg
               className="archive-wordmark-svg"
               viewBox="0 0 900 250"
@@ -194,6 +214,7 @@ export default function ArchiveIntro() {
               role="img"
               aria-label="ON AIR"
             >
+
               <g
                 fill="none"
                 stroke="#112548"
@@ -201,6 +222,7 @@ export default function ArchiveIntro() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
+
                 {/* O */}
 
                 <g className="archive-logo-letter archive-letter-o">
@@ -271,7 +293,9 @@ export default function ArchiveIntro() {
                     "
                   />
                 </g>
+
               </g>
+
             </svg>
 
             {/* Arabic Brand */}
@@ -286,6 +310,7 @@ export default function ArchiveIntro() {
               className="archive-logo-line"
               aria-hidden="true"
             />
+
           </div>
 
           {/* =================================
@@ -301,6 +326,7 @@ export default function ArchiveIntro() {
               className="hero-action hero-action-notes"
               onClick={scrollToMemory}
             >
+
               <span
                 className="hero-action-icon"
                 aria-hidden="true"
@@ -309,6 +335,7 @@ export default function ArchiveIntro() {
               </span>
 
               <span className="hero-action-copy">
+
                 <strong>
                   {isArabic ? "اضغط" : "CLICK"}
                 </strong>
@@ -318,7 +345,9 @@ export default function ArchiveIntro() {
                     ? "متنساش تسيب لينا ذكرى"
                     : "Don't forget to leave us a memory"}
                 </small>
+
               </span>
+
             </button>
 
             {/* SCROLL */}
@@ -328,6 +357,7 @@ export default function ArchiveIntro() {
               className="cinematic-scroll"
               onClick={scrollToNext}
             >
+
               <span
                 className="cinematic-scroll-line"
                 aria-hidden="true"
@@ -352,6 +382,7 @@ export default function ArchiveIntro() {
               >
                 ↓
               </span>
+
             </button>
 
             {/* SOCIAL */}
@@ -361,7 +392,9 @@ export default function ArchiveIntro() {
               className="hero-action hero-action-social"
               onClick={scrollToSocial}
             >
+
               <span className="hero-action-copy">
+
                 <strong>
                   {isArabic ? "اضغط" : "CLICK"}
                 </strong>
@@ -371,6 +404,7 @@ export default function ArchiveIntro() {
                     ? "تابعنا عشان نكمل الحكاية"
                     : "Follow us to continue the story"}
                 </small>
+
               </span>
 
               <span
@@ -379,6 +413,7 @@ export default function ArchiveIntro() {
               >
                 ↗
               </span>
+
             </button>
 
           </div>
@@ -397,13 +432,16 @@ export default function ArchiveIntro() {
             </span>
 
             {isArabic ? (
+
               <p>
                 كل مشهد هنا كان تعب، وضحك، وسهر...
                 <br />
                 وحلم كبير اسمه{" "}
                 <strong>ON AIR بِالعَافيَه.</strong>
               </p>
+
             ) : (
+
               <p dir="ltr">
                 Every frame here carried effort,
                 laughter, sleepless nights...
@@ -411,6 +449,7 @@ export default function ArchiveIntro() {
                 and one big dream called{" "}
                 <strong>ON AIR.</strong>
               </p>
+
             )}
 
             <span
@@ -430,6 +469,7 @@ export default function ArchiveIntro() {
           {/* STATUS */}
 
           <div className="cinematic-status">
+
             <span className="status-dot" />
 
             <span>
@@ -437,6 +477,7 @@ export default function ArchiveIntro() {
                 ? "ملف الفريق مفتوح"
                 : "TEAM FILE OPEN"}
             </span>
+
           </div>
 
         </div>
@@ -444,12 +485,38 @@ export default function ArchiveIntro() {
         {/* BOTTOM META */}
 
         <div className="cinematic-bottom-meta">
+
           <span>FILE OPENED</span>
           <span>/</span>
           <span>ON AIR بِالعَافيَه</span>
+
         </div>
 
       </section>
+
+      {/* =====================================
+    FLOATING TEDDY
+===================================== */}
+
+{createPortal(
+  <div
+    className={`archive-teddy-follow ${
+      teddyHidden ? "teddy-is-hidden" : ""
+    }`}
+    aria-hidden="true"
+  >
+    <div className="archive-teddy-entry">
+      <img
+        className="archive-teddy-image"
+        src={teddyImage}
+        alt=""
+        draggable={false}
+      />
+    </div>
+  </div>,
+  document.body
+)}
+
     </main>
   );
 }
