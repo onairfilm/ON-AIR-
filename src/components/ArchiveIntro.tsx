@@ -76,15 +76,9 @@ export default function ArchiveIntro() {
 
     if (!rope || !ropeImage || !bodyImage) return;
 
-    // نقطة الفصل بين الحبل والدبدوب في الصورة الأصلية.
-    // نستخدم نفس الصورة مرتين، من غير رسم حبل جديد.
     const ROPE_SPLIT = 0.43;
 
     let animationFrame = 0;
-
-    /* -----------------------------------------
-       UPDATE ROPE LENGTH
-    ----------------------------------------- */
 
     const updateTeddy = () => {
       if (animationFrame) return;
@@ -99,15 +93,12 @@ export default function ArchiveIntro() {
 
         if (!width) return;
 
-        // الحجم الطبيعي للصورة
         const imageHeight =
           width * (naturalHeight / naturalWidth);
 
-        // طول الحبل الأصلي
         const ropeBase =
           imageHeight * ROPE_SPLIT;
 
-        // تقدم السكرول داخل الانترو فقط
         const introRect = intro.getBoundingClientRect();
 
         const progress = Math.min(
@@ -119,7 +110,6 @@ export default function ArchiveIntro() {
           1
         );
 
-        // أقصى مقدار لزيادة طول الحبل
         const maximumDrop = Math.min(
           window.innerHeight * 0.22,
           180
@@ -132,13 +122,11 @@ export default function ArchiveIntro() {
         const ropeScale =
           ropeHeight / ropeBase;
 
-        // إعداد أبعاد الصورة الأصلية
         teddy.style.setProperty(
           "--archive-teddy-image-height",
           `${imageHeight}px`
         );
 
-        // طول الحبل قبل وبعد السكرول
         teddy.style.setProperty(
           "--archive-teddy-rope-base",
           `${ropeBase}px`
@@ -149,7 +137,6 @@ export default function ArchiveIntro() {
           `${ropeHeight}px`
         );
 
-        // تمديد الجزء الأصلي الخاص بالحبل فقط
         teddy.style.setProperty(
           "--archive-teddy-rope-scale",
           String(ropeScale)
@@ -574,66 +561,73 @@ export default function ArchiveIntro() {
           </div>
 
           {/* =================================
-              STATEMENT
+              ON AIR — WHO WE ARE
           ================================= */}
 
-          <div className="cinematic-statement">
-
+          <section
+            className="cinematic-about"
+            dir={isArabic ? "rtl" : "ltr"}
+            aria-label={isArabic ? "إحنا مين؟" : "Who we are"}
+          >
             <span
-              className="quote-mark quote-left"
-              aria-hidden="true"
+              className="cinematic-about-eyebrow"
+              dir="ltr"
             >
-              “
+              WHO WE ARE / 042
             </span>
 
-            {isArabic ? (
-
-              <p>
-                كل مشهد هنا كان تعب، وضحك، وسهر...
-                <br />
-                وحلم كبير اسمه{" "}
-                <strong>ON AIR بِالعَافيَه.</strong>
-              </p>
-
-            ) : (
-
-              <p dir="ltr">
-                Every frame here carried effort,
-                laughter, sleepless nights...
-                <br />
-                and one big dream called{" "}
-                <strong>ON AIR.</strong>
-              </p>
-
-            )}
-
-            <span
-              className="quote-mark quote-right"
-              aria-hidden="true"
-            >
-              ”
-            </span>
-
-          </div>
-
-          <div
-            className="cinematic-divider"
-            aria-hidden="true"
-          />
-
-          {/* STATUS */}
-
-          <div className="cinematic-status">
-
-            <span className="status-dot" />
-
-            <span>
+            <p className="cinematic-about-story">
               {isArabic
-                ? "ملف الفريق مفتوح"
-                : "TEAM FILE OPEN"}
-            </span>
+                ? "كل مشهد هنا كان تعب، وضحك، وسهر..."
+                : "Every scene here came with effort, laughter, and late nights..."}
+            </p>
 
-          </div>
+            <h2>
+              {isArabic ? "إحنا مين؟" : "WHO ARE WE?"}
+            </h2>
+
+            <strong className="cinematic-about-brand">
+              {isArabic
+                ? "إحنا ON AIR بِالعَافيَه"
+                : "We are ON AIR"}
+            </strong>
+
+            <p className="cinematic-about-slogan">
+              {isArabic
+                ? "يعني أي حاجة معانا عافية 😉"
+                : "With us, everything takes a little extra effort 😉"}
+            </p>
+
+            <div className="cinematic-about-details">
+
+              <span>
+                {isArabic
+                  ? "مشروع تخرج إعلام "
+                  : " Media Graduation Project"}
+              </span>
+
+              <i aria-hidden="true" />
+
+              <span>
+                {isArabic
+                  ? "شعبة الإذاعة والتلفزيون"
+                  : "Radio & Television Department"}
+              </span>
+
+              <i aria-hidden="true" />
+
+              <span>
+                {isArabic ? "دفعة 42" : "Class 42"}
+              </span>
+
+            </div>
+
+            <div
+              className="cinematic-about-line"
+              aria-hidden="true"
+            />
+
+          </section>
 
         </div>
 

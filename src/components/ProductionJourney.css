@@ -2540,3 +2540,29 @@ a.oa-stage-card:focus-visible {
   }
 
 }
+/* =========================================
+   ON AIR — REMOVE OLD TEAM INTRO
+========================================= */
+
+.oa-team-intro {
+  display: none !important;
+}
+
+/* Restore original production section spacing */
+
+.oa-production {
+  padding:
+    clamp(86px, 8vw, 120px)
+    clamp(18px, 5vw, 76px)
+    48px !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .oa-production {
+    padding: 78px 12px 38px !important;
+  }
+
+}
