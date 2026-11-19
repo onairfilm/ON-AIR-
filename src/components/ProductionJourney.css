@@ -2490,3 +2490,53 @@ a.oa-stage-card:focus-visible {
   }
 
 }
+/* =========================================
+   MOBILE — TEAM INTRO SPACING
+========================================= */
+
+@media (max-width: 700px) {
+
+  .oa-production {
+    padding: 22px 12px 38px !important;
+    min-height: auto !important;
+  }
+
+  .oa-team-intro {
+    position: relative !important;
+
+    top: auto !important;
+    left: auto !important;
+
+    transform: none !important;
+
+    margin: 0 auto 28px !important;
+
+    width: calc(100% - 20px);
+  }
+
+  .oa-production-header {
+    margin-top: 0 !important;
+    margin-bottom: 22px !important;
+  }
+
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 430px) {
+
+  .oa-production {
+    padding-top: 18px !important;
+  }
+
+  .oa-team-intro {
+    margin-bottom: 24px !important;
+  }
+
+  .oa-production-header {
+    margin-bottom: 18px !important;
+  }
+
+}

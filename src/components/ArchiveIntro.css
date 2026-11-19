@@ -1824,3 +1824,78 @@
   }
 
 }
+/* =========================================
+   MOBILE — REMOVE EMPTY SPACE AFTER INTRO
+========================================= */
+
+@media (max-width: 700px) {
+
+  /* Release the fixed screen height */
+  .archive-page {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .archive-intro-screen {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+
+    display: block !important;
+
+    padding-bottom: 25px;
+  }
+
+  /* Content takes only the space it needs */
+  .archive-content {
+    width: calc(100% - 20px) !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 78px 7px 25px !important;
+
+    justify-content: flex-start !important;
+
+    margin: 0 auto !important;
+  }
+
+  /* Tighten the content spacing */
+  .cinematic-hero-actions {
+    margin-top: 20px !important;
+  }
+
+  .cinematic-statement {
+    margin-top: 19px !important;
+  }
+
+  .cinematic-divider {
+    margin-top: 12px !important;
+  }
+
+  .cinematic-status {
+    margin-top: 8px !important;
+  }
+
+  .cinematic-bottom-meta {
+    bottom: 8px;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 430px) {
+
+  .archive-content {
+    padding-top: 70px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .archive-intro-screen {
+    padding-bottom: 15px;
+  }
+
+}
