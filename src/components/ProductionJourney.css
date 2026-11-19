@@ -2145,3 +2145,348 @@ a.oa-stage-card:focus-visible {
     animation: none;
   }
 }
+/* =========================================
+   ON AIR — WHO WE ARE
+========================================= */
+
+.oa-production {
+  padding-top: 190px;
+}
+
+.oa-team-intro {
+  position: absolute;
+
+  top: 22px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: 7;
+
+  width: min(850px, calc(100% - 40px));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+
+  text-align: center;
+
+  pointer-events: none;
+}
+
+.oa-team-eyebrow {
+  color: var(--prod-gold);
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 9px;
+
+  letter-spacing: .25em;
+
+  opacity: .75;
+}
+
+.oa-team-intro h3 {
+  margin: 3px 0 0;
+
+  color: var(--prod-cream);
+
+  font-family: "Tajawal", sans-serif;
+
+  font-size: clamp(22px, 2.3vw, 29px);
+
+  font-weight: 600;
+}
+
+.oa-team-intro strong {
+  color: var(--prod-teal);
+
+  font-family: "Tajawal", sans-serif;
+
+  font-size: clamp(23px, 2.5vw, 32px);
+
+  font-weight: 800;
+}
+
+.oa-team-intro p {
+  margin: 2px 0;
+
+  color: var(--prod-beige);
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: clamp(12px, 1.1vw, 15px);
+}
+
+.oa-team-intro small {
+  margin-top: 5px;
+
+  color: rgba(247, 237, 227, .58);
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: 10px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .oa-team-intro {
+    width: calc(100% - 35px);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .oa-production {
+    padding: 150px 12px 38px !important;
+  }
+
+  .oa-team-intro {
+    top: 15px;
+    width: calc(100% - 28px);
+    gap: 3px;
+  }
+
+  .oa-team-eyebrow {
+    font-size: 7px;
+  }
+
+  .oa-team-intro h3 {
+    font-size: 19px;
+  }
+
+  .oa-team-intro strong {
+    font-size: 22px;
+  }
+
+  .oa-team-intro p {
+    font-size: 10px;
+  }
+
+  .oa-team-intro small {
+    font-size: 7.5px;
+    line-height: 1.8;
+  }
+}
+/* =========================================
+   ON AIR — TEAM INTRO FINAL LAYOUT
+========================================= */
+
+.oa-production {
+  padding-top: 35px !important;
+}
+
+/* Team introduction */
+
+.oa-team-intro {
+  position: relative !important;
+
+  top: auto !important;
+  left: auto !important;
+
+  transform: none !important;
+
+  z-index: 7;
+
+  width: min(850px, calc(100% - 40px));
+
+  margin: 0 auto 65px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 9px;
+
+  text-align: center;
+
+  pointer-events: none;
+}
+
+/* English label */
+
+.oa-team-eyebrow {
+  color: var(--prod-gold);
+
+  font-family: "Space Mono", monospace;
+
+  font-size: 9px;
+
+  letter-spacing: .25em;
+
+  opacity: .75;
+}
+
+/* Arabic heading */
+
+.oa-team-intro h3 {
+  margin: 5px 0 0;
+
+  color: var(--prod-cream);
+
+  font-family: "Tajawal", sans-serif;
+
+  font-size: clamp(25px, 2.5vw, 32px);
+
+  font-weight: 600;
+}
+
+/* Brand */
+
+.oa-team-intro strong {
+  color: var(--prod-teal);
+
+  font-family: "Tajawal", sans-serif;
+
+  font-size: clamp(25px, 2.8vw, 36px);
+
+  font-weight: 800;
+}
+
+/* Slogan */
+
+.oa-team-intro p {
+  margin: 2px 0 0;
+
+  color: var(--prod-cream);
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: clamp(13px, 1.2vw, 16px);
+
+  line-height: 1.8;
+}
+
+/* University information */
+
+.oa-team-intro small {
+  margin-top: 6px;
+
+  color: rgba(247, 237, 227, .62);
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: 11px;
+
+  line-height: 1.9;
+}
+
+/* Decorative separator */
+
+.oa-team-intro::after {
+  content: "";
+
+  display: block;
+
+  width: 65px;
+
+  height: 1px;
+
+  margin-top: 19px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--prod-gold),
+    transparent
+  );
+
+  opacity: .65;
+}
+
+/* Production heading spacing */
+
+.oa-production-header {
+  margin-top: 0 !important;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .oa-team-intro {
+    margin-bottom: 48px;
+  }
+
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .oa-production {
+    padding: 30px 14px 38px !important;
+  }
+
+  .oa-team-intro {
+    width: calc(100% - 20px);
+
+    margin-bottom: 38px;
+
+    gap: 6px;
+  }
+
+  .oa-team-eyebrow {
+    font-size: 7px;
+  }
+
+  .oa-team-intro h3 {
+    font-size: 22px;
+  }
+
+  .oa-team-intro strong {
+    font-size: 25px;
+  }
+
+  .oa-team-intro p {
+    font-size: 11px;
+  }
+
+  .oa-team-intro small {
+    font-size: 8px;
+
+    max-width: 95%;
+  }
+
+  .oa-team-intro::after {
+    margin-top: 12px;
+    width: 45px;
+  }
+
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 430px) {
+
+  .oa-team-intro {
+    margin-bottom: 30px;
+  }
+
+  .oa-team-intro h3 {
+    font-size: 20px;
+  }
+
+  .oa-team-intro strong {
+    font-size: 22px;
+  }
+
+  .oa-team-intro p {
+    font-size: 10px;
+  }
+
+  .oa-team-intro small {
+    font-size: 7.5px;
+  }
+
+}

@@ -242,6 +242,7 @@ export default function ProductionJourney() {
     if (!selectedStage) return;
 
     const previousOverflow = document.body.style.overflow;
+
     document.body.style.overflow = "hidden";
 
     const handleEscape = (event: KeyboardEvent) => {
@@ -502,7 +503,43 @@ export default function ProductionJourney() {
       </div>
 
       {/* =====================================
-          HEADER
+          WHO WE ARE — ON AIR IDENTITY
+      ===================================== */}
+
+      <div
+        className="oa-team-intro"
+        dir={isArabic ? "rtl" : "ltr"}
+      >
+        <span
+          className="oa-team-eyebrow"
+          dir="ltr"
+        >
+          WHO WE ARE / 042
+        </span>
+
+        <h3>
+          {isArabic ? "إحنا مين؟" : "WHO ARE WE?"}
+        </h3>
+
+        <strong>
+          ON AIR بِالعَافيَه
+        </strong>
+
+        <p>
+          {isArabic
+            ? "يعني أي حاجة حلوة معانا بتيجي بالعافية 😉"
+            : "Every good thing with us takes a little extra effort 😉"}
+        </p>
+
+        <small>
+          {isArabic
+            ? "مشروع تخرج إعلام | شعبة الإذاعة والتلفزيون | دفعة 42"
+            : "Media Graduation Project | Radio & Television Department | Class 42"}
+        </small>
+      </div>
+
+      {/* =====================================
+          PRODUCTION JOURNEY HEADER
       ===================================== */}
 
       <header className="oa-production-header">
