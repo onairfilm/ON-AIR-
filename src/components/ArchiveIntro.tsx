@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import "./ArchiveIntro.css";
+import "./ArchiveTeddy.css";
 
 type Language = "ar" | "en";
 
@@ -14,7 +15,6 @@ export default function ArchiveIntro() {
   });
 
   const [soundOn, setSoundOn] = useState(false);
-  const [teddyHidden, setTeddyHidden] = useState(false);
 
   const isArabic = language === "ar";
 
@@ -48,32 +48,182 @@ export default function ArchiveIntro() {
   }, []);
 
   /* =========================================
-     TEDDY SCROLL BEHAVIOR
-     يظهر أثناء تصفح الموقع
-     ويختفي داخل رحلة الإنتاج
+     TEDDY — ORIGINAL ROPE + INTRO ONLY
   ========================================= */
 
   useEffect(() => {
-    const productionSection =
-      document.getElementById("productionSection");
+    const intro = document.querySelector<HTMLElement>(
+      ".archive-intro-screen"
+    );
 
-    if (!productionSection) return;
+    const teddy = document.querySelector<HTMLElement>(
+      ".archive-teddy-follow"
+    );
+
+    if (!intro || !teddy) return;
+
+    const rope = teddy.querySelector<HTMLElement>(
+      ".archive-teddy-rope"
+    );
+
+    const ropeImage = teddy.querySelector<HTMLImageElement>(
+      ".archive-teddy-rope-image"
+    );
+
+    const bodyImage = teddy.querySelector<HTMLImageElement>(
+      ".archive-teddy-body-image"
+    );
+
+    if (!rope || !ropeImage || !bodyImage) return;
+
+    // نقطة الفصل بين الحبل والدبدوب في الصورة الأصلية.
+    // نستخدم نفس الصورة مرتين، من غير رسم حبل جديد.
+    const ROPE_SPLIT = 0.43;
+
+    let animationFrame = 0;
+
+    /* -----------------------------------------
+       UPDATE ROPE LENGTH
+    ----------------------------------------- */
+
+    const updateTeddy = () => {
+      if (animationFrame) return;
+
+      animationFrame = requestAnimationFrame(() => {
+        animationFrame = 0;
+
+        const width = rope.clientWidth;
+
+        const naturalWidth = ropeImage.naturalWidth || 403;
+        const naturalHeight = ropeImage.naturalHeight || 1533;
+
+        if (!width) return;
+
+        // الحجم الطبيعي للصورة
+        const imageHeight =
+          width * (naturalHeight / naturalWidth);
+
+        // طول الحبل الأصلي
+        const ropeBase =
+          imageHeight * ROPE_SPLIT;
+
+        // تقدم السكرول داخل الانترو فقط
+        const introRect = intro.getBoundingClientRect();
+
+        const progress = Math.min(
+          Math.max(
+            -introRect.top /
+              Math.max(introRect.height, window.innerHeight),
+            0
+          ),
+          1
+        );
+
+        // أقصى مقدار لزيادة طول الحبل
+        const maximumDrop = Math.min(
+          window.innerHeight * 0.22,
+          180
+        );
+
+        const drop = progress * maximumDrop;
+
+        const ropeHeight = ropeBase + drop;
+
+        const ropeScale =
+          ropeHeight / ropeBase;
+
+        // إعداد أبعاد الصورة الأصلية
+        teddy.style.setProperty(
+          "--archive-teddy-image-height",
+          `${imageHeight}px`
+        );
+
+        // طول الحبل قبل وبعد السكرول
+        teddy.style.setProperty(
+          "--archive-teddy-rope-base",
+          `${ropeBase}px`
+        );
+
+        teddy.style.setProperty(
+          "--archive-teddy-rope-height",
+          `${ropeHeight}px`
+        );
+
+        // تمديد الجزء الأصلي الخاص بالحبل فقط
+        teddy.style.setProperty(
+          "--archive-teddy-rope-scale",
+          String(ropeScale)
+        );
+      });
+    };
+
+    /* -----------------------------------------
+       SHOW TEDDY INSIDE INTRO ONLY
+    ----------------------------------------- */
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry) {
-          setTeddyHidden(entry.isIntersecting);
+        if (!entry) return;
+
+        teddy.classList.toggle(
+          "is-intro-visible",
+          entry.isIntersecting
+        );
+
+        if (entry.isIntersecting) {
+          updateTeddy();
         }
       },
       {
-        threshold: 0.01,
+        threshold: 0,
       }
     );
 
-    observer.observe(productionSection);
+    observer.observe(intro);
+
+    /* -----------------------------------------
+       EVENT LISTENERS
+    ----------------------------------------- */
+
+    window.addEventListener(
+      "scroll",
+      updateTeddy,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "resize",
+      updateTeddy
+    );
+
+    ropeImage.addEventListener("load", updateTeddy);
+    bodyImage.addEventListener("load", updateTeddy);
+
+    updateTeddy();
+
+    /* -----------------------------------------
+       CLEANUP
+    ----------------------------------------- */
 
     return () => {
       observer.disconnect();
+
+      window.removeEventListener(
+        "scroll",
+        updateTeddy
+      );
+
+      window.removeEventListener(
+        "resize",
+        updateTeddy
+      );
+
+      ropeImage.removeEventListener("load", updateTeddy);
+      bodyImage.removeEventListener("load", updateTeddy);
+
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
     };
   }, []);
 
@@ -157,6 +307,7 @@ export default function ArchiveIntro() {
         ===================================== */}
 
         <div className="cinematic-tech">
+
           <div className="cinematic-sound" dir="ltr">
 
             <button
@@ -167,6 +318,7 @@ export default function ArchiveIntro() {
               }
               aria-pressed={soundOn}
             >
+
               <span
                 className="sound-symbol"
                 aria-hidden="true"
@@ -181,6 +333,7 @@ export default function ArchiveIntro() {
             </button>
 
           </div>
+
         </div>
 
         {/* =====================================
@@ -198,9 +351,7 @@ export default function ArchiveIntro() {
             aria-hidden="true"
           />
 
-          {/* =================================
-              ANIMATED ON AIR LOGO
-          ================================= */}
+          {/* ANIMATED LOGO */}
 
           <div
             className="archive-logo"
@@ -246,6 +397,7 @@ export default function ArchiveIntro() {
                 {/* A */}
 
                 <g className="archive-logo-letter archive-letter-a">
+
                   <path
                     d="
                       M 415 205
@@ -265,11 +417,13 @@ export default function ArchiveIntro() {
                     fill="#112548"
                     stroke="none"
                   />
+
                 </g>
 
                 {/* I */}
 
                 <g className="archive-logo-letter archive-letter-i">
+
                   <path d="M 650 105 V 205" />
 
                   <circle
@@ -279,11 +433,13 @@ export default function ArchiveIntro() {
                     fill="#112548"
                     stroke="none"
                   />
+
                 </g>
 
                 {/* R */}
 
                 <g className="archive-logo-letter archive-letter-r">
+
                   <path
                     d="
                       M 705 205
@@ -292,19 +448,18 @@ export default function ArchiveIntro() {
                       H 860
                     "
                   />
+
                 </g>
 
               </g>
 
             </svg>
 
-            {/* Arabic Brand */}
+            {/* ARABIC BRAND */}
 
             <div className="archive-arabic" dir="rtl">
               بِالعَافيَه
             </div>
-
-            {/* Logo Underline */}
 
             <div
               className="archive-logo-line"
@@ -495,27 +650,51 @@ export default function ArchiveIntro() {
       </section>
 
       {/* =====================================
-    FLOATING TEDDY
-===================================== */}
+          ORIGINAL TEDDY — INTRO ONLY
+      ===================================== */}
 
-{createPortal(
-  <div
-    className={`archive-teddy-follow ${
-      teddyHidden ? "teddy-is-hidden" : ""
-    }`}
-    aria-hidden="true"
-  >
-    <div className="archive-teddy-entry">
-      <img
-        className="archive-teddy-image"
-        src={teddyImage}
-        alt=""
-        draggable={false}
-      />
-    </div>
-  </div>,
-  document.body
-)}
+      {createPortal(
+
+        <div
+          className="archive-teddy-follow"
+          aria-hidden="true"
+        >
+
+          <div className="archive-teddy-swing">
+
+            {/* ORIGINAL ROPE */}
+
+            <div className="archive-teddy-rope">
+
+              <img
+                className="archive-teddy-rope-image"
+                src={teddyImage}
+                alt=""
+                draggable={false}
+              />
+
+            </div>
+
+            {/* ORIGINAL TEDDY BODY */}
+
+            <div className="archive-teddy-body">
+
+              <img
+                className="archive-teddy-body-image"
+                src={teddyImage}
+                alt=""
+                draggable={false}
+              />
+
+            </div>
+
+          </div>
+
+        </div>,
+
+        document.body
+
+      )}
 
     </main>
   );
