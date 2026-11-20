@@ -30,7 +30,10 @@ const SUPABASE_URL =
   import.meta.env.VITE_SUPABASE_URL?.replace(/\/+$/, "") ?? "";
 
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";
-
+console.log("SUPABASE CHECK:", {
+  urlLoaded: Boolean(SUPABASE_URL),
+  keyLoaded: Boolean(SUPABASE_KEY),
+});
 const PAGE_SIZE = 500;
 const MAX_NAME_LENGTH = 40;
 const MAX_MESSAGE_LENGTH = 180;
