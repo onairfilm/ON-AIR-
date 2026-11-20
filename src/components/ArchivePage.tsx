@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ArchiveIntro from "./ArchiveIntro";
 import ProductionDays from "./ProductionDays";
 import TeamSection from "./TeamSection";
+import LeaveMemory from "./LeaveMemory"; 
 import ProductionJourney from "./ProductionJourney";
 import "./ArchivePage.css";
 
@@ -155,6 +156,7 @@ export default function ArchivePage() {
       <ProductionJourney />
 <ProductionDays />
 <TeamSection />
+<LeaveMemory />
     </main>
   );
 }

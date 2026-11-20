@@ -1,0 +1,916 @@
+/* =========================================================
+   ON AIR — THE MEMORY CREDITS
+   Editorial film archive.
+   Uses the site's original background.
+   No section overlay, filter, vignette, or extra background.
+========================================================= */
+
+.oa-credits-section {
+  --credits-navy: #112548;
+  --credits-deep: #050c14;
+  --credits-cream: #f7ede3;
+  --credits-beige: #e1d7cc;
+  --credits-gold: #c7a86b;
+  --credits-red: #d92832;
+
+  position: relative;
+  width: min(1120px, calc(100% - 48px));
+  margin: clamp(92px, 10vw, 145px) auto 92px;
+  color: var(--credits-cream);
+  font-family: "Cairo", "Tajawal", sans-serif;
+  background: transparent !important;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.oa-credits-heading {
+  position: relative;
+  max-width: 790px;
+  margin: 0 auto 42px;
+  text-align: center;
+  animation: credits-heading-in 700ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+@keyframes credits-heading-in {
+  from {
+    opacity: 0;
+    transform: translateY(13px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.oa-credits-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: rgba(247, 237, 227, .74);
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  letter-spacing: .16em;
+  direction: ltr;
+}
+
+.oa-credits-rec {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: var(--credits-red);
+  box-shadow: 0 0 9px rgba(217, 40, 50, .32);
+  animation: credits-rec 1.8s ease-in-out infinite;
+}
+
+@keyframes credits-rec {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .42;
+  }
+}
+
+.oa-credits-edition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  margin-bottom: 13px;
+  color: var(--credits-gold);
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .15em;
+  direction: ltr;
+}
+
+.oa-credits-edition i {
+  display: block;
+  width: 34px;
+  height: 1px;
+  background: rgba(199, 168, 107, .65);
+}
+
+.oa-credits-heading h2 {
+  margin: 0;
+  color: var(--credits-cream);
+  font-size: clamp(34px, 4.7vw, 60px);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.oa-credits-heading > p:last-child {
+  max-width: 650px;
+  margin: 13px auto 0;
+  color: rgba(225, 215, 204, .84);
+  font-size: clamp(12px, 1.08vw, 15px);
+  line-height: 2.05;
+}
+
+/* Restrained animated gold line */
+
+.oa-credits-heading::after {
+  content: "";
+  display: block;
+  width: 92px;
+  height: 1px;
+  margin: 26px auto 0;
+  transform-origin: center;
+  background: var(--credits-gold);
+  opacity: .75;
+  animation: credits-hairline 850ms 220ms ease both;
+}
+
+@keyframes credits-hairline {
+  from {
+    transform: scaleX(.15);
+    opacity: 0;
+  }
+
+  to {
+    transform: scaleX(1);
+    opacity: .75;
+  }
+}
+
+/* =========================================================
+   ARCHIVE — TRANSPARENT ON THE GLOBAL BACKGROUND
+========================================================= */
+
+.oa-credits-archive {
+  position: relative;
+  padding: 0 clamp(12px, 3vw, 34px);
+  border-top: 1px solid rgba(199, 168, 107, .52);
+  border-bottom: 1px solid rgba(199, 168, 107, .42);
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Centre divider between the two credit columns */
+
+.oa-credits-archive::before {
+  content: "";
+  position: absolute;
+  top: 82px;
+  bottom: 40px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(199, 168, 107, .3) 14%,
+    rgba(199, 168, 107, .2) 86%,
+    transparent
+  );
+}
+
+.oa-credits-archive-head {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(225, 215, 204, .2);
+  color: rgba(225, 215, 204, .72);
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .12em;
+}
+
+.oa-credits-archive-label,
+.oa-credits-total {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.oa-credits-index {
+  color: var(--credits-gold);
+  font-size: 12px;
+}
+
+.oa-credits-total strong {
+  color: var(--credits-cream);
+  font-size: 14px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   MEMORIES — TWO COLUMN FILM CREDITS, NEVER CARDS
+========================================================= */
+
+.oa-credits-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(28px, 5vw, 68px);
+  row-gap: 0;
+  padding: 8px 0 12px;
+}
+
+.oa-credits-entry {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 14px;
+  padding: 23px 0 21px;
+  border-bottom: 1px solid rgba(225, 215, 204, .18);
+  background: transparent !important;
+
+  opacity: 0;
+  transform: translateY(12px);
+
+  transition:
+    opacity 560ms ease,
+    transform 560ms cubic-bezier(.2,.7,.2,1);
+}
+
+.oa-credits-entry.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.oa-credits-entry-number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding-top: 3px;
+  color: var(--credits-gold);
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  letter-spacing: .06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.oa-credits-entry-number i {
+  display: block;
+  width: 1px;
+  min-height: 24px;
+  flex: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(199, 168, 107, .66),
+    rgba(199, 168, 107, .06)
+  );
+}
+
+.oa-credits-entry-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.oa-credits-quote {
+  margin: 0;
+  color: var(--credits-cream);
+  font-size: clamp(15px, 1.32vw, 18px);
+  font-weight: 600;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.oa-credits-byline {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.oa-credits-byline strong {
+  color: var(--credits-gold);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.oa-credits-byline span {
+  color: rgba(225, 215, 204, .58);
+  font-family: "Space Mono", monospace;
+  font-size: 7px;
+  text-align: end;
+}
+
+.oa-credits-entry.is-pending .oa-credits-quote {
+  color: rgba(247, 237, 227, .84);
+}
+
+.oa-credits-entry.is-pending .oa-credits-byline span {
+  color: var(--credits-gold);
+}
+
+/* Archive closing credit */
+
+.oa-credits-archive-foot {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border-top: 1px solid rgba(225, 215, 204, .17);
+  color: rgba(225, 215, 204, .5);
+  font-family: "Space Mono", monospace;
+  font-size: 7px;
+  letter-spacing: .11em;
+  direction: ltr;
+}
+
+/* =========================================================
+   LOADING / EMPTY / ERROR
+========================================================= */
+
+.oa-credits-state {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.oa-credits-state p {
+  max-width: 460px;
+  margin: 12px 0 0;
+  color: rgba(225, 215, 204, .8);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.oa-credits-state h3 {
+  margin: 12px 0 0;
+  color: var(--credits-cream);
+  font-size: 22px;
+}
+
+.oa-credits-empty-mark {
+  color: var(--credits-gold);
+  font-size: 26px;
+}
+
+.oa-credits-loader {
+  width: 25px;
+  height: 25px;
+  border: 1px solid rgba(199, 168, 107, .28);
+  border-top-color: var(--credits-gold);
+  border-radius: 50%;
+  animation: credits-spin 800ms linear infinite;
+}
+
+@keyframes credits-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.oa-credits-state button {
+  margin-top: 15px;
+  padding: 8px 17px;
+  border: 1px solid rgba(199, 168, 107, .55);
+  background: transparent;
+  color: var(--credits-cream);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* =========================================================
+   CTA — REFINED TICKET / FILM MARK
+========================================================= */
+
+.oa-credits-cta-wrap {
+  display: grid;
+  grid-template-columns: minmax(30px, 1fr) auto minmax(30px, 1fr);
+  align-items: center;
+  gap: 22px;
+  margin-top: 27px;
+}
+
+.oa-credits-cta-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(199, 168, 107, .55)
+  );
+}
+
+.oa-credits-cta-rule:last-child {
+  transform: scaleX(-1);
+}
+
+.oa-credits-cta {
+  position: relative;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  padding: 0 25px;
+  border: 1px solid rgba(199, 168, 107, .76);
+  border-radius: 2px;
+  background: rgba(5, 12, 20, .18);
+  color: var(--credits-cream);
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  transition:
+    color 220ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 220ms ease;
+}
+
+.oa-credits-cta::before,
+.oa-credits-cta::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 11px;
+  transform: translateY(-50%);
+  border-top: 1px solid var(--credits-gold);
+  border-bottom: 1px solid var(--credits-gold);
+  opacity: .8;
+}
+
+.oa-credits-cta::before {
+  left: -3px;
+}
+
+.oa-credits-cta::after {
+  right: -3px;
+}
+
+.oa-credits-cta:hover {
+  transform: translateY(-2px);
+  border-color: var(--credits-cream);
+  background: rgba(17, 37, 72, .42);
+}
+
+.oa-credits-cta span {
+  color: var(--credits-gold);
+  font-size: 17px;
+  line-height: 1;
+}
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+.oa-credits-notice {
+  width: min(760px, 94%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 20px auto 0;
+  padding: 12px 16px;
+  border: 1px solid rgba(199, 168, 107, .38);
+  background: rgba(5, 12, 20, .72);
+  color: var(--credits-cream);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.oa-credits-notice.is-error {
+  border-color: rgba(217, 40, 50, .55);
+}
+
+.oa-credits-notice p {
+  margin: 0;
+}
+
+.oa-credits-notice button {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: var(--credits-beige);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* =========================================================
+   FORM MODAL
+   No blur/filter on the normal page background.
+========================================================= */
+
+.oa-credits-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  background: rgba(2, 7, 13, .78);
+}
+
+.oa-credits-modal {
+  width: min(550px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 22px clamp(19px, 5vw, 40px) 33px;
+  border: 1px solid rgba(199, 168, 107, .58);
+  background: #07111d;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .42);
+  animation: credits-modal-in 320ms ease both;
+}
+
+@keyframes credits-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.oa-credits-modal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(225, 215, 204, .15);
+  color: rgba(199, 168, 107, .85);
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .13em;
+}
+
+.oa-credits-modal-top button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(225, 215, 204, .25);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--credits-cream);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.oa-credits-modal-heading {
+  padding: 27px 0 20px;
+  text-align: center;
+}
+
+.oa-credits-modal-mark {
+  color: var(--credits-gold);
+  font-size: 22px;
+}
+
+.oa-credits-modal-heading h3 {
+  margin: 7px 0;
+  color: var(--credits-cream);
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.oa-credits-modal-heading p {
+  margin: 0;
+  color: rgba(225, 215, 204, .72);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.oa-credits-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.oa-credits-form label {
+  margin-top: 8px;
+  color: var(--credits-beige);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.oa-credits-form input:not(.oa-credits-honeypot),
+.oa-credits-form textarea {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid rgba(225, 215, 204, .24);
+  border-radius: 0;
+  outline: 0;
+  background: rgba(5, 12, 20, .82);
+  color: var(--credits-cream);
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: 13px;
+  line-height: 1.9;
+
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.oa-credits-form input:not(.oa-credits-honeypot) {
+  min-height: 48px;
+}
+
+.oa-credits-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.oa-credits-form input:focus,
+.oa-credits-form textarea:focus {
+  border-color: rgba(199, 168, 107, .82);
+  box-shadow: 0 0 0 3px rgba(199, 168, 107, .08);
+}
+
+.oa-credits-form input::placeholder,
+.oa-credits-form textarea::placeholder {
+  color: rgba(225, 215, 204, .4);
+}
+
+.oa-credits-message-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.oa-credits-message-label label {
+  margin: 8px 0 0;
+}
+
+.oa-credits-message-label span {
+  color: var(--credits-gold);
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+}
+
+.oa-credits-honeypot {
+  position: absolute !important;
+  inset-inline-start: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.oa-credits-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.oa-credits-cancel,
+.oa-credits-submit {
+  min-height: 46px;
+  padding: 0 19px;
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.oa-credits-cancel {
+  border: 1px solid rgba(225, 215, 204, .25);
+  background: transparent;
+  color: var(--credits-beige);
+}
+
+.oa-credits-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  border: 1px solid var(--credits-gold);
+  background: var(--credits-navy);
+  color: var(--credits-cream);
+}
+
+.oa-credits-submit span {
+  color: var(--credits-gold);
+}
+
+.oa-credits-submit:disabled,
+.oa-credits-cancel:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+}
+
+.oa-credits-form-error {
+  margin: 3px 0;
+  color: #e6a2a2;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.oa-credits-section button:focus-visible {
+  outline: 2px solid var(--credits-gold);
+  outline-offset: 4px;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+  .oa-credits-section {
+    width: min(calc(100% - 34px), 760px);
+  }
+
+  .oa-credits-entry {
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  .oa-credits-quote {
+    font-size: 15px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .oa-credits-section {
+    width: calc(100% - 28px);
+    margin: 76px auto 62px;
+  }
+
+  .oa-credits-heading {
+    margin-bottom: 28px;
+  }
+
+  .oa-credits-kicker {
+    font-size: 7px;
+    margin-bottom: 17px;
+  }
+
+  .oa-credits-edition {
+    font-size: 7px;
+  }
+
+  .oa-credits-heading h2 {
+    font-size: clamp(29px, 8vw, 39px);
+  }
+
+  .oa-credits-heading > p:last-child {
+    font-size: 11px;
+  }
+
+  .oa-credits-archive {
+    padding-inline: 14px;
+    background: transparent !important;
+  }
+
+  .oa-credits-archive::before {
+    display: none;
+  }
+
+  .oa-credits-archive-head {
+    min-height: 50px;
+    font-size: 6px;
+    gap: 8px;
+  }
+
+  .oa-credits-archive-label,
+  .oa-credits-total {
+    gap: 7px;
+  }
+
+  .oa-credits-index {
+    font-size: 10px;
+  }
+
+  .oa-credits-total strong {
+    font-size: 11px;
+  }
+
+  .oa-credits-list {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 0;
+  }
+
+  .oa-credits-entry {
+    grid-template-columns: 29px minmax(0, 1fr);
+    gap: 10px;
+    padding: 18px 0 16px;
+  }
+
+  .oa-credits-entry-number {
+    font-size: 8px;
+  }
+
+  .oa-credits-quote {
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .oa-credits-byline {
+    margin-top: 9px;
+  }
+
+  .oa-credits-byline strong {
+    font-size: 10px;
+  }
+
+  .oa-credits-byline span {
+    font-size: 6px;
+  }
+
+  .oa-credits-archive-foot {
+    min-height: 43px;
+    font-size: 5px;
+    letter-spacing: .05em;
+  }
+
+  .oa-credits-cta-wrap {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0;
+    margin-top: 21px;
+  }
+
+  .oa-credits-cta-rule {
+    display: none;
+  }
+
+  .oa-credits-cta {
+    width: min(100%, 330px);
+    min-height: 50px;
+    padding-inline: 17px;
+    font-size: 12px;
+  }
+
+  .oa-credits-modal-backdrop {
+    align-items: end;
+    padding: 10px;
+  }
+
+  .oa-credits-modal {
+    max-height: 92vh;
+    padding: 18px 17px 25px;
+  }
+
+  .oa-credits-modal-heading {
+    padding: 20px 0 15px;
+  }
+
+  .oa-credits-modal-heading h3 {
+    font-size: 23px;
+  }
+
+  .oa-credits-form textarea {
+    min-height: 120px;
+  }
+
+  .oa-credits-form-actions {
+    gap: 8px;
+  }
+
+  .oa-credits-cancel,
+  .oa-credits-submit {
+    min-height: 43px;
+    padding-inline: 13px;
+    font-size: 11px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .oa-credits-rec,
+  .oa-credits-loader,
+  .oa-credits-heading,
+  .oa-credits-heading::after,
+  .oa-credits-entry,
+  .oa-credits-modal {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .oa-credits-entry {
+    opacity: 1;
+    transform: none;
+  }
+}

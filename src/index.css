@@ -55,6 +55,7 @@ body {
   min-height: 100svh;
 
   margin: 0;
+
   overflow-x: hidden;
 
   background: transparent !important;
@@ -72,9 +73,18 @@ body::before {
   content: "";
 
   position: fixed;
-  inset: 0;
 
-  z-index: 0;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+
+  height: 100vh;
+  height: 100lvh;
+
+  /* داخل طبقة body وخلف المحتوى */
+  z-index: -1;
+
   pointer-events: none;
 
   background-image: url("/images/on-air-global.png");
@@ -95,6 +105,29 @@ body::before {
   min-height: 100svh;
 
   background: transparent !important;
+}
+
+/* =====================================
+   MOBILE BACKGROUND STABILITY
+===================================== */
+
+@media (max-width: 700px) {
+  body::before {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+
+    /* يثبت الخلفية على أكبر ارتفاع للـ viewport */
+    height: 100lvh;
+
+    background-image: url("/images/on-air-global.png");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 }
 
 /* =====================================
