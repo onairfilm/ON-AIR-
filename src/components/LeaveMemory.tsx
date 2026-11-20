@@ -1,7 +1,7 @@
 import {
   useCallback,
   useEffect,
-  useMemo,
+  
   useRef,
   useState,
   type ChangeEvent,
@@ -18,7 +18,7 @@ type Memory = {
   name: string;
   message: string;
   created_at: string;
-  pending?: boolean;
+
 };
 
 type Notice = {
@@ -27,13 +27,10 @@ type Notice = {
 };
 
 const SUPABASE_URL =
-  import.meta.env.VITE_SUPABASE_URL?.replace(/\/+$/, "") ?? "";
-
+ 
+import.meta.env.VITE_SUPABASE_URL?.replace(/\/+$/, "") ?? "";
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";
-console.log("SUPABASE CHECK:", {
-  urlLoaded: Boolean(SUPABASE_URL),
-  keyLoaded: Boolean(SUPABASE_KEY),
-});
+
 const PAGE_SIZE = 500;
 const MAX_NAME_LENGTH = 40;
 const MAX_MESSAGE_LENGTH = 180;
@@ -44,7 +41,7 @@ const COPY = {
     index: "ARCHIVE 009",
     title: "الفيلم هيخلص… بس حكايتنا مش هتخلص.",
     description:
-  "قبل ما آخر مشهد يخلص، متنساش تسيب لنا ذكرى أو كلمة حلوة. حاجة صغيرة نرجعلها بعدين، وتفكّرنا إن الحكاية دي كانت حقيقية… وإن أثرها لسه عايش جوانا.",
+      "قبل ما آخر مشهد يخلص، متنساش تسيب لنا ذكرى أو كلمة حلوة. حاجة صغيرة نرجعلها بعدين، وتفكّرنا إن الحكاية دي كانت حقيقية… وإن أثرها لسه عايش جوانا.",
     reelLabel: "A COLLECTION OF MOMENTS",
     countLabel: "ذكرى محفوظة",
     scene: "لقطة",
@@ -64,23 +61,23 @@ const COPY = {
     submit: "إرسال الذكرى",
     submitting: "جاري الإرسال...",
     success:
-      "وصلت ذكراك! هتظهر عندك فورًا، وللجميع بعد مراجعتها والموافقة عليها.",
+  "وصلت ذكراك، وبقت جزء من حكايتنا. شكرًا إنك سيبتلنا أثر حلو يفضل معانا ❤️",
     error: "حصلت مشكلة أثناء إرسال الذكرى. حاول مرة تانية.",
     required: "اكتب اسمك والذكرى الأول.",
-    pending: "قيد المراجعة",
+  
     configError: "راجعي إعدادات الاتصال بـ Supabase في ملف .env.local.",
     close: "إغلاق",
     dismiss: "إخفاء",
     dateFallback: "من أرشيف ON AIR",
-   endLine: "حكايتنا مكملة بعد آخر مشهد",
+    endLine: "حكايتنا مكملة بعد آخر مشهد",
   },
 
   en: {
     eyebrow: "THE MEMORY ARCHIVE / ON AIR",
     index: "ARCHIVE 009",
     title: "The film may end, but our story won't.",
-   description:
-  "Before the final scene fades, leave us a memory or a kind word. Something we can return to and remember that this story was real, and its impact is still with us.",
+    description:
+      "Before the final scene fades, leave us a memory or a kind word. Something we can return to and remember that this story was real, and its impact is still with us.",
     reelLabel: "A COLLECTION OF MOMENTS",
     countLabel: "MEMORIES SAVED",
     scene: "FRAME",
@@ -99,16 +96,16 @@ const COPY = {
     cancel: "Cancel",
     submit: "Send memory",
     submitting: "Sending...",
-    success:
-      "Your memory has arrived. It is visible to you now and will appear publicly after review and approval.",
+  success:
+  "Your memory is now part of our story. Thank you for leaving a little piece of yourself with us. ❤️",
     error: "Something went wrong while sending your memory.",
     required: "Please enter your name and memory.",
-    pending: "UNDER REVIEW",
+
     configError: "Check your Supabase settings in .env.local.",
     close: "Close",
     dismiss: "Dismiss",
     dateFallback: "From the ON AIR archive",
-   endLine: "OUR STORY LIVES BEYOND THE FINAL FRAME",
+    endLine: "OUR STORY LIVES BEYOND THE FINAL FRAME",
   },
 } as const;
 
@@ -118,10 +115,7 @@ function getInitialLanguage(): Language {
 
 function formatMemoryDate(value: string, language: Language): string {
   const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return COPY[language].dateFallback;
-  }
+  if (Number.isNaN(date.getTime())) return COPY[language].dateFallback;
 
   return new Intl.DateTimeFormat(language === "ar" ? "ar-EG" : "en-US", {
     day: "numeric",
@@ -132,10 +126,7 @@ function formatMemoryDate(value: string, language: Language): string {
 
 export default function LeaveMemory() {
   const [language, setLanguage] = useState<Language>(getInitialLanguage);
-
   const [approvedMemories, setApprovedMemories] = useState<Memory[]>([]);
-  const [localPending, setLocalPending] = useState<Memory[]>([]);
-
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
 
@@ -143,26 +134,19 @@ export default function LeaveMemory() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [website, setWebsite] = useState("");
-
   const [submitting, setSubmitting] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
 
   const creditsListRef = useRef<HTMLDivElement | null>(null);
-
   const copy = COPY[language];
   const isConfigured = Boolean(SUPABASE_URL && SUPABASE_KEY);
 
-  /* ------------------------------------------
-     LANGUAGE SYNC
-  ------------------------------------------ */
-
+  /* Keep the section synchronized with the site's language switch. */
   useEffect(() => {
     const syncLanguage = (next?: Language) => {
-      if (next === "ar" || next === "en") {
-        setLanguage(next);
-      } else {
-        setLanguage(getInitialLanguage());
-      }
+      setLanguage(
+        next === "ar" || next === "en" ? next : getInitialLanguage()
+      );
     };
 
     const onLanguageChange = (event: Event) => {
@@ -170,7 +154,6 @@ export default function LeaveMemory() {
     };
 
     window.addEventListener("onair-language-change", onLanguageChange);
-
     const observer = new MutationObserver(() => syncLanguage());
 
     observer.observe(document.documentElement, {
@@ -184,10 +167,7 @@ export default function LeaveMemory() {
     };
   }, []);
 
-  /* ------------------------------------------
-     LOAD MEMORIES FROM SUPABASE
-  ------------------------------------------ */
-
+  /* Only approved memories are requested for the public archive. */
   const loadMemories = useCallback(
     async (silent = false) => {
       if (!isConfigured) {
@@ -196,12 +176,10 @@ export default function LeaveMemory() {
         return;
       }
 
-      if (!silent) {
-        setLoading(true);
-      }
+      if (!silent) setLoading(true);
 
       try {
-        const all: Memory[] = [];
+        const allMemories: Memory[] = [];
         let start = 0;
 
         while (true) {
@@ -210,7 +188,6 @@ export default function LeaveMemory() {
             approved: "eq.true",
             order: "created_at.desc",
           });
-
           const end = start + PAGE_SIZE - 1;
 
           const response = await fetch(
@@ -227,32 +204,25 @@ export default function LeaveMemory() {
           );
 
           if (!response.ok) {
-            throw new Error(await response.text());
+            throw new Error(
+              `Supabase read failed (${response.status}): ${await response.text()}`
+            );
           }
 
           const page = (await response.json()) as Memory[];
+          allMemories.push(...page);
 
-          all.push(...page);
-
-          if (page.length < PAGE_SIZE) {
-            break;
-          }
-
+          if (page.length < PAGE_SIZE) break;
           start += PAGE_SIZE;
         }
 
-        setApprovedMemories(all);
+        setApprovedMemories(allMemories);
         setLoadError("");
       } catch (error) {
         console.error("ON AIR MEMORY LOAD ERROR:", error);
-
-        if (!silent) {
-          setLoadError(copy.loadError);
-        }
+        if (!silent) setLoadError(copy.loadError);
       } finally {
-        if (!silent) {
-          setLoading(false);
-        }
+        if (!silent) setLoading(false);
       }
     },
     [copy.configError, copy.loadError, isConfigured]
@@ -260,55 +230,22 @@ export default function LeaveMemory() {
 
   useEffect(() => {
     void loadMemories();
-
-    const interval = window.setInterval(
-      () => void loadMemories(true),
-      60000
-    );
-
+    const interval = window.setInterval(() => void loadMemories(true), 60000);
     return () => window.clearInterval(interval);
   }, [loadMemories]);
 
-  /* ------------------------------------------
-     COMBINE APPROVED + LOCAL PENDING
-  ------------------------------------------ */
-
-  const memories = useMemo(() => {
-    const pendingNotApproved = localPending.filter(
-      (pending) =>
-        !approvedMemories.some(
-          (approved) =>
-            approved.name.trim() === pending.name.trim() &&
-            approved.message.trim() === pending.message.trim()
-        )
-    );
-
-    return [...approvedMemories, ...pendingNotApproved].sort(
-      (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
-  }, [approvedMemories, localPending]);
-
-  /* ------------------------------------------
-     REVEAL ON SCROLL
-  ------------------------------------------ */
-
+  /* Reveal approved credits as they enter the viewport. */
   useEffect(() => {
     const list = creditsListRef.current;
-
     if (!list) return;
 
     const entries = Array.from(
       list.querySelectorAll<HTMLElement>(".oa-credits-entry")
     );
-
     if (entries.length === 0) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      entries.forEach((entry) => {
-        entry.classList.add("is-visible");
-      });
-
+      entries.forEach((entry) => entry.classList.add("is-visible"));
       return;
     }
 
@@ -321,34 +258,23 @@ export default function LeaveMemory() {
           }
         });
       },
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -32px 0px",
-      }
+      { threshold: 0.12, rootMargin: "0px 0px -32px 0px" }
     );
 
     entries.forEach((entry) => observer.observe(entry));
-
     return () => observer.disconnect();
-  }, [memories.length, loading]);
+  }, [approvedMemories.length, loading]);
 
-  /* ------------------------------------------
-     MODAL CONTROL
-  ------------------------------------------ */
-
+  /* Modal controls and page scroll lock. */
   useEffect(() => {
     if (!modalOpen) return;
 
     const onEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setModalOpen(false);
-      }
+      if (event.key === "Escape") setModalOpen(false);
     };
 
     const oldOverflow = document.body.style.overflow;
-
     document.body.style.overflow = "hidden";
-
     window.addEventListener("keydown", onEscape);
 
     return () => {
@@ -357,10 +283,7 @@ export default function LeaveMemory() {
     };
   }, [modalOpen]);
 
-  /* ------------------------------------------
-     SUBMIT MEMORY
-  ------------------------------------------ */
-
+  /* Save every new message as pending. It is never inserted into local UI state. */
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -370,20 +293,12 @@ export default function LeaveMemory() {
     const cleanMessage = message.trim();
 
     if (!cleanName || !cleanMessage) {
-      setNotice({
-        type: "error",
-        message: copy.required,
-      });
-
+      setNotice({ type: "error", message: copy.required });
       return;
     }
 
     if (!isConfigured) {
-      setNotice({
-        type: "error",
-        message: copy.configError,
-      });
-
+      setNotice({ type: "error", message: copy.configError });
       return;
     }
 
@@ -391,63 +306,40 @@ export default function LeaveMemory() {
     setNotice(null);
 
     try {
-      const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/sticky_notes`,
-        {
-          method: "POST",
-          headers: {
-            apikey: SUPABASE_KEY,
-            "Content-Type": "application/json",
-            Prefer: "return=minimal",
-          },
-          body: JSON.stringify({
-            name: cleanName.slice(0, MAX_NAME_LENGTH),
-            message: cleanMessage.slice(0, MAX_MESSAGE_LENGTH),
-            color: "navy",
-            approved: false,
-          }),
-        }
-      );
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/sticky_notes`, {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify({
+          name: cleanName.slice(0, MAX_NAME_LENGTH),
+          message: cleanMessage.slice(0, MAX_MESSAGE_LENGTH),
+          color: "navy",
+          approved: false,
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error(await response.text());
+        throw new Error(
+          `Supabase insert failed (${response.status}): ${await response.text()}`
+        );
       }
 
-      setLocalPending((current) => [
-        {
-          id: `local-${Date.now()}`,
-          name: cleanName,
-          message: cleanMessage,
-          created_at: new Date().toISOString(),
-          pending: true,
-        },
-        ...current,
-      ]);
-
+      // Do not add the submitted memory to the public list or local state.
       setName("");
       setMessage("");
       setWebsite("");
       setModalOpen(false);
-
-      setNotice({
-        type: "success",
-        message: copy.success,
-      });
+      setNotice({ type: "success", message: copy.success });
     } catch (error) {
       console.error("ON AIR MEMORY SUBMIT ERROR:", error);
-
-      setNotice({
-        type: "error",
-        message: copy.error,
-      });
+      setNotice({ type: "error", message: copy.error });
     } finally {
       setSubmitting(false);
     }
   };
-
-  /* ------------------------------------------
-     RENDER
-  ------------------------------------------ */
 
   return (
     <section
@@ -455,8 +347,6 @@ export default function LeaveMemory() {
       dir={language === "ar" ? "rtl" : "ltr"}
       aria-labelledby="oa-credits-title"
     >
-      {/* INTRO */}
-
       <header className="oa-credits-heading">
         <div className="oa-credits-kicker" dir="ltr">
           <span className="oa-credits-rec" />
@@ -470,11 +360,8 @@ export default function LeaveMemory() {
         </div>
 
         <h2 id="oa-credits-title">{copy.title}</h2>
-
         <p>{copy.description}</p>
       </header>
-
-      {/* ARCHIVE */}
 
       <div className="oa-credits-archive">
         <div className="oa-credits-archive-head" dir="ltr">
@@ -484,73 +371,45 @@ export default function LeaveMemory() {
           </div>
 
           <div className="oa-credits-total" aria-live="polite">
-            <strong>
-              {String(memories.length).padStart(2, "0")}
-            </strong>
-
+            <strong>{String(approvedMemories.length).padStart(2, "0")}</strong>
             <span>{copy.countLabel}</span>
           </div>
         </div>
-
-        {/* LOADING */}
 
         {loading ? (
           <div className="oa-credits-state" aria-live="polite">
             <span className="oa-credits-loader" />
             <p>{copy.loading}</p>
           </div>
-        ) : loadError && memories.length === 0 ? (
+        ) : loadError && approvedMemories.length === 0 ? (
           <div className="oa-credits-state" aria-live="polite">
             <p>{loadError}</p>
-
-            <button
-              type="button"
-              onClick={() => void loadMemories()}
-            >
+            <button type="button" onClick={() => void loadMemories()}>
               {copy.retry}
             </button>
           </div>
-        ) : memories.length === 0 ? (
+        ) : approvedMemories.length === 0 ? (
           <div className="oa-credits-state">
             <span className="oa-credits-empty-mark">✳</span>
             <h3>{copy.emptyTitle}</h3>
             <p>{copy.emptyDescription}</p>
           </div>
         ) : (
-          /* MEMORY LIST */
-
           <div className="oa-credits-list" ref={creditsListRef}>
-            {memories.map((memory, index) => (
-              <article
-                className={`oa-credits-entry ${
-                  memory.pending ? "is-pending" : ""
-                }`}
-                key={memory.id}
-              >
+            {approvedMemories.map((memory, index) => (
+              <article className="oa-credits-entry" key={memory.id}>
                 <div className="oa-credits-entry-number" dir="ltr">
                   <span>
-                    {String(memories.length - index).padStart(3, "0")}
+                    {String(approvedMemories.length - index).padStart(3, "0")}
                   </span>
-
                   <i />
                 </div>
 
                 <div className="oa-credits-entry-copy">
-                  <p className="oa-credits-quote">
-                    {memory.message}
-                  </p>
-
+                  <p className="oa-credits-quote">{memory.message}</p>
                   <div className="oa-credits-byline">
                     <strong>{memory.name}</strong>
-
-                    <span>
-                      {memory.pending
-                        ? copy.pending
-                        : formatMemoryDate(
-                            memory.created_at,
-                            language
-                          )}
-                    </span>
+                    <span>{formatMemoryDate(memory.created_at, language)}</span>
                   </div>
                 </div>
               </article>
@@ -558,19 +417,14 @@ export default function LeaveMemory() {
           </div>
         )}
 
-        {/* ARCHIVE FOOTER */}
-
         <div className="oa-credits-archive-foot" dir="ltr">
           <span>ON AIR — THE STORY CONTINUES</span>
           <span>{copy.endLine}</span>
         </div>
       </div>
 
-      {/* CTA */}
-
       <div className="oa-credits-cta-wrap">
         <div className="oa-credits-cta-rule" />
-
         <button
           className="oa-credits-cta"
           type="button"
@@ -583,19 +437,12 @@ export default function LeaveMemory() {
           <strong>{copy.leave}</strong>
           <span aria-hidden="true">↗</span>
         </button>
-
         <div className="oa-credits-cta-rule" />
       </div>
 
-      {/* NOTICE */}
-
       {notice && (
-        <div
-          className={`oa-credits-notice is-${notice.type}`}
-          role="status"
-        >
+        <div className={`oa-credits-notice is-${notice.type}`} role="status">
           <p>{notice.message}</p>
-
           <button
             type="button"
             onClick={() => setNotice(null)}
@@ -606,15 +453,11 @@ export default function LeaveMemory() {
         </div>
       )}
 
-      {/* FORM MODAL */}
-
       {modalOpen && (
         <div
           className="oa-credits-modal-backdrop"
           onMouseDown={(event: ReactMouseEvent<HTMLDivElement>) => {
-            if (event.target === event.currentTarget) {
-              setModalOpen(false);
-            }
+            if (event.target === event.currentTarget) setModalOpen(false);
           }}
         >
           <div
@@ -625,7 +468,6 @@ export default function LeaveMemory() {
           >
             <div className="oa-credits-modal-top" dir="ltr">
               <span>NEW MEMORY / ARCHIVE 009</span>
-
               <button
                 type="button"
                 onClick={() => setModalOpen(false)}
@@ -637,28 +479,18 @@ export default function LeaveMemory() {
 
             <div className="oa-credits-modal-heading">
               <span className="oa-credits-modal-mark">✳</span>
-
-              <h3 id="oa-credits-form-title">
-                {copy.formTitle}
-              </h3>
-
+              <h3 id="oa-credits-form-title">{copy.formTitle}</h3>
               <p>{copy.formDescription}</p>
             </div>
 
-            <form
-              className="oa-credits-form"
-              onSubmit={handleSubmit}
-            >
+            <form className="oa-credits-form" onSubmit={handleSubmit}>
               {notice?.type === "error" && (
                 <p className="oa-credits-form-error" role="alert">
                   {notice.message}
                 </p>
               )}
 
-              <label htmlFor="oa-credits-name">
-                {copy.name}
-              </label>
-
+              <label htmlFor="oa-credits-name">{copy.name}</label>
               <input
                 id="oa-credits-name"
                 value={name}
@@ -673,10 +505,7 @@ export default function LeaveMemory() {
               />
 
               <div className="oa-credits-message-label">
-                <label htmlFor="oa-credits-message">
-                  {copy.message}
-                </label>
-
+                <label htmlFor="oa-credits-message">{copy.message}</label>
                 <span dir="ltr">
                   {message.length}/{MAX_MESSAGE_LENGTH}
                 </span>
@@ -693,8 +522,6 @@ export default function LeaveMemory() {
                 rows={5}
                 required
               />
-
-              {/* ANTI-SPAM FIELD */}
 
               <input
                 className="oa-credits-honeypot"
@@ -728,9 +555,7 @@ export default function LeaveMemory() {
               </div>
 
               {!isConfigured && (
-                <p className="oa-credits-form-error">
-                  {copy.configError}
-                </p>
+                <p className="oa-credits-form-error">{copy.configError}</p>
               )}
             </form>
           </div>
