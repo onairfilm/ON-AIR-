@@ -144,9 +144,7 @@ export default function ArchiveIntro() {
       });
     };
 
-    /* -----------------------------------------
-       SHOW TEDDY INSIDE INTRO ONLY
-    ----------------------------------------- */
+    /* SHOW TEDDY INSIDE INTRO ONLY */
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -168,9 +166,7 @@ export default function ArchiveIntro() {
 
     observer.observe(intro);
 
-    /* -----------------------------------------
-       EVENT LISTENERS
-    ----------------------------------------- */
+    /* EVENT LISTENERS */
 
     window.addEventListener(
       "scroll",
@@ -188,9 +184,7 @@ export default function ArchiveIntro() {
 
     updateTeddy();
 
-    /* -----------------------------------------
-       CLEANUP
-    ----------------------------------------- */
+    /* CLEANUP */
 
     return () => {
       observer.disconnect();
@@ -218,6 +212,7 @@ export default function ArchiveIntro() {
      SCROLL FUNCTIONS
   ========================================= */
 
+  // الانتقال إلى رحلة الإنتاج
   const scrollToNext = () => {
     const nextSection =
       document.getElementById("productionSection");
@@ -228,25 +223,22 @@ export default function ArchiveIntro() {
     });
   };
 
+  // الانتقال إلى قسم الذكريات
   const scrollToMemory = () => {
-    const section =
-      document.getElementById("leaveMarkSection");
+    const notesSection =
+      document.querySelector<HTMLElement>(
+        ".oa-credits-section"
+      );
 
-    section?.scrollIntoView({
+    notesSection?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
 
-  const scrollToSocial = () => {
-    const section =
-      document.getElementById("socialSection");
-
-    section?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
+  /* =========================================
+     PAGE
+  ========================================= */
 
   return (
     <main
@@ -456,59 +448,64 @@ export default function ArchiveIntro() {
           </div>
 
           {/* =================================
-              HERO ACTIONS
+              TWO HERO ACTIONS
           ================================= */}
 
           <div className="cinematic-hero-actions">
 
-            {/* MEMORY */}
+            {/* MEMORY ARCHIVE */}
 
             <button
               type="button"
               className="hero-action hero-action-notes"
               onClick={scrollToMemory}
+              aria-label={
+                isArabic ? "سيب لنا ذكرى" : "Leave us a memory"
+              }
             >
 
               <span
                 className="hero-action-icon"
                 aria-hidden="true"
               >
-                ↙
+                ✎
               </span>
 
               <span className="hero-action-copy">
 
                 <strong>
-                  {isArabic ? "اضغط" : "CLICK"}
+                  {isArabic
+                    ? "سيب لنا ذكرى"
+                    : "LEAVE A MEMORY"}
                 </strong>
 
                 <small>
                   {isArabic
-                    ? "متنساش تسيب لينا ذكرى"
-                    : "Don't forget to leave us a memory"}
+                    ? "كلمة منك تفضل جزء من حكايتنا"
+                    : "Leave a little piece of our story"}
                 </small>
 
               </span>
 
             </button>
 
-            {/* SCROLL */}
+            {/* DISCOVER THE STORY */}
 
             <button
               type="button"
               className="cinematic-scroll"
               onClick={scrollToNext}
+              aria-label={
+                isArabic
+                  ? "انزل واكتشف باقي الحكاية"
+                  : "Scroll to discover the story"
+              }
             >
-
-              <span
-                className="cinematic-scroll-line"
-                aria-hidden="true"
-              />
 
               <span className="cinematic-scroll-text">
                 {isArabic
-                  ? "انزل عشان تكمل الحكاية"
-                  : "SCROLL TO CONTINUE"}
+                  ? "انزل واكتشف باقي الحكاية"
+                  : "SCROLL TO DISCOVER THE STORY"}
               </span>
 
               <span
@@ -527,37 +524,6 @@ export default function ArchiveIntro() {
 
             </button>
 
-            {/* SOCIAL */}
-
-            <button
-              type="button"
-              className="hero-action hero-action-social"
-              onClick={scrollToSocial}
-            >
-
-              <span className="hero-action-copy">
-
-                <strong>
-                  {isArabic ? "اضغط" : "CLICK"}
-                </strong>
-
-                <small>
-                  {isArabic
-                    ? "تابعنا عشان نكمل الحكاية"
-                    : "Follow us to continue the story"}
-                </small>
-
-              </span>
-
-              <span
-                className="hero-action-icon"
-                aria-hidden="true"
-              >
-                ↗
-              </span>
-
-            </button>
-
           </div>
 
           {/* =================================
@@ -567,8 +533,11 @@ export default function ArchiveIntro() {
           <section
             className="cinematic-about"
             dir={isArabic ? "rtl" : "ltr"}
-            aria-label={isArabic ? "إحنا مين؟" : "Who we are"}
+            aria-label={
+              isArabic ? "إحنا مين؟" : "Who we are"
+            }
           >
+
             <span
               className="cinematic-about-eyebrow"
               dir="ltr"
