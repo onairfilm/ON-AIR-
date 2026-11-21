@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./ProductionDays.css";
 
@@ -6,6 +7,7 @@ type PhotoOrientation = "landscape" | "portrait";
 
 type DayMedia = {
   video?: string;
+  videoOrientation?: PhotoOrientation;
   photos?: string[];
   muted?: boolean;
   photoOrientations?: PhotoOrientation[];
@@ -22,6 +24,7 @@ type ProductionDay = {
   arDetails: string[];
   enDetails: string[];
   video?: string;
+  videoOrientation?: PhotoOrientation;
   photos: string[];
   muted?: boolean;
   photoOrientations?: PhotoOrientation[];
@@ -53,14 +56,21 @@ function createDay(
     enStory,
     arDetails,
     enDetails,
-    // Explicit media prevents the default placeholder paths from being used.
-    video: media ? media.video : `/videos/production-days/day-${id}.mp4`,
+
+    // إذا تم تحديد media لا يتم إنشاء فيديو افتراضي.
+    video: media
+      ? media.video
+      : `/videos/production-days/day-${id}.mp4`,
+
+    videoOrientation: media?.videoOrientation,
+
     photos: media
       ? media.photos ?? []
       : [
           `/images/production-days/day-${id}-01.jpeg`,
           `/images/production-days/day-${id}-02.jpeg`,
         ],
+
     muted: media?.muted ?? false,
     photoOrientations: media?.photoOrientations ?? [],
     locked,
@@ -72,7 +82,9 @@ function createDay(
 ===================================================== */
 
 const productionDays: ProductionDay[] = [
+
   /* DAY 01 — 29/6: FIRST MEETING, VIDEO MUTED */
+
   createDay(
     "01",
     "29/6",
@@ -92,6 +104,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   /* DAY 02 — 7/8: FIRST MEETING WITH SABA */
+
   createDay(
     "02",
     "7/8",
@@ -109,6 +122,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   /* DAY 03 — 29/8: ORGANIZING THE NEXT STEPS */
+
   createDay(
     "03",
     "29/8",
@@ -125,7 +139,8 @@ const productionDays: ProductionDay[] = [
     }
   ),
 
-  /* DAY 04 — 2/9: TEAM INTRO VIDEO, NORMAL AUDIO */
+  /* DAY 04 — 2/9: TEAM INTRO VIDEO */
+
   createDay(
     "04",
     "2/9",
@@ -153,6 +168,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   /* DAY 05 — 5/9: PLANNING WHAT COMES NEXT */
+
   createDay(
     "05",
     "5/9",
@@ -174,6 +190,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   /* DAY 06 — 14/9: MORE VIDEO SHOOTS */
+
   createDay(
     "06",
     "14/9",
@@ -191,7 +208,8 @@ const productionDays: ProductionDay[] = [
     }
   ),
 
-  /* DAY 07 — 18/9: FIRST FULL GATHERING WITH SABA — ONE PHOTO */
+  /* DAY 07 — 18/9: FIRST FULL GATHERING WITH SABA */
+
   createDay(
     "07",
     "18/9",
@@ -214,7 +232,8 @@ const productionDays: ProductionDay[] = [
     }
   ),
 
-  /* DAY 08 — 23/9: OPEN DAY, TEXT ONLY */
+  /* DAY 08 — 23/9: TEXT ONLY */
+
   createDay(
     "08",
     "23/9",
@@ -232,6 +251,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   /* DAY 09 — 3/10: SCRIPT SIGNED AND APPROVED */
+
   createDay(
     "09",
     "3/10",
@@ -253,11 +273,13 @@ const productionDays: ProductionDay[] = [
     false,
     {
       video: "/videos/production-days/day-09.mp4",
+      videoOrientation: "portrait",
       photos: [],
     }
   ),
 
-  /* DAY 10 — 7/10: FIRST REHEARSAL AND CAST */
+  /* DAY 10 — 7/10: FIRST REHEARSAL AND CAST — NO VIDEO */
+
   createDay(
     "10",
     "7/10",
@@ -275,10 +297,17 @@ const productionDays: ProductionDay[] = [
       "Our first rehearsal",
       "Our first cast",
       "Seeing the characters come to life",
-    ]
-  ),
+    ],
+    false,
+    {
+      
+  photos: [],
+  }
+),
+  
 
-  /* DAY 11 — 10/10: THE REAL SIDE OF TEAMWORK — ONE PHOTO */
+  /* DAY 11 — 10/10: THE REAL SIDE OF TEAMWORK */
+
   createDay(
     "11",
     "10/10",
@@ -292,10 +321,12 @@ const productionDays: ProductionDay[] = [
     false,
     {
       photos: ["/images/production-days/day-11-01.jpeg"],
+      photoOrientations: ["portrait"],
     }
   ),
 
   /* DAY 12 — 14/10: REHEARSALS — TEXT ONLY */
+
   createDay(
     "12",
     "14/10",
@@ -313,6 +344,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   /* DAY 13 — 21/10: REHEARSALS — TEXT ONLY */
+
   createDay(
     "13",
     "21/10",
@@ -330,6 +362,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   /* DAY 14 — 24/10: REHEARSALS — TEXT ONLY */
+
   createDay(
     "14",
     "24/10",
@@ -347,6 +380,7 @@ const productionDays: ProductionDay[] = [
   ),
 
   // FUTURE DAYS — LOCKED UNTIL THEIR CONTENT IS READY
+
   createDay("15", "27/10", "27 OCT", "", "", "", "", [], [], true),
   createDay("16", "28/10", "28 OCT", "", "", "", "", [], [], true),
   createDay("17", "31/10", "31 OCT", "", "", "", "", [], [], true),
@@ -366,10 +400,12 @@ const productionDays: ProductionDay[] = [
 
 export default function ProductionDays() {
   const sectionRef = useRef<HTMLElement | null>(null);
+
   const [language, setLanguage] = useState<Language>("ar");
   const [activeNumber, setActiveNumber] = useState("01");
 
   const isArabic = language === "ar";
+
   const openDays = useMemo(
     () => productionDays.filter((day) => !day.locked),
     []
@@ -387,6 +423,7 @@ export default function ProductionDays() {
   );
 
   /* LANGUAGE SYNC */
+
   useEffect(() => {
     const syncLanguage = () => {
       setLanguage(
@@ -397,6 +434,7 @@ export default function ProductionDays() {
     syncLanguage();
 
     const observer = new MutationObserver(syncLanguage);
+
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["lang", "dir"],
@@ -404,20 +442,32 @@ export default function ProductionDays() {
 
     const onLanguageChange = (event: Event) => {
       const value = (event as CustomEvent<Language>).detail;
-      if (value === "ar" || value === "en") setLanguage(value);
+
+      if (value === "ar" || value === "en") {
+        setLanguage(value);
+      }
     };
 
-    window.addEventListener("onair-language-change", onLanguageChange);
+    window.addEventListener(
+      "onair-language-change",
+      onLanguageChange
+    );
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("onair-language-change", onLanguageChange);
+
+      window.removeEventListener(
+        "onair-language-change",
+        onLanguageChange
+      );
     };
   }, []);
 
   /* SECTION REVEAL */
+
   useEffect(() => {
     const section = sectionRef.current;
+
     if (!section) return;
 
     if (typeof IntersectionObserver === "undefined") {
@@ -436,42 +486,79 @@ export default function ProductionDays() {
     );
 
     reveal.observe(section);
+
     return () => reveal.disconnect();
   }, []);
 
   /* PREVIOUS / NEXT */
+
   const moveDay = (step: number) => {
     const current = openDays.findIndex(
       (day) => day.number === activeNumber
     );
+
     const next = Math.max(
       0,
       Math.min(openDays.length - 1, current + step)
     );
+
     setActiveNumber(openDays[next].number);
   };
 
   /* ACTIVE DAY CONTENT */
-  const story = isArabic ? activeDay.arStory : activeDay.enStory;
-  const title = isArabic ? activeDay.arTitle : activeDay.enTitle;
-  const details = isArabic ? activeDay.arDetails : activeDay.enDetails;
+
+  const story = isArabic
+    ? activeDay.arStory
+    : activeDay.enStory;
+
+  const title = isArabic
+    ? activeDay.arTitle
+    : activeDay.enTitle;
+
+  const details = isArabic
+    ? activeDay.arDetails
+    : activeDay.enDetails;
 
   const hasVideo = Boolean(activeDay.video);
   const hasPhotos = activeDay.photos.length > 0;
+
   const orientations = activeDay.photoOrientations ?? [];
+
   const hasLandscape = orientations.includes("landscape");
   const hasPortrait = orientations.includes("portrait");
 
+  /* MEDIA LAYOUT */
+
   const mediaLayoutClass = [
     hasVideo && !hasPhotos ? "video-only" : "",
-    !hasVideo && activeDay.photos.length === 1 ? "single-photo" : "",
+
+    hasVideo && activeDay.videoOrientation === "portrait"
+      ? "portrait-video"
+      : "",
+
+    !hasVideo && activeDay.photos.length === 1
+      ? "single-photo"
+      : "",
+
     !hasVideo &&
     activeDay.photos.length === 1 &&
     orientations[0] === "landscape"
       ? "landscape-photo"
       : "",
-    hasPhotos && hasLandscape && hasPortrait ? "mixed-orientation" : "",
-    activeDay.photos.length === 5 ? "five-photos" : "",
+
+    !hasVideo &&
+    activeDay.photos.length === 1 &&
+    orientations[0] === "portrait"
+      ? "portrait-photo"
+      : "",
+
+    hasPhotos && hasLandscape && hasPortrait
+      ? "mixed-orientation"
+      : "",
+
+    activeDay.photos.length === 5
+      ? "five-photos"
+      : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -493,7 +580,9 @@ export default function ProductionDays() {
       <span className="oa-diary-frame frame-bottom-right" />
 
       <div className="oa-diary-container">
+
         {/* INTRO */}
+
         <header className="oa-diary-intro">
           <div className="oa-diary-overline" dir="ltr">
             <span>ON AIR</span>
@@ -505,7 +594,9 @@ export default function ProductionDays() {
 
           <span className="oa-diary-kicker">
             <span className="oa-diary-dot" />
-            {isArabic ? "من يوميات فريق ON AIR" : "A JOURNEY BY ON AIR"}
+            {isArabic
+              ? "من يوميات فريق ON AIR"
+              : "A JOURNEY BY ON AIR"}
           </span>
 
           <h2>
@@ -528,11 +619,15 @@ export default function ProductionDays() {
         </header>
 
         {/* DATE TIMELINE */}
+
         <div className="oa-diary-navigation">
           <div className="oa-diary-nav-heading">
             <span>
-              {isArabic ? "اختاروا يوم من رحلتنا" : "EXPLORE OUR DATES"}
+              {isArabic
+                ? "اختاروا يوم من رحلتنا"
+                : "EXPLORE OUR DATES"}
             </span>
+
             <span dir="ltr">01 — 25</span>
           </div>
 
@@ -540,26 +635,38 @@ export default function ProductionDays() {
             className="oa-diary-date-track"
             role="tablist"
             dir={isArabic ? "rtl" : "ltr"}
-            aria-label={isArabic ? "أيام الإنتاج" : "Production days"}
+            aria-label={
+              isArabic ? "أيام الإنتاج" : "Production days"
+            }
           >
             {productionDays.map((day) => {
               const selected = day.number === activeNumber;
+
               return (
                 <button
                   key={day.number}
                   type="button"
-                  className={`oa-diary-date ${selected ? "selected" : ""} ${day.locked ? "locked" : ""}`}
+                  className={`oa-diary-date ${
+                    selected ? "selected" : ""
+                  } ${day.locked ? "locked" : ""}`}
                   disabled={day.locked}
                   role="tab"
                   aria-selected={selected}
                   onClick={() => setActiveNumber(day.number)}
                 >
-                  <span className="oa-diary-date-number">{day.number}</span>
+                  <span className="oa-diary-date-number">
+                    {day.number}
+                  </span>
+
                   <span className="oa-diary-date-value">
                     {isArabic ? day.date : day.enDate}
                   </span>
+
                   {day.locked && (
-                    <span className="oa-diary-lock" aria-hidden="true">
+                    <span
+                      className="oa-diary-lock"
+                      aria-hidden="true"
+                    >
                       ⌑
                     </span>
                   )}
@@ -576,11 +683,20 @@ export default function ProductionDays() {
         </div>
 
         {/* ACTIVE DAY */}
-        <article className="oa-diary-story" key={activeDay.number}>
+
+        <article
+          className="oa-diary-story"
+          key={activeDay.number}
+        >
+
           {/* STORY CONTENT */}
+
           <section className="oa-diary-story-content">
             <div className="oa-diary-story-meta">
-              <span dir="ltr">CHAPTER {activeDay.number}</span>
+              <span dir="ltr">
+                CHAPTER {activeDay.number}
+              </span>
+
               <span>
                 <i />
                 {isArabic ? "من حكايتنا" : "FROM OUR STORY"}
@@ -588,30 +704,49 @@ export default function ProductionDays() {
             </div>
 
             <div className="oa-diary-story-title">
-              <span className="oa-diary-big-number" aria-hidden="true">
+              <span
+                className="oa-diary-big-number"
+                aria-hidden="true"
+              >
                 {activeDay.number}
               </span>
-              <span className="oa-diary-story-date" dir="ltr">
-                {isArabic ? activeDay.date : activeDay.enDate}
+
+              <span
+                className="oa-diary-story-date"
+                dir="ltr"
+              >
+                {isArabic
+                  ? activeDay.date
+                  : activeDay.enDate}
               </span>
+
               <h3>{title}</h3>
             </div>
 
-            <p className="oa-diary-story-text">{story}</p>
+            <p className="oa-diary-story-text">
+              {story}
+            </p>
 
             {details.length > 0 && (
               <div className="oa-diary-moments">
                 <div className="oa-diary-moments-title">
                   <span>
-                    {isArabic ? "ومن اليوم ده فاكرين…" : "WE REMEMBER"}
+                    {isArabic
+                      ? "ومن اليوم ده فاكرين…"
+                      : "WE REMEMBER"}
                   </span>
                   <i />
                 </div>
 
                 <ul>
                   {details.map((detail, index) => (
-                    <li key={`${activeDay.number}-${index}`}>
-                      <span dir="ltr">0{index + 1}</span>
+                    <li
+                      key={`${activeDay.number}-${index}`}
+                    >
+                      <span dir="ltr">
+                        0{index + 1}
+                      </span>
+
                       {detail}
                     </li>
                   ))}
@@ -620,24 +755,35 @@ export default function ProductionDays() {
             )}
 
             <div className="oa-diary-signature">
-              <span>{isArabic ? "مننا ليكم" : "FROM US TO YOU"}</span>
+              <span>
+                {isArabic ? "مننا ليكم" : "FROM US TO YOU"}
+              </span>
+
               <strong>ON AIR بِالعَافيَه</strong>
             </div>
           </section>
 
           {/* MEDIA: VIDEO AND/OR PHOTOS */}
+
           {(hasVideo || hasPhotos) && (
             <section
               className={`oa-diary-media ${mediaLayoutClass}`.trim()}
-              aria-label={isArabic ? "محتوى اليوم" : "Day media"}
+              aria-label={
+                isArabic ? "محتوى اليوم" : "Day media"
+              }
             >
+
               {/* VIDEO */}
+
               {hasVideo && (
                 <>
                   <div className="oa-diary-media-heading">
                     <span>
-                      {isArabic ? "فيديو من اليوم ده" : "VIDEO FROM THAT DAY"}
+                      {isArabic
+                        ? "فيديو من اليوم ده"
+                        : "VIDEO FROM THAT DAY"}
                     </span>
+
                     <span dir="ltr">VIDEO / 01</span>
                   </div>
 
@@ -651,7 +797,10 @@ export default function ProductionDays() {
                       preload="metadata"
                       muted={activeDay.muted ?? false}
                       onVolumeChange={(event) => {
-                        if (activeDay.muted && !event.currentTarget.muted) {
+                        if (
+                          activeDay.muted &&
+                          !event.currentTarget.muted
+                        ) {
                           event.currentTarget.muted = true;
                           event.currentTarget.volume = 0;
                         }
@@ -674,6 +823,7 @@ export default function ProductionDays() {
               )}
 
               {/* PHOTOS */}
+
               {hasPhotos && (
                 <>
                   <div className="oa-diary-photo-heading">
@@ -683,23 +833,33 @@ export default function ProductionDays() {
                           ? "صورة من اليوم ده"
                           : "صور من اليوم ده"
                         : activeDay.photos.length === 1
-                        ? "PHOTO FROM THAT DAY"
-                        : "PHOTOS FROM THAT DAY"}
+                          ? "PHOTO FROM THAT DAY"
+                          : "PHOTOS FROM THAT DAY"}
                     </span>
+
                     <span dir="ltr">
-                      PHOTO 01 / {String(activeDay.photos.length).padStart(2, "0")}
+                      PHOTO 01 /{" "}
+                      {String(activeDay.photos.length).padStart(2, "0")}
                     </span>
                   </div>
 
                   <div className="oa-diary-photos">
                     {activeDay.photos.map((photo, index) => (
                       <figure
-                        className={`oa-diary-photo is-${activeDay.photoOrientations?.[index] ?? "landscape"}`}
+                        className={`oa-diary-photo is-${
+                          activeDay.photoOrientations?.[index] ??
+                          "landscape"
+                        }`}
                         key={photo}
                       >
                         <div className="oa-diary-photo-placeholder">
-                          <span>{`PHOTO ${String(index + 1).padStart(2, "0")}`}</span>
-                          <small dir="ltr">{photo.split("/").pop()}</small>
+                          <span>
+                            {`PHOTO ${String(index + 1).padStart(2, "0")}`}
+                          </span>
+
+                          <small dir="ltr">
+                            {photo.split("/").pop()}
+                          </small>
                         </div>
 
                         <img
@@ -711,7 +871,9 @@ export default function ProductionDays() {
                           }
                           loading="lazy"
                           onError={(event) => {
-                            event.currentTarget.classList.add("is-missing");
+                            event.currentTarget.classList.add(
+                              "is-missing"
+                            );
                           }}
                         />
 
@@ -725,6 +887,7 @@ export default function ProductionDays() {
               )}
 
               {/* MEDIA FOOTER */}
+
               <div className="oa-diary-media-footer" dir="ltr">
                 <span>ON AIR / ARCHIVE</span>
                 <span>24 FPS</span>
@@ -735,8 +898,12 @@ export default function ProductionDays() {
         </article>
 
         {/* FOOTER */}
+
         <footer className="oa-diary-footer">
-          <span className="oa-diary-footer-label" dir="ltr">
+          <span
+            className="oa-diary-footer-label"
+            dir="ltr"
+          >
             ON AIR / PRODUCTION LOG
           </span>
 
@@ -750,7 +917,8 @@ export default function ProductionDays() {
             </button>
 
             <span dir="ltr">
-              {String(activeIndex + 1).padStart(2, "0")} / {String(openDays.length).padStart(2, "0")}
+              {String(activeIndex + 1).padStart(2, "0")} /{" "}
+              {String(openDays.length).padStart(2, "0")}
             </span>
 
             <button
@@ -763,7 +931,9 @@ export default function ProductionDays() {
           </div>
 
           <span className="oa-diary-footer-note">
-            {isArabic ? "والحكاية لسه مكملة…" : "OUR STORY CONTINUES…"}
+            {isArabic
+              ? "والحكاية لسه مكملة…"
+              : "OUR STORY CONTINUES…"}
           </span>
         </footer>
       </div>

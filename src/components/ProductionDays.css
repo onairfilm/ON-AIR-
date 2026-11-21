@@ -1,3 +1,4 @@
+
 /* =========================================
    ON AIR — CINEMATIC PRODUCTION DIARY
    GLOBAL BACKGROUND VERSION
@@ -1060,6 +1061,7 @@
   }
 
   /* Stack story and media */
+
   .oa-diary-story {
     display: flex;
     flex-direction: column;
@@ -1136,6 +1138,7 @@
   }
 
   /* Footer */
+
   .oa-diary-footer {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -1152,6 +1155,7 @@
   }
 
   /* Camera corners */
+
   .oa-diary-frame {
     width: 17px;
     height: 17px;
@@ -1385,6 +1389,7 @@
 ========================================= */
 
 /* DAY WITH VIDEO ONLY */
+
 .oa-diary-media.video-only .oa-diary-media-heading {
   margin-bottom: 14px;
 }
@@ -1395,6 +1400,7 @@
 }
 
 /* DAY WITH ONE PHOTO ONLY */
+
 .oa-diary-media.single-photo .oa-diary-photo-heading {
   margin-top: 0;
 }
@@ -1436,7 +1442,8 @@
    PRODUCTION DAYS — DAY-SPECIFIC MEDIA COMPOSITIONS
 ===================================================== */
 
-/* Day 05: one landscape frame + one portrait frame. */
+/* Day 05: landscape + portrait */
+
 .oa-diary-media.mixed-orientation .oa-diary-photos {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(125px, .75fr);
@@ -1452,7 +1459,8 @@
   aspect-ratio: 3 / 4;
 }
 
-/* Keep the single photo from Day 06 wide rather than square. */
+/* Day 06 */
+
 .oa-diary-media.single-photo.landscape-photo .oa-diary-photo {
   width: 100%;
   max-width: 100%;
@@ -1464,7 +1472,8 @@
   background: transparent;
 }
 
-/* Day 07: editorial contact sheet with five photographs. */
+/* Day with five photographs */
+
 .oa-diary-media.five-photos .oa-diary-photos {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -1509,7 +1518,6 @@
 
 /* =====================================================
    DAY 05 — MATCHED FRAME HEIGHTS
-   Keep the landscape and portrait frames aligned.
 ===================================================== */
 
 .oa-diary-media.mixed-orientation .oa-diary-photos {
@@ -1542,7 +1550,8 @@
   background: rgba(5, 12, 20, 0.28);
 }
 
-/* Day 07: only one photograph. */
+/* Day 07: single photograph */
+
 .oa-diary-media.single-photo .oa-diary-photos {
   grid-template-columns: minmax(0, 1fr);
 }
@@ -1564,5 +1573,210 @@
     height: auto;
     aspect-ratio: 3 / 4;
     justify-self: center;
+  }
+}
+
+/* =====================================================
+   FINAL FIX — DAY MEDIA + TEXT READABILITY
+===================================================== */
+
+/* DAY 05 — NATURAL MIXED ORIENTATION */
+
+.oa-diary-media.mixed-orientation .oa-diary-photos {
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(130px, .72fr);
+
+  align-items: center;
+  width: 100%;
+  height: auto;
+  gap: 12px;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  aspect-ratio: auto;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-landscape {
+  aspect-ratio: 16 / 9;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-portrait {
+  aspect-ratio: 3 / 4;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-landscape img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: rgba(5, 12, 20, .45);
+}
+
+/* DAY 03/10 — PORTRAIT VIDEO */
+
+.oa-diary-media.portrait-video .oa-diary-video-wrap {
+  width: min(100%, 280px);
+  aspect-ratio: 9 / 16;
+  height: auto;
+  margin-inline: auto;
+}
+
+.oa-diary-media.portrait-video .oa-diary-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #02070d;
+}
+
+/* DAY 10/10 — PORTRAIT PHOTO */
+
+.oa-diary-media.single-photo.portrait-photo .oa-diary-photos {
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+}
+
+.oa-diary-media.single-photo.portrait-photo .oa-diary-photo {
+  width: min(100%, 320px);
+  max-width: 320px;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  margin-inline: auto;
+}
+
+.oa-diary-media.single-photo.portrait-photo .oa-diary-photo img {
+  object-fit: contain;
+  background: rgba(5, 12, 20, .45);
+}
+
+/* =========================================
+   TEXT COLUMN — CINEMATIC GLASS / SHADOW
+========================================= */
+
+.oa-diary-story-content {
+  position: relative;
+  isolation: isolate;
+
+  background: linear-gradient(
+    145deg,
+    rgba(5, 12, 20, .76),
+    rgba(17, 37, 72, .58)
+  ) !important;
+
+  backdrop-filter: blur(8px) saturate(.92) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(.92) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(247, 237, 227, .07),
+    inset 0 0 45px rgba(5, 12, 20, .22),
+    0 8px 25px rgba(0, 0, 0, .12);
+}
+
+.oa-diary-story-text {
+  color: rgba(247, 237, 227, .96);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .3);
+}
+
+.oa-diary-story-title h3 {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .28);
+}
+
+/* =========================================
+   MOBILE MEDIA ADJUSTMENTS
+========================================= */
+
+@media (max-width: 680px) {
+
+  /* DAY 05 */
+
+  .oa-diary-media.mixed-orientation .oa-diary-photos {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    height: auto;
+    gap: 10px;
+  }
+
+  .oa-diary-media.mixed-orientation .oa-diary-photo {
+    height: auto;
+  }
+
+  .oa-diary-media.mixed-orientation .oa-diary-photo.is-landscape {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .oa-diary-media.mixed-orientation .oa-diary-photo.is-portrait {
+    width: min(78%, 280px);
+    aspect-ratio: 3 / 4;
+    justify-self: center;
+  }
+
+  /* DAY 03/10 */
+
+  .oa-diary-media.portrait-video .oa-diary-video-wrap {
+    width: min(82%, 270px);
+    aspect-ratio: 9 / 16;
+    height: auto;
+  }
+
+  .oa-diary-media.portrait-video .oa-diary-video {
+    object-fit: contain;
+  }
+
+  /* DAY 10/10 */
+
+  .oa-diary-media.single-photo.portrait-photo .oa-diary-photo {
+    width: min(82%, 300px);
+    max-width: 300px;
+    aspect-ratio: 3 / 4;
+  }
+
+  /* TEXT BACKGROUND */
+
+  .oa-diary-story-content {
+    background: linear-gradient(
+      145deg,
+      rgba(5, 12, 20, .82),
+      rgba(17, 37, 72, .64)
+    ) !important;
+
+    backdrop-filter: blur(7px) !important;
+    -webkit-backdrop-filter: blur(7px) !important;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 370px) {
+  .oa-diary-media.portrait-video .oa-diary-video-wrap {
+    width: min(85%, 245px);
+  }
+
+  .oa-diary-media.single-photo.portrait-photo .oa-diary-photo {
+    width: min(85%, 270px);
+  }
+}
+
+/* =========================================
+   FINAL ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .oa-diary *,
+  .oa-diary *::before,
+  .oa-diary *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }
