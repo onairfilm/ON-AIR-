@@ -1060,7 +1060,6 @@
   }
 
   /* Stack story and media */
-
   .oa-diary-story {
     display: flex;
     flex-direction: column;
@@ -1137,7 +1136,6 @@
   }
 
   /* Footer */
-
   .oa-diary-footer {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -1154,7 +1152,6 @@
   }
 
   /* Camera corners */
-
   .oa-diary-frame {
     width: 17px;
     height: 17px;
@@ -1379,19 +1376,15 @@
 
 .oa-diary,
 .oa-diary * {
-
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-
 }
 
 /* =========================================
    CUSTOM MEDIA LAYOUTS
-   Different layouts for different day media
 ========================================= */
 
 /* DAY WITH VIDEO ONLY */
-
 .oa-diary-media.video-only .oa-diary-media-heading {
   margin-bottom: 14px;
 }
@@ -1402,7 +1395,6 @@
 }
 
 /* DAY WITH ONE PHOTO ONLY */
-
 .oa-diary-media.single-photo .oa-diary-photo-heading {
   margin-top: 0;
 }
@@ -1425,8 +1417,6 @@
   background: #050C14;
 }
 
-/* MOBILE */
-
 @media (max-width: 680px) {
   .oa-diary-media.video-only .oa-diary-video-wrap {
     aspect-ratio: 16 / 9;
@@ -1439,5 +1429,140 @@
   .oa-diary-media.single-photo .oa-diary-photo {
     max-width: 100%;
     aspect-ratio: 4 / 3;
+  }
+}
+
+/* =====================================================
+   PRODUCTION DAYS — DAY-SPECIFIC MEDIA COMPOSITIONS
+===================================================== */
+
+/* Day 05: one landscape frame + one portrait frame. */
+.oa-diary-media.mixed-orientation .oa-diary-photos {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(125px, .75fr);
+  align-items: start;
+  gap: 12px;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-landscape {
+  aspect-ratio: 16 / 9;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-portrait {
+  aspect-ratio: 3 / 4;
+}
+
+/* Keep the single photo from Day 06 wide rather than square. */
+.oa-diary-media.single-photo.landscape-photo .oa-diary-photo {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.oa-diary-media.single-photo.landscape-photo .oa-diary-photo img {
+  object-fit: cover;
+  background: transparent;
+}
+
+/* Day 07: editorial contact sheet with five photographs. */
+.oa-diary-media.five-photos .oa-diary-photos {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  gap: 9px;
+}
+
+.oa-diary-media.five-photos .oa-diary-photo {
+  grid-column: span 2;
+  aspect-ratio: 4 / 3;
+}
+
+.oa-diary-media.five-photos .oa-diary-photo:nth-child(1),
+.oa-diary-media.five-photos .oa-diary-photo:nth-child(2) {
+  grid-column: span 3;
+  aspect-ratio: 16 / 10;
+}
+
+.oa-diary-video-corner {
+  min-width: 45px;
+  text-align: center;
+}
+
+@media (max-width: 680px) {
+  .oa-diary-media.mixed-orientation .oa-diary-photos {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .78fr);
+    gap: 8px;
+  }
+
+  .oa-diary-media.five-photos .oa-diary-photos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .oa-diary-media.five-photos .oa-diary-photo,
+  .oa-diary-media.five-photos .oa-diary-photo:nth-child(1),
+  .oa-diary-media.five-photos .oa-diary-photo:nth-child(2) {
+    grid-column: auto;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* =====================================================
+   DAY 05 — MATCHED FRAME HEIGHTS
+   Keep the landscape and portrait frames aligned.
+===================================================== */
+
+.oa-diary-media.mixed-orientation .oa-diary-photos {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.9fr);
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  height: clamp(210px, 21vw, 285px);
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  aspect-ratio: auto;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-landscape img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.oa-diary-media.mixed-orientation .oa-diary-photo.is-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: rgba(5, 12, 20, 0.28);
+}
+
+/* Day 07: only one photograph. */
+.oa-diary-media.single-photo .oa-diary-photos {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 680px) {
+  .oa-diary-media.mixed-orientation .oa-diary-photos {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    gap: 10px;
+  }
+
+  .oa-diary-media.mixed-orientation .oa-diary-photo.is-landscape {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .oa-diary-media.mixed-orientation .oa-diary-photo.is-portrait {
+    width: min(78%, 280px);
+    height: auto;
+    aspect-ratio: 3 / 4;
+    justify-self: center;
   }
 }
