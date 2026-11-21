@@ -2566,3 +2566,44 @@ a.oa-stage-card:focus-visible {
   }
 
 }
+/* =========================================
+   ON AIR — PRODUCTION CHARACTERS FIX
+========================================= */
+
+/* خلي الشخصيتين فوق المستطيلين */
+.oa-production > .production-character {
+  z-index: 8 !important;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.34));
+}
+
+/* MR BEAN */
+.oa-production > .production-mr-bean {
+  left: max(4px, calc((100% - 1240px) / 2 - 52px));
+  top: 34%;
+  width: clamp(108px, 10vw, 150px);
+}
+
+/* TEDDY */
+.oa-production > .production-teddy {
+  right: max(4px, calc((100% - 1240px) / 2 - 48px));
+  top: 54%;
+  width: clamp(76px, 7vw, 104px);
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+
+  .oa-production > .production-mr-bean {
+    left: 2px;
+    top: 42%;
+    width: clamp(76px, 20vw, 96px);
+  }
+
+  .oa-production > .production-teddy {
+    right: 2px;
+    top: 69%;
+    width: clamp(60px, 16vw, 78px);
+  }
+
+}
+
