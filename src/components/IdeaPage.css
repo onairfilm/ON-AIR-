@@ -1,9 +1,7 @@
-
-/* =========================================================
-   ON AIR بِالعَافيَه
-   IDEA / THE FILM
-   CINEMATIC ARCHIVE
-========================================================= */
+/* ==========================================
+   ON AIR — بِالعَافيَه
+   IDEA PAGE | CINEMATIC EDITORIAL
+========================================== */
 
 .oa-film-idea,
 .oa-film-idea * {
@@ -11,12 +9,10 @@
 }
 
 .oa-film-idea {
-  --idea-cream: #F7EDE3;
-  --idea-beige: #E1D7CC;
-  --idea-navy: #112548;
-  --idea-teal: #4E8484;
-  --idea-red: #D92832;
-  --idea-gold: #C7A86B;
+  --cream: #F7EDE3;
+  --navy: #112548;
+  --gold: #C7A86B;
+  --dark: #07111D;
 
   position: relative;
   isolation: isolate;
@@ -28,102 +24,53 @@
   width: 100%;
   min-height: 100svh;
 
-  padding: 100px clamp(26px, 8vw, 150px) 76px;
+  padding: 100px 7vw 85px;
 
   overflow-x: hidden;
   overflow-y: visible;
 
-  color: var(--idea-cream);
-  background: #050C14;
+  color: var(--cream);
+
+  background:
+    radial-gradient(
+      ellipse at 50% 43%,
+      rgba(17, 37, 72, .78) 0%,
+      rgba(11, 25, 43, .35) 48%,
+      transparent 78%
+    ),
+    linear-gradient(
+      135deg,
+      #07111D 0%,
+      #0B192A 50%,
+      #07111D 100%
+    );
 
   font-family: "Cairo", "Tajawal", sans-serif;
 }
 
-/* =========================================================
-   CUSTOM BACKGROUND
-   الصورة الخاصة بصفحة الفكرة فقط
-========================================================= */
+/* ==========================================
+   REMOVE OLD DECORATIONS
+========================================== */
 
-.oa-film-idea__background {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-
-  pointer-events: none;
-
-  background-image: url("/images/idea-background.png");
-
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+.oa-film-idea__background,
+.oa-film-idea__frame,
+.oa-film-idea__side,
+.oa-film-idea__film-mark {
+  display: none !important;
 }
 
-/* =========================================================
-   CINEMATIC FRAME
-========================================================= */
-
-.oa-film-idea__frame {
-  position: absolute;
-  inset: 20px;
-  z-index: 5;
-
-  border: 1px solid rgba(247, 237, 227, .18);
-
-  pointer-events: none;
-}
-
-.oa-film-idea__corner {
-  position: absolute;
-  width: 56px;
-  height: 56px;
-
-  border-color: rgba(247, 237, 227, .66);
-}
-
-.oa-film-idea__corner--tl {
-  top: -1px;
-  left: -1px;
-
-  border-top: 1px solid;
-  border-left: 1px solid;
-}
-
-.oa-film-idea__corner--tr {
-  top: -1px;
-  right: -1px;
-
-  border-top: 1px solid;
-  border-right: 1px solid;
-}
-
-.oa-film-idea__corner--bl {
-  bottom: -1px;
-  left: -1px;
-
-  border-bottom: 1px solid;
-  border-left: 1px solid;
-}
-
-.oa-film-idea__corner--br {
-  right: -1px;
-  bottom: -1px;
-
-  border-right: 1px solid;
-  border-bottom: 1px solid;
-}
-
-/* =========================================================
-   TOP ARCHIVE
-========================================================= */
+/* ==========================================
+   TOP INFORMATION
+========================================== */
 
 .oa-film-idea__top {
   position: absolute;
 
-  top: 39px;
-  left: 42px;
-  right: 42px;
+  top: 35px;
+  left: 5%;
+  right: 5%;
 
-  z-index: 8;
+  z-index: 5;
 
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -132,11 +79,10 @@
 
 .oa-film-idea__rec {
   display: flex;
-  justify-self: start;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 
-  color: rgba(247, 237, 227, .72);
+  color: rgba(247, 237, 227, .42);
 
   font-family: "Space Mono", monospace;
   font-size: 9px;
@@ -144,206 +90,115 @@
 }
 
 .oa-film-idea__rec-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 
   border-radius: 50%;
 
-  background: var(--idea-red);
+  background: #D92832;
 
-  box-shadow: 0 0 8px rgba(217, 40, 50, .7);
-
-  animation: oaIdeaRecording 1.3s infinite;
+  animation: ideaRec 1.5s infinite;
 }
 
-@keyframes oaIdeaRecording {
-  0%, 45% {
-    opacity: 1;
-  }
-
-  55%, 100% {
-    opacity: .2;
+@keyframes ideaRec {
+  50% {
+    opacity: .25;
   }
 }
 
 .oa-film-idea__top-center {
-  color: rgba(247, 237, 227, .76);
+  color: rgba(247, 237, 227, .32);
 
   font-family: "Space Mono", monospace;
   font-size: 8px;
   letter-spacing: 3px;
-
-  white-space: nowrap;
-
-  text-shadow: 0 1px 8px rgba(0, 0, 0, .72);
 }
 
 .oa-film-idea__archive-number {
   justify-self: end;
 
-  color: rgba(247, 237, 227, .72);
+  color: rgba(247, 237, 227, .42);
 
   font-family: "Space Mono", monospace;
   font-size: 9px;
   letter-spacing: 2px;
 }
 
-/* =========================================================
-   SIDE ARCHIVE LABELS
-========================================================= */
-
-.oa-film-idea__side {
-  position: absolute;
-
-  top: 50%;
-  z-index: 6;
-
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-
-  color: rgba(247, 237, 227, .72);
-
-  transform: translateY(-50%);
-
-  text-shadow: 0 1px 10px rgba(0, 0, 0, .72);
-}
-
-.oa-film-idea__side--left {
-  left: 7.5%;
-  align-items: flex-start;
-}
-
-.oa-film-idea__side--right {
-  right: 7.5%;
-  align-items: flex-start;
-}
-
-.oa-film-idea__brand,
-.oa-film-idea__file-number {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.oa-film-idea__brand span,
-.oa-film-idea__file-number span {
-  color: rgba(247, 237, 227, .72);
-
-  font-family: "Space Mono", monospace;
-  font-size: 9px;
-  letter-spacing: 3px;
-}
-
-.oa-film-idea__brand strong,
-.oa-film-idea__file-number strong {
-  color: rgba(247, 237, 227, .86);
-
-  font-family: "Cairo", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.oa-film-idea__file-number strong {
-  font-family: "Space Mono", monospace;
-  font-size: 18px;
-  letter-spacing: 2px;
-}
-
-.oa-film-idea__side-rule {
-  width: 82px;
-  height: 1px;
-
-  background: rgba(247, 237, 227, .46);
-}
-
-.oa-film-idea__side-small {
-  color: rgba(247, 237, 227, .65);
-
-  font-family: "Space Mono", monospace;
-  font-size: 6px;
-  letter-spacing: 2px;
-}
-
-/* =========================================================
-   MAIN IDEA CONTENT
-========================================================= */
+/* ==========================================
+   MAIN CONTENT
+========================================== */
 
 .oa-film-idea__center {
   position: relative;
-  z-index: 7;
+  z-index: 2;
 
-  width: min(790px, 66vw);
+  width: min(820px, 100%);
 
   margin: 0 auto;
 
   text-align: center;
 
-  animation: oaIdeaEntrance 1.15s cubic-bezier(.16, .72, .22, 1) both;
+  animation: ideaEntrance 1s ease both;
 }
 
-@keyframes oaIdeaEntrance {
+@keyframes ideaEntrance {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(.99);
+    transform: translateY(15px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-/* =========================================================
-   IDEA LABEL
-========================================================= */
+/* ==========================================
+   SMALL TITLE
+========================================== */
 
 .oa-film-idea__label {
   margin-bottom: 18px;
 
-  color: rgba(247, 237, 227, .92);
+  color: var(--gold);
 
   font-family: "Space Mono", monospace;
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 5px;
-
-  text-shadow: 0 1px 10px rgba(0, 0, 0, .75);
 }
 
-/* =========================================================
-   TITLE
-========================================================= */
+/* ==========================================
+   MAIN TITLE
+========================================== */
 
 .oa-film-idea__center h1 {
   margin: 0;
 
-  color: #FFF8F0;
+  color: var(--cream);
 
   font-family: "Cairo", "Tajawal", sans-serif;
-  font-size: clamp(32px, 3.7vw, 56px);
+  font-size: clamp(34px, 3.4vw, 48px);
   font-weight: 600;
-  line-height: 1.25;
 
-  text-shadow:
-    0 2px 22px rgba(0, 0, 0, .7),
-    0 0 38px rgba(0, 0, 0, .25);
+  line-height: 1.5;
+
+  text-shadow: none;
 }
 
-/* =========================================================
-   TITLE LINE
-========================================================= */
+/* ==========================================
+   TITLE SEPARATOR
+========================================== */
 
 .oa-film-idea__title-line {
   position: relative;
 
-  width: 150px;
+  width: 85px;
   height: 1px;
 
-  margin: 24px auto 30px;
+  margin: 25px auto 36px;
 
-  background: rgba(247, 237, 227, .7);
-
-  box-shadow: 0 1px 8px rgba(0, 0, 0, .3);
+  background: rgba(199, 168, 107, .5);
+  box-shadow: none;
 }
 
 .oa-film-idea__title-line span {
@@ -357,16 +212,16 @@
 
   border-radius: 50%;
 
-  background: #FFF8F0;
-
-  box-shadow: 0 0 15px rgba(247, 237, 227, .75);
+  background: var(--gold);
 
   transform: translate(-50%, -50%);
+
+  box-shadow: none;
 }
 
-/* =========================================================
+/* ==========================================
    LOGLINE
-========================================================= */
+========================================== */
 
 .oa-film-idea__logline {
   display: flex;
@@ -374,7 +229,7 @@
   align-items: center;
 
   width: 100%;
-  max-width: 790px;
+  max-width: 760px;
 
   margin: 0 auto;
 }
@@ -386,21 +241,21 @@
 .oa-film-idea__line {
   margin: 0;
 
-  color: rgba(255, 248, 240, .98);
+  color: rgba(247, 237, 227, .88);
 
   font-family: "Cairo", "Tajawal", sans-serif;
-  font-size: clamp(13px, 1.18vw, 17px);
-  font-weight: 500;
-  line-height: 2.15;
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 400;
 
-  text-shadow:
-    0 2px 16px rgba(0, 0, 0, .88),
-    0 0 5px rgba(0, 0, 0, .6);
+  line-height: 2.2;
+
+  text-shadow: none;
 
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px);
 
-  animation: oaIdeaLineReveal .85s cubic-bezier(.16, .72, .22, 1) forwards;
+  animation:
+    ideaTextReveal .8s ease forwards;
 }
 
 .oa-film-idea__line--final {
@@ -408,133 +263,85 @@
   font-weight: 600;
 }
 
-@keyframes oaIdeaLineReveal {
+@keyframes ideaTextReveal {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* =========================================================
-   CINEMATIC SEPARATORS
-========================================================= */
+/* ==========================================
+   SMALL GOLD SEPARATORS
+========================================== */
 
 .oa-film-idea__pause {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  gap: 10px;
+  gap: 8px;
 
-  width: 130px;
-  height: 14px;
+  width: 75px;
+  height: 10px;
 
-  margin: 13px auto;
+  margin: 12px auto;
 }
 
 .oa-film-idea__pause--large {
-  margin-block: 18px;
+  margin-block: 16px;
 }
 
 .oa-film-idea__pause-line {
-  position: relative;
-
-  width: 40px;
+  width: 25px;
   height: 1px;
 
-  overflow: hidden;
-
-  background: rgba(217, 40, 50, .52);
+  background: rgba(199, 168, 107, .38);
 }
 
 .oa-film-idea__pause-line::after {
-  content: "";
-
-  position: absolute;
-  top: 0;
-  left: -100%;
-
-  width: 70%;
-  height: 100%;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #E84848,
-    transparent
-  );
-
-  box-shadow: 0 0 8px rgba(232, 72, 72, .75);
-
-  animation: oaIdeaScan 1.3s ease-in-out infinite;
-}
-
-@keyframes oaIdeaScan {
-  0% {
-    left: -100%;
-  }
-
-  50%, 100% {
-    left: 120%;
-  }
+  display: none;
 }
 
 .oa-film-idea__pause-core {
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
 
-  flex: 0 0 4px;
+  flex: 0 0 3px;
 
   border-radius: 50%;
 
-  background: #E84848;
+  background: var(--gold);
 
-  box-shadow:
-    0 0 5px rgba(232, 72, 72, .9),
-    0 0 14px rgba(232, 72, 72, .45);
+  box-shadow: none;
 
-  animation: oaIdeaPulse 1.4s ease-in-out infinite;
+  animation: none;
 }
 
-@keyframes oaIdeaPulse {
-  0%, 100% {
-    opacity: .45;
-    transform: scale(.75);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.45);
-  }
-}
-
-/* =========================================================
-   BOTTOM CAMERA DATA
-========================================================= */
+/* ==========================================
+   BOTTOM ARCHIVE INFORMATION
+========================================== */
 
 .oa-film-idea__bottom {
   position: absolute;
 
-  bottom: 39px;
+  bottom: 32px;
   left: 50%;
 
-  z-index: 8;
+  z-index: 5;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  gap: 15px;
+  gap: 13px;
 
-  color: rgba(247, 237, 227, .82);
+  color: rgba(247, 237, 227, .35);
 
   font-family: "Space Mono", monospace;
   font-size: 8px;
   letter-spacing: 2px;
 
   white-space: nowrap;
-
-  text-shadow: 0 1px 8px rgba(0, 0, 0, .7);
 
   transform: translateX(-50%);
 }
@@ -545,153 +352,72 @@
 
   border-radius: 50%;
 
-  background: var(--idea-red);
-
-  box-shadow: 0 0 6px rgba(217, 40, 50, .6);
+  background: var(--gold);
 }
 
-/* =========================================================
-   FILM MARKS
-========================================================= */
+/* ==========================================
+   RESPONSIVE
+========================================== */
 
-.oa-film-idea__film-mark {
-  position: absolute;
+@media (max-width: 900px) {
 
-  bottom: 38px;
-  z-index: 8;
-
-  color: rgba(247, 237, 227, .6);
-
-  font-family: "Space Mono", monospace;
-  font-size: 15px;
-}
-
-.oa-film-idea__film-mark--left {
-  left: 44px;
-}
-
-.oa-film-idea__film-mark--right {
-  right: 44px;
-}
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 1000px) {
   .oa-film-idea {
-    padding-inline: 9vw;
+    padding-inline: 6vw;
   }
 
   .oa-film-idea__center {
-    width: min(760px, 78vw);
-  }
-
-  .oa-film-idea__side--left {
-    left: 5%;
-  }
-
-  .oa-film-idea__side--right {
-    right: 5%;
+    width: 100%;
   }
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media (max-width: 600px) {
+
   .oa-film-idea {
     min-height: 100svh;
 
-    justify-content: flex-start;
-
-    padding: 105px 23px 86px;
-
-    overflow-x: hidden;
-    overflow-y: visible;
-  }
-
-  .oa-film-idea__background {
-    background-size: auto 100%;
-    background-position: 65% center;
-  }
-
-  .oa-film-idea__frame {
-    inset: 12px;
-  }
-
-  .oa-film-idea__corner {
-    width: 34px;
-    height: 34px;
+    padding: 100px 24px 80px;
   }
 
   .oa-film-idea__top {
     top: 23px;
     left: 22px;
     right: 22px;
+  }
 
-    display: flex;
-    justify-content: space-between;
-
-    gap: 8px;
+  .oa-film-idea__top-center {
+    font-size: 6px;
+    letter-spacing: .5px;
   }
 
   .oa-film-idea__rec,
   .oa-film-idea__archive-number {
     font-size: 7px;
-    letter-spacing: 1.4px;
-  }
-
-  .oa-film-idea__top-center {
-    position: absolute;
-    left: 50%;
-
-    font-size: 6px;
-    letter-spacing: .7px;
-
-    transform: translateX(-50%);
-  }
-
-  .oa-film-idea__side {
-    display: none;
-  }
-
-  .oa-film-idea__center {
-    width: 100%;
-    margin: auto 0;
-    padding: 18px 0 28px;
   }
 
   .oa-film-idea__label {
-    margin-bottom: 13px;
-
-    font-size: 7px;
-    letter-spacing: 3px;
+    font-size: 8px;
+    margin-bottom: 15px;
   }
 
   .oa-film-idea__center h1 {
-    font-size: clamp(28px, 8vw, 36px);
-    line-height: 1.3;
+    font-size: 31px;
   }
 
   .oa-film-idea__title-line {
-    width: 92px;
-    margin: 18px auto 22px;
+    margin: 20px auto 28px;
   }
 
   .oa-film-idea__line {
-    font-size: clamp(12px, 3.5vw, 14px);
-    line-height: 2;
-    font-weight: 600;
+    font-size: 13px;
+    line-height: 2.15;
   }
 
   .oa-film-idea__pause {
-    margin-block: 9px;
+    margin-block: 10px;
   }
 
   .oa-film-idea__pause--large {
-    margin-block: 13px;
+    margin-block: 14px;
   }
 
   .oa-film-idea__bottom {
@@ -700,63 +426,78 @@
     bottom: auto;
     left: auto;
 
-    margin: 25px auto 0;
+    margin: 30px auto 0;
 
     gap: 7px;
-    width: 100%;
 
     font-size: 6px;
-    letter-spacing: .8px;
+    letter-spacing: .7px;
 
     transform: none;
   }
-
-  .oa-film-idea__film-mark {
-    display: none;
-  }
 }
 
-/* =========================================================
+/* ==========================================
    SMALL PHONES
-========================================================= */
+========================================== */
 
 @media (max-width: 380px) {
+
   .oa-film-idea {
-    padding-inline: 19px;
+    padding-inline: 18px;
   }
 
-  .oa-film-idea__top-center {
-    font-size: 5.5px;
-    letter-spacing: .35px;
+  .oa-film-idea__center h1 {
+    font-size: 28px;
   }
 
   .oa-film-idea__line {
     font-size: 12px;
-    line-height: 1.95;
   }
 
   .oa-film-idea__bottom {
     gap: 5px;
-    font-size: 5.5px;
-    letter-spacing: .4px;
+    font-size: 5px;
   }
 }
 
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
   .oa-film-idea *,
   .oa-film-idea *::before,
   .oa-film-idea *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
   }
 
   .oa-film-idea__line {
     opacity: 1;
     transform: none;
   }
+}
+/* Restore ON AIR Global Background */
+
+.oa-film-idea {
+  background: transparent !important;
+}
+
+.oa-film-idea::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    rgba(7, 17, 29, 0.38),
+    rgba(7, 17, 29, 0.12),
+    rgba(7, 17, 29, 0.38)
+  );
 }
