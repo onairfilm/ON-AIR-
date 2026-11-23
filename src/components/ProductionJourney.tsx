@@ -1,6 +1,14 @@
+
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
+
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
 import "./ProductionJourney.css";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type Language = "ar" | "en";
 
@@ -26,7 +34,7 @@ type ProductionStage = {
 };
 
 /* =========================================
-   PROJECT FILES — 07
+   PROJECT FILES
 ========================================= */
 
 const projectFiles: ProjectFile[] = [
@@ -98,7 +106,7 @@ const projectFiles: ProjectFile[] = [
 ];
 
 /* =========================================
-   PRODUCTION STAGES — 06
+   PRODUCTION STAGES
 ========================================= */
 
 const productionStages: ProductionStage[] = [
@@ -169,9 +177,12 @@ const productionStages: ProductionStage[] = [
   },
 ];
 
+/* =========================================
+   COMPONENT
+========================================= */
+
 export default function ProductionJourney() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const rafRef = useRef<number | null>(null);
 
   const [language, setLanguage] = useState<Language>(() => {
     if (typeof document === "undefined") return "ar";
@@ -187,7 +198,7 @@ export default function ProductionJourney() {
   const isArabic = language === "ar";
 
   /* =========================================
-     GLOBAL LANGUAGE
+     LANGUAGE SYNC
   ========================================= */
 
   useEffect(() => {
@@ -235,7 +246,7 @@ export default function ProductionJourney() {
   }, []);
 
   /* =========================================
-     STAGE MODAL — CLOSE / SCROLL LOCK
+     MODAL — SCROLL LOCK
   ========================================= */
 
   useEffect(() => {
@@ -264,7 +275,8 @@ export default function ProductionJourney() {
   }, [selectedStage]);
 
   /* =========================================
-     SECTION REVEAL
+     SECTION VISIBILITY
+     Preserves existing camera corner effects
   ========================================= */
 
   useEffect(() => {
@@ -291,119 +303,331 @@ export default function ProductionJourney() {
   }, []);
 
   /* =========================================
-     CINEMATIC SCROLL PROGRESS
+     GSAP — CINEMATIC ANIMATIONS
   ========================================= */
 
-  useEffect(() => {
-    const section = sectionRef.current;
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
 
-    if (!section) return;
+      if (!section) return;
 
-    const updateScene = () => {
-      rafRef.current = null;
+      const selectAll = (selector: string) =>
+        Array.from(
+          section.querySelectorAll<HTMLElement>(selector)
+        );
 
-      const rect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-
-      const totalDistance =
-        viewportHeight + rect.height;
-
-      if (totalDistance <= 0) return;
-
-      const rawProgress =
-        (viewportHeight - rect.top) /
-        totalDistance;
-
-      const progress = Math.max(
-        0,
-        Math.min(1, rawProgress)
+      const header = section.querySelector<HTMLElement>(
+        ".oa-production-header"
       );
 
-      section.style.setProperty(
-        "--scroll-progress",
-        progress.toFixed(4)
+      const tables = selectAll(
+        ".oa-production-table"
       );
 
-      const timelineProgress = Math.max(
-        0,
-        Math.min(
-          1,
-          (progress - 0.16) / 0.56
-        )
+      const stageTrack = section.querySelector<HTMLElement>(
+        ".oa-stage-track"
       );
+
+      const stageCards = selectAll(
+        ".oa-stage-card"
+      );
+
+      const filesTrack = section.querySelector<HTMLElement>(
+        ".oa-files-track"
+      );
+
+      const fileFrames = selectAll(
+        ".oa-file-frame"
+      );
+
+      const footer = section.querySelector<HTMLElement>(
+        ".oa-production-footer"
+      );
+
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      /* -------------------------------------
+         REDUCED MOTION
+      ------------------------------------- */
+
+      if (reducedMotion) {
+        gsap.set(
+          [
+            ...(header ? [header] : []),
+            ...tables,
+            ...stageCards,
+            ...fileFrames,
+            ...(footer ? [footer] : []),
+          ],
+          {
+            autoAlpha: 1,
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotation: 0,
+            filter: "none",
+          }
+        );
+
+        section.style.setProperty(
+          "--timeline-progress",
+          "1"
+        );
+
+        section.style.setProperty(
+          "--character-progress",
+          "1"
+        );
+
+        return;
+      }
+
+      /* -------------------------------------
+         01 — HEADER ENTRANCE
+      ------------------------------------- */
+
+      if (header) {
+        gsap.fromTo(
+          header,
+          {
+            autoAlpha: 0,
+            y: 65,
+            scale: 0.94,
+            filter: "blur(15px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1.35,
+            ease: "power4.out",
+
+            scrollTrigger: {
+              trigger: header,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      /* -------------------------------------
+         02 — PANELS REVEAL
+      ------------------------------------- */
+
+      tables.forEach((table, index) => {
+        gsap.fromTo(
+          table,
+          {
+            autoAlpha: 0,
+            y: 75,
+            scale: 0.93,
+            filter: "blur(10px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1.15,
+            delay: index * 0.12,
+            ease: "power3.out",
+
+            scrollTrigger: {
+              trigger: table,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
+      });
+
+      /* -------------------------------------
+         03 — STAGES STAGGER
+      ------------------------------------- */
+
+      if (stageTrack && stageCards.length > 0) {
+        gsap.fromTo(
+          stageCards,
+          {
+            autoAlpha: 0,
+            y: 45,
+            x: (index: number) =>
+              index % 2 === 0 ? -22 : 22,
+            rotation: (index: number) =>
+              index % 2 === 0 ? -2 : 2,
+            scale: 0.92,
+            filter: "blur(8px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            x: 0,
+            rotation: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.9,
+            stagger: 0.13,
+            ease: "power3.out",
+
+            scrollTrigger: {
+              trigger: stageTrack,
+              start: "top 86%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      /* -------------------------------------
+         04 — FILM STRIP REVEAL
+      ------------------------------------- */
+
+      if (filesTrack && fileFrames.length > 0) {
+        gsap.fromTo(
+          fileFrames,
+          {
+            autoAlpha: 0,
+            y: 48,
+            scale: 0.87,
+            rotation: (index: number) =>
+              index % 2 === 0 ? -4 : 4,
+            filter: "blur(8px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            rotation: 0,
+            filter: "blur(0px)",
+            duration: 0.85,
+            stagger: 0.11,
+            ease: "back.out(1.3)",
+
+            scrollTrigger: {
+              trigger: filesTrack,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      /* -------------------------------------
+         05 — FOOTER ENTRANCE
+      ------------------------------------- */
+
+      if (footer) {
+        gsap.fromTo(
+          footer,
+          {
+            autoAlpha: 0,
+            y: 35,
+            filter: "blur(6px)",
+          },
+          {
+            autoAlpha: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1,
+            ease: "power3.out",
+
+            scrollTrigger: {
+              trigger: footer,
+              start: "top 96%",
+              once: true,
+            },
+          }
+        );
+      }
+
+      /* -------------------------------------
+         06 — SCROLL TIMELINE
+      ------------------------------------- */
+
+      const progress = {
+        value: 0,
+      };
 
       section.style.setProperty(
         "--timeline-progress",
-        timelineProgress.toFixed(4)
+        "0"
       );
-
-      const characterIn = Math.max(
-        0,
-        Math.min(
-          1,
-          (progress - 0.08) / 0.18
-        )
-      );
-
-      const characterOut = Math.max(
-        0,
-        Math.min(
-          1,
-          (0.86 - progress) / 0.18
-        )
-      );
-
-      const characterProgress =
-        characterIn * characterOut;
 
       section.style.setProperty(
         "--character-progress",
-        characterProgress.toFixed(4)
-      );
-    };
-
-    const requestSceneUpdate = () => {
-      if (rafRef.current !== null) return;
-
-      rafRef.current =
-        window.requestAnimationFrame(updateScene);
-    };
-
-    updateScene();
-
-    window.addEventListener(
-      "scroll",
-      requestSceneUpdate,
-      { passive: true }
-    );
-
-    window.addEventListener(
-      "resize",
-      requestSceneUpdate
-    );
-
-    return () => {
-      window.removeEventListener(
-        "scroll",
-        requestSceneUpdate
+        "0"
       );
 
-      window.removeEventListener(
-        "resize",
-        requestSceneUpdate
-      );
+      gsap.to(progress, {
+        value: 1,
+        ease: "none",
 
-      if (rafRef.current !== null) {
-        window.cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, []);
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+        },
+
+        onUpdate: () => {
+          const p = progress.value;
+
+          const clamp = (value: number) =>
+            Math.max(0, Math.min(1, value));
+
+          const timelineProgress = clamp(
+            (p - 0.16) / 0.56
+          );
+
+          const characterIn = clamp(
+            (p - 0.08) / 0.18
+          );
+
+          const characterOut = clamp(
+            (0.86 - p) / 0.18
+          );
+
+          const characterProgress =
+            characterIn * characterOut;
+
+          section.style.setProperty(
+            "--timeline-progress",
+            timelineProgress.toFixed(4)
+          );
+
+          section.style.setProperty(
+            "--character-progress",
+            characterProgress.toFixed(4)
+          );
+        },
+      });
+
+      /* -------------------------------------
+         REFRESH AFTER LAYOUT
+      ------------------------------------- */
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    },
+    {
+      scope: sectionRef,
+    }
+  );
 
   /* =========================================
-     STATUS
+     STAGE STATUS
   ========================================= */
 
-  const renderStageStatus = (stage: ProductionStage) => {
+  const renderStageStatus = (
+    stage: ProductionStage
+  ) => {
     if (stage.type === "open") {
       return (
         <span className="oa-status-live open-status">
@@ -437,6 +661,10 @@ export default function ProductionJourney() {
     );
   };
 
+  /* =========================================
+     PAGE
+  ========================================= */
+
   return (
     <section
       ref={sectionRef}
@@ -445,9 +673,7 @@ export default function ProductionJourney() {
       dir={isArabic ? "rtl" : "ltr"}
       lang={language}
     >
-      {/* =====================================
-          CINEMATIC BACKGROUND
-      ===================================== */}
+      {/* CINEMATIC BACKGROUND */}
 
       <div
         className="oa-production-bg"
@@ -469,18 +695,14 @@ export default function ProductionJourney() {
         aria-hidden="true"
       />
 
-      {/* =====================================
-          CAMERA FRAME
-      ===================================== */}
+      {/* CAMERA FRAME */}
 
       <span className="oa-prod-corner oa-prod-tl" />
       <span className="oa-prod-corner oa-prod-tr" />
       <span className="oa-prod-corner oa-prod-bl" />
       <span className="oa-prod-corner oa-prod-br" />
 
-      {/* =====================================
-          CHARACTERS
-      ===================================== */}
+      {/* CHARACTERS */}
 
       <div
         className="production-character production-mr-bean"
@@ -502,9 +724,7 @@ export default function ProductionJourney() {
         />
       </div>
 
-      {/* =====================================
-          PRODUCTION JOURNEY HEADER
-      ===================================== */}
+      {/* PRODUCTION HEADER */}
 
       <header className="oa-production-header">
         <div
@@ -540,15 +760,11 @@ export default function ProductionJourney() {
         />
       </header>
 
-      {/* =====================================
-          MAIN CONTENT
-      ===================================== */}
+      {/* MAIN CONTENT */}
 
       <div className="oa-production-content">
 
-        {/* ===================================
-            PRODUCTION TIMELINE
-        =================================== */}
+        {/* PRODUCTION TIMELINE */}
 
         <section
           className="oa-production-table oa-status-table"
@@ -585,7 +801,10 @@ export default function ProductionJourney() {
                     className="oa-stage-node-wrap"
                     aria-hidden="true"
                   >
-                    <span className="oa-stage-number" dir="ltr">
+                    <span
+                      className="oa-stage-number"
+                      dir="ltr"
+                    >
                       {stage.number}
                     </span>
 
@@ -616,7 +835,6 @@ export default function ProductionJourney() {
                 </>
               );
 
-              // All stages with href open their dedicated pages.
               if (stage.href) {
                 return (
                   <a
@@ -633,7 +851,6 @@ export default function ProductionJourney() {
                 );
               }
 
-              // Secret stages open the classified modal.
               if (
                 stage.type === "open" ||
                 stage.type === "secret"
@@ -675,9 +892,7 @@ export default function ProductionJourney() {
           </div>
         </section>
 
-        {/* ===================================
-            PROJECT FILES — FILM STRIP
-        =================================== */}
+        {/* PROJECT FILES — FILM STRIP */}
 
         <section
           className="oa-production-table oa-files-table"
@@ -765,9 +980,7 @@ export default function ProductionJourney() {
         </section>
       </div>
 
-      {/* =====================================
-          FOOTER
-      ===================================== */}
+      {/* FOOTER */}
 
       <footer className="oa-production-footer">
         <span dir="ltr">
@@ -789,9 +1002,7 @@ export default function ProductionJourney() {
         </span>
       </footer>
 
-      {/* =====================================
-          STAGE DETAILS / CLASSIFIED MODAL
-      ===================================== */}
+      {/* CLASSIFIED MODAL */}
 
       {selectedStage && (
         <div

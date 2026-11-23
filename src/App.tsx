@@ -9,7 +9,7 @@ import {
 
 // نحتفظ بتصميم شاشة التحميل الأصلي
 import "./components/Hero.css";
-
+import SiteScrollAnimations from "./components/SiteScrollAnimations";
 import ArchivePage from "./components/ArchivePage";
 import IdeaPage from "./components/IdeaPage";
 import ScenarioPage from "./components/ScenarioPage";
@@ -66,7 +66,10 @@ function EntryLoader() {
 
 function App() {
   return (
+    
     <BrowserRouter>
+  <SiteScrollAnimations />
+
       <Routes>
 
         {/* تحميل ثم دخول الأرشيف مباشرة */}
