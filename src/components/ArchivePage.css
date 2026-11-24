@@ -1,6 +1,6 @@
+
 /* =========================================================
-   ON AIR — ARCHIVE PAGE WRAPPER
-   Transparent over global website background
+   ON AIR — ARCHIVE PAGE
 ========================================================= */
 
 .archive-page-wrapper {
@@ -8,11 +8,8 @@
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-
-  /* No local section background */
   background: transparent !important;
 }
-
 
 /* =========================================================
    GLOBAL ARCHIVE CHROME
@@ -33,10 +30,8 @@
   --red: #D92832;
 }
 
-
 /* =========================================================
    TOP BAR
-   Transparent — No blur — No overlay
 ========================================================= */
 
 .archive-global-bar {
@@ -55,14 +50,13 @@
 
   border-bottom: 1px solid rgba(199, 168, 107, 0.38);
 
-  /* Removed dark background and blur */
   background: transparent !important;
+
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 
   direction: ltr;
 }
-
 
 /* =========================================================
    LANGUAGE — LEFT
@@ -72,8 +66,10 @@
   display: flex;
   align-items: center;
   gap: 10px;
+
   direction: ltr;
   pointer-events: auto;
+  flex-shrink: 0;
 }
 
 .archive-global-language button {
@@ -106,15 +102,13 @@
   font-family: "Space Mono", monospace;
 }
 
-
 /* =========================================================
-   TECHNICAL INFO — CENTER
+   CAMERA DATA — CENTER
 ========================================================= */
 
 .archive-global-tech {
   position: absolute;
   left: 50%;
-
   transform: translateX(-50%);
 
   display: flex;
@@ -129,6 +123,8 @@
   font-family: "Space Mono", monospace;
   font-size: 11px;
   letter-spacing: 0.18em;
+
+  pointer-events: none;
 }
 
 .archive-global-tech i {
@@ -136,22 +132,158 @@
   color: var(--gray);
 }
 
+/* =========================================================
+   SOCIAL MEDIA + REC
+========================================================= */
+
+.archive-global-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 18px;
+
+  direction: ltr;
+  pointer-events: auto;
+  flex-shrink: 0;
+}
 
 /* =========================================================
-   REC — RIGHT
+   SOCIAL MEDIA GROUP
+========================================================= */
+
+.archive-global-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  direction: ltr;
+  pointer-events: auto;
+}
+
+/* =========================================================
+   CINEMATIC ICON FRAMES
+========================================================= */
+
+.archive-global-social a {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  color: var(--cream);
+
+  background: linear-gradient(
+    145deg,
+    rgba(17, 37, 72, 0.78),
+    rgba(7, 17, 29, 0.58)
+  );
+
+  border: 1px solid rgba(199, 168, 107, 0.65);
+
+  border-radius: 3px;
+
+  box-shadow:
+    inset 0 0 12px rgba(199, 168, 107, 0.07),
+    0 3px 12px rgba(0, 0, 0, 0.20);
+
+  text-decoration: none;
+
+  outline: none;
+
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* INNER FRAME */
+
+.archive-global-social a::before {
+  content: "";
+
+  position: absolute;
+  inset: 4px;
+
+  border: 1px solid rgba(199, 168, 107, 0.22);
+
+  pointer-events: none;
+}
+
+/* ICON SIZE */
+
+.archive-global-social a svg {
+  display: block;
+
+  width: 24px;
+  height: 24px;
+
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   CINEMATIC HOVER
+========================================================= */
+
+.archive-global-social a:hover {
+  color: #FFFFFF;
+
+  border-color: var(--gold);
+
+  background: rgba(199, 168, 107, 0.20);
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 0 16px rgba(199, 168, 107, 0.22),
+    inset 0 0 12px rgba(199, 168, 107, 0.12);
+}
+
+/* KEYBOARD FOCUS */
+
+.archive-global-social a:focus-visible {
+  color: #FFFFFF;
+  border-color: var(--gold);
+
+  outline: 1px solid var(--gold);
+  outline-offset: 5px;
+}
+
+/* =========================================================
+   REC — RECORDING INDICATOR
 ========================================================= */
 
 .archive-global-rec {
   display: flex;
   align-items: center;
-  gap: 12px;
+
+  gap: 9px;
+
+  margin-left: 3px;
+  padding-left: 17px;
+
+  border-left: 1px solid rgba(199, 168, 107, 0.7);
 
   direction: ltr;
+
   color: var(--cream);
 
   font-family: "Space Mono", monospace;
   font-size: 12px;
   letter-spacing: 0.12em;
+
+  flex-shrink: 0;
 }
 
 .archive-global-rec span {
@@ -159,12 +291,15 @@
   height: 13px;
 
   border-radius: 50%;
+
   background: var(--red);
 
   box-shadow: 0 0 12px rgba(217, 40, 50, 0.35);
 
   animation: archiveGlobalRecBlink 1.3s infinite;
 }
+
+/* REC ANIMATION */
 
 @keyframes archiveGlobalRecBlink {
   0%, 45% {
@@ -178,7 +313,6 @@
   }
 }
 
-
 /* =========================================================
    GLOBAL CAMERA FRAME
 ========================================================= */
@@ -187,13 +321,15 @@
   position: absolute;
 
   top: 125px;
+
   right: clamp(28px, 5vw, 76px);
+
   bottom: 45px;
+
   left: clamp(28px, 5vw, 76px);
 
   pointer-events: none;
 }
-
 
 /* =========================================================
    CORNERS
@@ -201,18 +337,21 @@
 
 .global-corner {
   position: absolute;
+
   width: 64px;
   height: 64px;
+
   opacity: 0.72;
 }
 
 .global-corner::before,
 .global-corner::after {
   content: "";
+
   position: absolute;
+
   background: var(--gold);
 }
-
 
 /* TOP LEFT */
 
@@ -224,6 +363,7 @@
 .global-tl::before {
   top: 0;
   left: 0;
+
   width: 64px;
   height: 1px;
 }
@@ -231,10 +371,10 @@
 .global-tl::after {
   top: 0;
   left: 0;
+
   width: 1px;
   height: 64px;
 }
-
 
 /* TOP RIGHT */
 
@@ -246,6 +386,7 @@
 .global-tr::before {
   top: 0;
   right: 0;
+
   width: 64px;
   height: 1px;
 }
@@ -253,10 +394,10 @@
 .global-tr::after {
   top: 0;
   right: 0;
+
   width: 1px;
   height: 64px;
 }
-
 
 /* BOTTOM LEFT */
 
@@ -268,6 +409,7 @@
 .global-bl::before {
   bottom: 0;
   left: 0;
+
   width: 64px;
   height: 1px;
 }
@@ -275,10 +417,10 @@
 .global-bl::after {
   bottom: 0;
   left: 0;
+
   width: 1px;
   height: 64px;
 }
-
 
 /* BOTTOM RIGHT */
 
@@ -290,6 +432,7 @@
 .global-br::before {
   bottom: 0;
   right: 0;
+
   width: 64px;
   height: 1px;
 }
@@ -297,13 +440,13 @@
 .global-br::after {
   bottom: 0;
   right: 0;
+
   width: 1px;
   height: 64px;
 }
 
-
 /* =========================================================
-   HIDE THE OLD LOCAL TOP BAR
+   HIDE OLD LOCAL TOP BAR
 ========================================================= */
 
 .archive-page-wrapper
@@ -311,7 +454,6 @@
 .archive-global-bar {
   display: none !important;
 }
-
 
 /* =========================================================
    HIDE OLD INTRO CORNERS
@@ -329,24 +471,24 @@
   display: none !important;
 }
 
-
 /* =========================================================
    KEEP CONTENT ABOVE GLOBAL BACKGROUND
 ========================================================= */
 
 .archive-page-wrapper
 .cinematic-archive,
+
 .archive-page-wrapper
 .oa-production {
   position: relative;
+
   z-index: 1;
 
   background: transparent !important;
 }
 
-
 /* =========================================================
-   MOBILE
+   TABLETS
 ========================================================= */
 
 @media (max-width: 800px) {
@@ -356,6 +498,7 @@
     padding: 0 20px;
 
     background: transparent !important;
+
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -369,8 +512,31 @@
     font-size: 8px;
   }
 
+  /* SOCIAL */
+
+  .archive-global-status {
+    gap: 12px;
+  }
+
+  .archive-global-social {
+    gap: 10px;
+  }
+
+  .archive-global-social a {
+    width: 36px;
+    height: 36px;
+  }
+
+  .archive-global-social a svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* REC */
+
   .archive-global-rec {
     gap: 8px;
+    padding-left: 11px;
     font-size: 9px;
   }
 
@@ -379,8 +545,11 @@
     height: 9px;
   }
 
+  /* FRAME */
+
   .archive-global-frame {
     top: 92px;
+
     right: 18px;
     bottom: 22px;
     left: 18px;
@@ -406,9 +575,8 @@
   }
 }
 
-
 /* =========================================================
-   SMALL PHONES
+   MOBILE — PHONES
 ========================================================= */
 
 @media (max-width: 430px) {
@@ -418,6 +586,8 @@
     padding: 0 12px;
   }
 
+  /* LANGUAGE */
+
   .archive-global-language {
     gap: 6px;
   }
@@ -426,9 +596,15 @@
     font-size: 8px;
   }
 
+  /* CAMERA DATA */
+
   .archive-global-tech {
+    left: 38%;
+
     gap: 6px;
+
     font-size: 6.5px;
+
     letter-spacing: 0.08em;
   }
 
@@ -437,8 +613,35 @@
     display: none;
   }
 
+  /* SOCIAL */
+
+  .archive-global-status {
+    gap: 8px;
+  }
+
+  .archive-global-social {
+    gap: 7px;
+  }
+
+  .archive-global-social a {
+    width: 30px;
+    height: 30px;
+  }
+
+  .archive-global-social a svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* REC */
+
   .archive-global-rec {
-    gap: 6px;
+    margin-left: 1px;
+
+    padding-left: 8px;
+
+    gap: 5px;
+
     font-size: 7px;
   }
 
@@ -447,8 +650,11 @@
     height: 7px;
   }
 
+  /* FRAME */
+
   .archive-global-frame {
     top: 78px;
+
     right: 12px;
     bottom: 12px;
     left: 12px;
@@ -474,13 +680,238 @@
   }
 }
 
+/* =========================================================
+   EXTRA SMALL PHONES
+========================================================= */
+
+@media (max-width: 350px) {
+
+  .archive-global-bar {
+    padding: 0 9px;
+  }
+
+  .archive-global-tech {
+    left: 35%;
+    gap: 5px;
+    font-size: 6px;
+  }
+
+  .archive-global-status {
+    gap: 6px;
+  }
+
+  .archive-global-social {
+    gap: 5px;
+  }
+
+  .archive-global-social a {
+    width: 26px;
+    height: 26px;
+  }
+
+  .archive-global-social a svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .archive-global-rec {
+    padding-left: 6px;
+    gap: 4px;
+  }
+
+}
 
 /* =========================================================
    REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   .archive-global-rec span {
     animation: none;
+  }
+
+  .archive-global-social a {
+    transition: none;
+  }
+
+}
+
+/* =========================================
+   ON AIR — CLEAN CINEMATIC SOCIAL ICONS
+   ICONS ONLY — NO BOXES
+========================================= */
+
+.archive-global-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 25px;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  direction: ltr;
+  pointer-events: auto;
+}
+
+.archive-global-social {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  direction: ltr;
+}
+
+/* ICONS */
+
+.archive-global-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+  margin: 0;
+
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0;
+
+  color: #F7EDE3;
+  opacity: 0.95;
+
+  box-shadow: none !important;
+
+  text-decoration: none;
+
+  transform: none;
+
+  transition:
+    color 0.3s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+/* REMOVE ALL FRAME DETAILS */
+
+.archive-global-social a::before,
+.archive-global-social a::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* ICON SIZE */
+
+.archive-global-social a svg {
+  display: block;
+  width: 27px;
+  height: 27px;
+}
+
+/* CINEMATIC HOVER */
+
+.archive-global-social a:hover {
+  color: #C7A86B;
+  opacity: 1;
+
+  background: transparent !important;
+  border: none !important;
+
+  transform: scale(1.13);
+
+  filter: drop-shadow(
+    0 0 7px rgba(199, 168, 107, 0.35)
+  );
+}
+
+/* NO REC SEPARATOR */
+
+.archive-global-rec {
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+/* TABLET */
+
+@media (max-width: 800px) {
+  .archive-global-status {
+    gap: 17px;
+  }
+
+  .archive-global-social {
+    gap: 17px;
+  }
+
+  .archive-global-social a {
+    width: 27px;
+    height: 27px;
+  }
+
+  .archive-global-social a svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 430px) {
+  .archive-global-status {
+    gap: 10px;
+  }
+
+  .archive-global-social {
+    gap: 12px;
+  }
+
+  .archive-global-social a {
+    width: 23px;
+    height: 23px;
+  }
+
+  .archive-global-social a svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .archive-global-rec {
+    gap: 5px;
+  }
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 350px) {
+  .archive-global-status {
+    gap: 7px;
+  }
+
+  .archive-global-social {
+    gap: 9px;
+  }
+
+  .archive-global-social a svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-global-social a {
+    transition: none;
   }
 }

@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+
 import {
   BrowserRouter,
   Routes,
@@ -7,15 +8,20 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-// نحتفظ بتصميم شاشة التحميل الأصلي
+// شاشة التحميل الأصلية
 import "./components/Hero.css";
 
+
+// صفحات الموقع الأصلية
 import ArchivePage from "./components/ArchivePage";
 import IdeaPage from "./components/IdeaPage";
 import ScenarioPage from "./components/ScenarioPage";
 import ShootingPage from "./components/ShootingPage";
 
-// شاشة التحميل فقط
+// ==========================================
+// ENTRY LOADER
+// ==========================================
+
 function EntryLoader() {
   const navigate = useNavigate();
 
@@ -64,41 +70,56 @@ function EntryLoader() {
   );
 }
 
+// ==========================================
+// MAIN APP
+// ==========================================
+
 function App() {
   return (
     <BrowserRouter>
+
+
+      {/* الصفحات الأصلية بدون تغيير */}
       <Routes>
 
-        {/* تحميل ثم دخول الأرشيف مباشرة */}
-        <Route path="/" element={<EntryLoader />} />
+        {/* شاشة التحميل */}
+        <Route
+          path="/"
+          element={<EntryLoader />}
+        />
 
-        {/* الصفحات الداخلية */}
+        {/* الأرشيف */}
         <Route
           path="/archive"
           element={<ArchivePage />}
         />
 
+        {/* الفكرة */}
         <Route
           path="/ideas"
           element={<IdeaPage />}
         />
 
+        {/* السيناريو */}
         <Route
           path="/scenario"
           element={<ScenarioPage />}
         />
 
+        {/* مسار بديل للسيناريو */}
         <Route
           path="/story"
           element={<ScenarioPage />}
         />
 
+        {/* التصوير */}
         <Route
           path="/shooting"
           element={<ShootingPage />}
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }
